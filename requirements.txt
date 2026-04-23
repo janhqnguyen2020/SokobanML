@@ -1,0 +1,35 @@
+# requirements.txt
+# Install all dependencies with: pip install -r requirements.txt
+#
+# --- Environment ---
+# gymnasium            ← RL environment interface
+# gymnasium-sokoban    ← Sokoban environment plugin for Gymnasium
+# pygame               ← rendering backend for Gymnasium Sokoban
+#
+# --- RL / ML ---
+# torch                ← PyTorch for neural networks (DQN/PPO policy networks)
+# torchvision          ← image transforms, used in observation preprocessing
+# stable-baselines3    ← PPO and DQN implementations
+# tensorboard          ← optional: training curve visualization
+#
+# --- Data / Metrics ---
+# numpy                ← array math, state transformations
+# pandas               ← results DataFrames, CSV handling
+# scipy                ← hungarian algorithm for heuristics (linear_sum_assignment)
+#
+# --- Visualization ---
+# matplotlib           ← learning curves, comparison charts, report figures
+# seaborn              ← styled statistical plots (boxplots, heatmaps)
+#
+# --- Video / GIF export ---
+# imageio              ← save animated GIFs from frame lists
+# imageio-ffmpeg       ← ffmpeg backend for imageio (MP4 support)
+# opencv-python        ← alternative video writer, frame manipulation
+#
+# --- Notebooks ---
+# jupyter              ← Jupyter Notebook / Lab for experiments
+# ipykernel            ← Jupyter kernel for this project's venv
+#
+# Pin versions once the environment is stable, e.g.:
+#   torch==2.2.0
+#   stable-baselines3==2.3.0

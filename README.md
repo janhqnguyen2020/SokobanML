@@ -7,4 +7,13 @@ members:
 - Joseph Anh-Quoc Nguyen
 
 
-
+languages 7 libraries:
+- Python
+- Gymnasium
+- PyTorch
+- Stable-Baselines3
+- NumPy
+- Pandas
+- Matplotlib
+- Jupyter
+- GitHub

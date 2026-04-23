@@ -1,0 +1,3 @@
+# This folder stores trained model checkpoints.
+# Files tracked by .gitignore — do not commit .zip or .pt files.
+# Share models via Google Drive or as GitHub release assets.
