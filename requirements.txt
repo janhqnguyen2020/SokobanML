@@ -10,7 +10,7 @@ pygame               # rendering backend for Gymnasium Sokoban
 torch==2.1.2         # PyTorch for neural networks (DQN/PPO policy networks)
 torchvision==0.16.2  # image transforms, used in observation preprocessing
 stable-baselines3==2.3.0    # PPO and DQN implementations
-shimmy==2.0.1        # For compatible with stable-baselines3
+shimmy>=0.2.1,<1.0   # For compatible with stable-baselines3
 tensorboard          # optional: training curve visualization
 #
 # --- Data / Metrics ---
