@@ -2,34 +2,36 @@
 # Install all dependencies with: pip install -r requirements.txt
 #
 # --- Environment ---
-# gymnasium            ← RL environment interface
-# gymnasium-sokoban    ← Sokoban environment plugin for Gymnasium
-# pygame               ← rendering backend for Gymnasium Sokoban
+gym==0.26.2          # RL environment interface
+gym-sokoban          # Sokoban environment plugin for Gymnasium
+pygame               # rendering backend for Gymnasium Sokoban
 #
 # --- RL / ML ---
-# torch                ← PyTorch for neural networks (DQN/PPO policy networks)
-# torchvision          ← image transforms, used in observation preprocessing
-# stable-baselines3    ← PPO and DQN implementations
-# tensorboard          ← optional: training curve visualization
+torch==2.1.2         # PyTorch for neural networks (DQN/PPO policy networks)
+torchvision==0.16.2  # image transforms, used in observation preprocessing
+stable-baselines3==2.3.0    # PPO and DQN implementations
+shimmy==2.0.1        # For compatible with stable-baselines3
+tensorboard          # optional: training curve visualization
 #
 # --- Data / Metrics ---
-# numpy                ← array math, state transformations
-# pandas               ← results DataFrames, CSV handling
-# scipy                ← hungarian algorithm for heuristics (linear_sum_assignment)
+numpy==1.26.4        # array math, state transformations
+pandas               # results DataFrames, CSV handling
+scipy                # hungarian algorithm for heuristics (linear_sum_assignment)
 #
 # --- Visualization ---
-# matplotlib           ← learning curves, comparison charts, report figures
-# seaborn              ← styled statistical plots (boxplots, heatmaps)
+matplotlib           # learning curves, comparison charts, report figures
+seaborn              # styled statistical plots (boxplots, heatmaps)
 #
 # --- Video / GIF export ---
-# imageio              ← save animated GIFs from frame lists
-# imageio-ffmpeg       ← ffmpeg backend for imageio (MP4 support)
-# opencv-python        ← alternative video writer, frame manipulation
+imageio              # save animated GIFs from frame lists
+imageio-ffmpeg       # ffmpeg backend for imageio (MP4 support)
+opencv-python        # alternative video writer, frame manipulation
 #
 # --- Notebooks ---
-# jupyter              ← Jupyter Notebook / Lab for experiments
-# ipykernel            ← Jupyter kernel for this project's venv
+jupyter              # Jupyter Notebook / Lab for experiments
+ipykernel            # Jupyter kernel for this project's venv
 #
 # Pin versions once the environment is stable, e.g.:
-#   torch==2.2.0
-#   stable-baselines3==2.3.0
+#torch==2.2.0
+#torchvision==0.17.2
+#stable-baselines3==2.3.0

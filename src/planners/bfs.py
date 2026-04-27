@@ -29,3 +29,9 @@
 #   - State = (player_pos, frozenset(box_positions))
 #   - Positions as (row, col) tuples
 #   - Should integrate with deadlock.py to prune dead states early
+
+def bfs_policy(obs):
+    # TODO: convert obs -> state graph
+    # return action (0: up, 1: down, 2: left, 3: right)
+    return 0
+    

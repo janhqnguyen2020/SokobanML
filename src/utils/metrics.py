@@ -37,3 +37,15 @@
 # Notes:
 #   - Keep schema in sync with planner_runner.py and evaluate.py
 #   - Timeout episodes: steps = max_steps, solved = False
+
+import numpy as np
+
+def compute_metrics(results):
+    rewards = [r for r, s in results]
+    steps = [s for r, s in results]
+
+    return {
+        "success_rate": np.mean([r > 0 for r in rewards]),
+        "avg_reward": np.mean(rewards),
+        "avg_steps": np.mean(steps)
+    }

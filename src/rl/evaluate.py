@@ -37,3 +37,25 @@
 #   - Use evaluate_policy() from SB3 for quick sanity checks
 #   - For detailed per-level metrics, use the custom evaluate_model() above
 #   - Deterministic=True means argmax action, no exploration
+
+import numpy as np
+from src.utils.metrics import compute_metrics
+
+def random_agent(env, obs):
+    return env.action_space.sample()
+
+def run_episode(env, agent):
+    observation = env.reset()
+    done = False
+
+    total_reward = 0
+    steps = 0
+
+    while not done:
+        action = agent(observation)
+        observation, reward, done, info = env.step(action)
+
+        total_reward += reward
+        steps += 1
+    
+    return total_reward, steps

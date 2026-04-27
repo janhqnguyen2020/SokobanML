@@ -32,3 +32,8 @@
 #   - Reuse get_neighbors() and reconstruct_path() from bfs.py or utils
 #   - Heap entries: (h_value, state, came_from)
 #   - Tie-break by insertion order to keep heap stable
+
+def greedy_policy(obs):
+    # TODO: choose best action using heuristic
+    # return action (0: up, 1: down, 2: left, 3: right)
+    return 0 # TEMP: random until heuristic is implemented

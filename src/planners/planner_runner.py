@@ -36,3 +36,33 @@
 # Notes:
 #   - Use signal or threading for timeouts (Windows-safe: use threading)
 #   - Metrics schema matches src/utils/metrics.py definitions
+
+from src.planners.bfs import bfs_policy
+from src.planners.greedy import greedy_policy
+from src.utils.metrics import compute_metrics
+from src.utils.config import NUM_EPISODES
+
+def run_episode(env, policy_function):
+    observation = env.reset()
+    done = False
+    
+    total_reward = 0
+    steps = 0
+
+    while not done:
+        action = policy_function(observation)
+        observation, reward, done, info = env.step(action)
+
+        total_reward += reward
+        steps += 1
+
+    return total_reward, steps
+
+def run_experiments(env, policy_function, number_episodes=NUM_EPISODES):
+    results = []
+
+    for i in range(number_episodes):
+        print("Starting episode: ", i)
+        results.append(run_episode(env, policy_function))
+
+    return compute_metrics(results)
