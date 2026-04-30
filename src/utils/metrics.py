@@ -34,18 +34,29 @@
 #   - print_summary(summary_df)
 #       → pretty-print comparison table to stdout
 #
-# Notes:
-#   - Keep schema in sync with planner_runner.py and evaluate.py
-#   - Timeout episodes: steps = max_steps, solved = False
 
 import numpy as np
 
 def compute_metrics(results):
-    rewards = [r for r, s in results]
-    steps = [s for r, s in results]
+    # results: list of (reward, steps) or (reward, steps, time_ms)
+    rewards = [r[0] for r in results]
+    steps   = [r[1] for r in results]
+    solved  = [r > 0 for r in rewards]
 
-    return {
-        "success_rate": np.mean([r > 0 for r in rewards]),
-        "avg_reward": np.mean(rewards),
-        "avg_steps": np.mean(steps)
+    metrics = {
+        "success_rate":   float(np.mean(solved)),
+        "solved_count":   int(sum(solved)),
+        "total_episodes": len(results),
+        "avg_reward":     float(np.mean(rewards)),
+        "avg_steps":      float(np.mean(steps)),
+        "min_steps":      int(np.min(steps)),
+        "max_steps":      int(np.max(steps)),
     }
+
+    if len(results[0]) >= 3:
+        times = [r[2] for r in results]
+        metrics["avg_time_ms"] = float(np.mean(times))
+        metrics["min_time_ms"] = float(np.min(times))
+        metrics["max_time_ms"] = float(np.max(times))
+
+    return metrics

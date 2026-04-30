@@ -36,3 +36,15 @@
 # Notes:
 #   - All positions as (row, col) tuples
 #   - Goal positions are fixed per puzzle; pass them in or read from config
+
+def manhattan(a,b):
+    return abs(a[0] - b[0]) + abs(a[1] - b[1])
+
+def min_box_to_goal(box_positions, goal_positions):
+    #for each box, find distance to nearest goal, sum those distances
+    total = 0
+    for box in box_positions:
+        nearest = min(manhattan(box, goal) for goal in goal_positions)
+        total += nearest
+    return total
+

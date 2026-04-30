@@ -37,17 +37,24 @@
 #   - Use signal or threading for timeouts (Windows-safe: use threading)
 #   - Metrics schema matches src/utils/metrics.py definitions
 
-from src.planners.bfs import bfs_policy
-from src.planners.greedy import greedy_policy
+import time
+from src.planners.bfs import BFSAgent
+from src.planners.greedy import GreedyAgent
 from src.utils.metrics import compute_metrics
 from src.utils.config import NUM_EPISODES
 
 def run_episode(env, policy_function):
     observation = env.reset()
+
+    #tell the agent a new epsiode started so it clears its cached plan
+    if hasattr(policy_function, 'reset'):
+        policy_function.reset()
+
     done = False
     
     total_reward = 0
     steps = 0
+    start_time = time.time()
 
     while not done:
         action = policy_function(observation)
@@ -55,8 +62,10 @@ def run_episode(env, policy_function):
 
         total_reward += reward
         steps += 1
+    
+    elapsed_ms = (time.time() - start_time) * 1000
 
-    return total_reward, steps
+    return total_reward, steps, elapsed_ms
 
 def run_experiments(env, policy_function, number_episodes=NUM_EPISODES):
     results = []
