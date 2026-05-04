@@ -14,7 +14,7 @@
 #     LEVELS_DIR  = "data/levels/"
 #
 #   ENVIRONMENT:
-ENV_ID       = "Sokoban-v2"
+ENV_ID       = "Sokoban-v2" #"Sokoban-v0" easiest, "Sokoban-v1" medium, "Sokoban-v2" hardest
 MAX_STEPS    = 100       # max actions per episode
 NUM_EPISODES = 5
 #     NUM_ENVS     = 4         # parallel envs for PPO
