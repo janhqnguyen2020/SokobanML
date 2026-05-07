@@ -1,3 +1,4 @@
+# src/planners/deadlock.py
 """
 Detect states where puzzle is in AUTOMATIC DEADLOCK, meaning no sequence of actions can lead to a solution
 - examples include: being stuck in a corner, trapped between obstacles, etc

@@ -42,6 +42,6 @@ from src.utils.config import DQN_TOTAL_STEPS # Training length
 from src.utils.config import DQN_BUFFER_SIZE # Replay memory size
 
 def train(env):
-    model = DQN("CnnPolicy", env, buffer_size=DQN_BUFFER_SIZE, verbose=1, device="cuda")
+    model = DQN("MlpPolicy", env, buffer_size=DQN_BUFFER_SIZE, verbose=1, device="cuda")
     model.learn(total_timesteps=DQN_TOTAL_STEPS) 
     return model

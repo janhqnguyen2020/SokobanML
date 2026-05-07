@@ -1,3 +1,4 @@
+# src/planners/bfs.py
 """
 BFS Agent for solving Sokoban
 This file implements a breadth-first search over box configurations,
@@ -7,6 +8,8 @@ while using BFS to validate movement and deadlock detection to prune bad states.
 from collections import deque # queue structure (FIFO needed for bfs)
 import numpy as np
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
+from src.planners.reasoning import ReasoningPlanner
+from src.planners.heuristics import manhattan
 
 _DIR = {
     1: (-1, 0),
@@ -17,12 +20,13 @@ _DIR = {
 
 class BFSAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
-    def __init__(self, env):
+    def __init__(self, env, reasoning=None):
         self.env = env
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.reasoning = reasoning or ReasoningPlanner(env)
 
     def reset(self):
         #clear everything for new episode
@@ -131,8 +135,12 @@ class BFSAgent:
             state = queue.popleft()#removes oldest state from queue for exploration
             player, boxes = state# expand state 
 
-            #try pushing boxes in every direction
-            for box in boxes:
+            # Explore promising boxes first by action ordering
+            assignment = self.reasoning.plan(boxes, goals)
+            sorted_boxes = sorted(boxes, key=lambda b: manhattan(b, assignment[b]))
+
+            for box in sorted_boxes:
+                #try pushing boxes in every direction
                 for action, (dirRow, dirCol) in _DIR.items():
                     
                     #compute push positions
