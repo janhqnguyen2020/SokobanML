@@ -1,19 +1,32 @@
-# DQN test: for training and evaluating pipeline
-from src.env.sokoban_env import initialize_env
+"""
+Higher-level DQN experiment entrypoint
+"""
+
+import os
 from src.rl.train_dqn import train
-from src.rl.evaluate import run_episode
-from src.utils.config import NUM_EPISODES
+from src.rl.evaluate import evaluate_model
+from src.utils.config import NUM_EPISODES, ENV_ID
+from src.rl.high_level_env import HighLevelSokobanEnv
 
-env = initialize_env()
 
-model = train(env)
+def main():
+    print("=== HIGH-LEVEL DQN ===")
+    _, run_dir = train()
+    model_path = os.path.join(run_dir, "high_level_dqn_final.zip")
+    output_path = os.path.join(run_dir, "eval_results.csv")
+    summary = evaluate_model(
+        model_path=model_path,
+        algo="dqn",
+        level_ids=[ENV_ID],
+        n_episodes=NUM_EPISODES,
+        output_path=output_path,
+        env_factory=HighLevelSokobanEnv,
+    )
 
-def agent(obs):
-    return model.predict(obs)[0]
+    print("Evaluation summary:")
+    print(summary)
+    print("Saved run artifacts to:", run_dir)
 
-results = []
-for i in range(NUM_EPISODES):
-    print("Starting episode: ", i)
-    results.append(run_episode(env, agent))
 
-print(results)
+if __name__ == "__main__":
+    main()
