@@ -1,23 +1,23 @@
 """
-DQN experiment entrypoint (MlpPolicy + HintWrapper)
+PPO experiment entrypoint (MlpPolicy + HintWrapper)
 """
 
 import os
-from src.rl.train_dqn import train
+from src.rl.train_ppo import train
 from src.rl.evaluate import evaluate_model
 from src.utils.config import NUM_EPISODES, ENV_ID
 
 
 def main():
-    print("=== DQN (MlpPolicy + HintWrapper) ===")
+    print("=== PPO (MlpPolicy + HintWrapper) ===")
     _, run_dir = train()
 
-    model_path  = os.path.join(run_dir, "dqn_final.zip")
+    model_path  = os.path.join(run_dir, "ppo_final.zip")
     output_path = os.path.join(run_dir, "eval_results.csv")
 
     summary = evaluate_model(
         model_path=model_path,
-        algo="dqn",
+        algo="ppo",
         level_ids=[ENV_ID],
         n_episodes=NUM_EPISODES,
         output_path=output_path,

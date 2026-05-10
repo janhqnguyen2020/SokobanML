@@ -14,8 +14,8 @@
 #     LEVELS_DIR  = "data/levels/"
 #
 #   ENVIRONMENT:
-ENV_ID       = "Sokoban-v2" #"Sokoban-v0" easiest, "Sokoban-v1" medium, "Sokoban-v2" hardest
-MAX_STEPS    = 100       # max actions per episode
+ENV_ID       = "Sokoban-v0" #"Sokoban-v0" easiest, "Sokoban-v1" medium, "Sokoban-v2" hardest
+MAX_STEPS    = 200       # max actions per episode
 NUM_EPISODES = 5
 #     NUM_ENVS     = 4         # parallel envs for PPO
 #     LEVEL_IDS    = list(range(0, 100))   ← training levels
@@ -24,12 +24,13 @@ NUM_EPISODES = 5
 #
 #   DQN HYPERPARAMS:
 #     DQN_LR                = 1e-4
-DQN_BUFFER_SIZE       = 10_000
+DQN_BUFFER_SIZE       = 50_000
 #     DQN_LEARNING_STARTS   = 10_000
 #     DQN_EXPLORATION_FRAC  = 0.2
 #     DQN_EPS_FINAL         = 0.05
 #     DQN_TARGET_UPDATE     = 1000
-DQN_TOTAL_STEPS       = 10_000
+DQN_TOTAL_STEPS       = 100_000
+PPO_TOTAL_STEPS      = 200_000
 #
 #   PLANNER:
 PLANNER_TIMEOUT_SEC = 30  # max time per level for BFS/Greedy
