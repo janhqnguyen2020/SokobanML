@@ -1,3 +1,4 @@
+# src/main_random.py
 # Random agent test: baseline sanity check
 from src.env.sokoban_env import initialize_env
 from src.rl.evaluate import run_episode

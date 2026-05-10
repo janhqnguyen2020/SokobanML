@@ -1,3 +1,4 @@
+# src/planners/greedy.py
 """
 Greedy Agent for solving Sokoban
 This file implements a greedy search over box configurations,
@@ -12,6 +13,9 @@ import numpy as np
 from src.planners.heuristics import min_box_to_goal#heuristic function
 
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
+from src.planners.reasoning import ReasoningPlanner
+from src.planners.heuristics import assignment_heuristic
+from src.planners.backward_hints import BackwardHintGenerator
 
 _DIR = {
     1: (-1, 0),
@@ -22,12 +26,14 @@ _DIR = {
 
 class GreedyAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
-    def __init__(self, env):
+    def __init__(self, env, reasoning=None):
         self.env = env
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.reasoning = reasoning or ReasoningPlanner(env)
+        self.hints = BackwardHintGenerator()
 
     def reset(self):
         #clear everything for new episode
@@ -128,8 +134,9 @@ class GreedyAgent:
             return []
 
         counter = 0
-        heuristicValue = min_box_to_goal(box_positions, goals)#estimate how close to solution
-        
+        assignment = self.reasoning.plan(box_positions, goals) #estimate how close to solution, but each box → fixed assigned goal
+        heuristicValue = assignment_heuristic(box_positions, assignment)
+
         #creates a priority queue (stores staes sorted by heuristic)
         heap = [(heuristicValue, counter, init_state)]
         
@@ -182,7 +189,11 @@ class GreedyAgent:
                         return self._reconstruct(came_from, next_state, walls)
 
                     counter += 1
-                    h = min_box_to_goal(new_boxes, goals)
+                    assignment = self.reasoning.plan(new_boxes, goals)
+                    h = assignment_heuristic(new_boxes, assignment)
+                    overlap = self.hints.compute_overlap(new_boxes, goals)
+                    h -= overlap * 2 # More overlap means better state, thus lower heuristic is preferred
+
                     heapq.heappush(heap, (h, counter, next_state))#push to heap
 
         return None

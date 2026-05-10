@@ -1,33 +1,34 @@
-# src/utils/logger.py
-# Member C — Joseph Nguyen
-#
-# CSV logging utilities for experiment results.
-#
-# Both planners and RL evaluation scripts call these functions to persist
-# results to disk. Keeping logging centralized ensures consistent file
-# formats that the notebooks can read without preprocessing.
-#
-# Functions to implement:
-#   - init_csv(output_path, fieldnames)
-#       → create a new CSV file with header row
-#       → if file exists, warn but overwrite (or append with flag)
-#
-#   - append_row(output_path, row_dict)
-#       → append one result dict to existing CSV
-#       → used inside planner_runner.py and evaluate.py loops
-#
-#   - load_results(csv_path)
-#       → read CSV into Pandas DataFrame
-#       → auto-cast columns to correct types (bool, int, float)
-#       → returns DataFrame ready for metrics.py
-#
-#   - log_training_step(log_path, timestep, reward, success)
-#       → lightweight logger for RL training curves
-#       → appends one row: {timestep, mean_reward, success_rate}
-#       → called from callbacks.py
-#
-# Notes:
-#   - Use Python's csv module for writing (no Pandas dep for writing)
-#   - Use Pandas for reading (load_results) — richer dtype handling
-#   - All output files go to results/
-#   - Thread-safe writes not required (single-process logging)
+import csv # for writing logs to a CSV file
+import os # for checking if the log file exists
+import pandas as pd # for creating a DataFrame to store logs
+
+def init_csv(output_dir, fieldnames):
+    os.makedirs(os.path.dirname(output_dir), exist_ok=True)#create the directory if it doesn't exist
+
+    with open(output_dir, mode = 'w', newline = '') as f:
+        writer = csv.DictWriter(f, fieldnames = fieldnames)
+        writer.writeheader() # write the header to the CSV file
+
+def append_row(output_dir, row_dict):
+   with open(output_dir, mode = 'a', newline = '') as f:
+       writer = csv.DictWriter(f, fieldnames = row_dict.keys())
+       writer.writerow(row_dict) # write a row to the CSV file
+
+def load_results(csv_path):
+    df = pd.read_csv(csv_path)
+    for col in df.columns:
+        if df[col].dtype == 'object':
+            if df[col].str.lower().isin(['true', 'false']).all():
+                df[col] = df[col].str.lower() == 'true' # convert to boolean
+    return df
+
+def log_training_step(log_path, timestep, mean_reward, success_rate, mean_loss):
+    row = {
+        'timestep': timestep,
+        'mean_reward': mean_reward,
+        'mean_loss': mean_loss,
+        'success_rate': success_rate
+    }
+    if not os.path.exists(log_path):
+        init_csv(log_path, fieldnames = list(row.keys()))
+    append_row(log_path, row)

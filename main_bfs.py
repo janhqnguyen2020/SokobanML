@@ -1,3 +1,4 @@
+# src/main_bfs.py
 # Planning (BFS/Greedy test): for testing planning algorithms and belongs in experiment script only
 from src.env.sokoban_env import initialize_env
 from src.planners.planner_runner import run_experiments
