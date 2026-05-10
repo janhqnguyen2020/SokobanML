@@ -3,7 +3,9 @@ import os # for checking if the log file exists
 import pandas as pd # for creating a DataFrame to store logs
 
 def init_csv(output_dir, fieldnames):
-    os.makedirs(os.path.dirname(output_dir), exist_ok=True)#create the directory if it doesn't exist
+    parent = os.path.dirname(output_dir)
+    if parent:
+        os.makedirs(parent, exist_ok=True)#create the directory if it doesn't exist
 
     with open(output_dir, mode = 'w', newline = '') as f:
         writer = csv.DictWriter(f, fieldnames = fieldnames)

@@ -14,9 +14,9 @@ from src.utils.config import NUM_EPISODES, ENV_ID
 
 from src.utils.logger import init_csv, append_row
 
-PLANNER_FIELDS = [ 'method', 'env_version' 'episode', 'solved', 'total_reward', 
-                  'steps', 'runtime_ms', 'avg_runtime_ms', 
-                  'nodes_expanded', 'deadlocks_pruned', 'dead_squares', 
+PLANNER_FIELDS = [ 'method', 'env_version', 'episode', 'solved', 'total_reward',
+                  'steps', 'runtime_ms', 'avg_runtime_ms',
+                  'nodes_expanded', 'deadlocks_pruned', 'dead_squares',
                   'pruning_rate']
 
 #runs one full game of Sokoban with the given agent, returns results for that episode

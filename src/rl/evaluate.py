@@ -1,42 +1,3 @@
-# src/rl/evaluate.py
-# Member B — Shizuka Takao / Member C — Joseph Nguyen
-#
-# Evaluation script for trained RL agents.
-#
-# Loads a saved model checkpoint and runs it on a set of test levels
-# to measure performance metrics comparable to the classical planners.
-# Results are saved to results/ so Member C can run cross-method analysis.
-#
-# Metrics collected (must match planner_runner.py schema):
-#   - solved: bool — did agent reach all boxes on goals?
-#   - steps: int — number of actions taken
-#   - runtime_ms: float — wall time for the episode
-#   - total_reward: float — cumulative reward received
-#
-# Functions to implement:
-#   - load_model(model_path, algo)
-#       → load PPO.load() or DQN.load() from Stable-Baselines3
-#       → algo: "ppo" or "dqn"
-#
-#   - evaluate_episode(model, env)
-#       → run one episode deterministically (deterministic=True)
-#       → returns metrics dict for that episode
-#
-#   - evaluate_model(model_path, algo, level_ids, n_episodes, output_path)
-#       → outer loop: for each level, run n_episodes
-#       → aggregate: success rate, mean steps, mean reward
-#       → save to results/rl_{algo}_results.csv
-#
-#   - main()
-#       → CLI: --model, --algo, --levels, --episodes, --output
-#
-# Usage (intended):
-#   python evaluate.py --model models/ppo_final.zip --algo ppo --output results/ppo_results.csv
-#
-# Notes:
-#   - Use evaluate_policy() from SB3 for quick sanity checks
-#   - For detailed per-level metrics, use the custom evaluate_model() above
-#   - Deterministic=True means argmax action, no exploration
 
 import os
 import csv
@@ -108,20 +69,22 @@ def evaluate_episode(model, env):
     }
 
 
-def _build_results_rows(results, level_label):
+def _build_results_rows(results, level_label, method=""):
     """
     Convert per-episode result dicts into flat rows for CSV / JSON output.
     level_label is stored so later analysis can group results by level set.
+    method is the algo name (dqn, ppo) so results can be joined with planner CSV.
     """
     rows = []
     for episode_idx, result in enumerate(results):
         rows.append({
-            "level": level_label,
-            "episode": episode_idx,
-            "solved": result["solved"],
-            "steps": result["steps"],
-            "runtime_ms": result["runtime_ms"],
+            "method":       method,
+            "env_version":  level_label,
+            "episode":      episode_idx,
+            "solved":       result["solved"],
             "total_reward": result["total_reward"],
+            "steps":        result["steps"],
+            "runtime_ms":   result["runtime_ms"],
         })
     return rows
 
@@ -136,17 +99,16 @@ def _write_results_csv(rows, output_path):
 
     with open(output_path, "w", newline="") as f:
         writer = csv.writer(f)
-        # CSV header
-        writer.writerow(["level", "episode", "solved", "steps", "runtime_ms", "total_reward"])
-        # One row per episode
+        writer.writerow(["method", "env_version", "episode", "solved", "total_reward", "steps", "runtime_ms"])
         for row in rows:
             writer.writerow([
-                row["level"],
+                row["method"],
+                row["env_version"],
                 row["episode"],
                 row["solved"],
+                row["total_reward"],
                 row["steps"],
                 row["runtime_ms"],
-                row["total_reward"],
             ])
 
 
@@ -229,7 +191,7 @@ def evaluate_model(model_path, algo, level_ids, n_episodes, output_path, env_fac
             all_results.append(episode_result)
             print("Episode result: ", episode_result)
 
-        all_episode_rows.extend(_build_results_rows(level_results, level_id))
+        all_episode_rows.extend(_build_results_rows(level_results, level_id, method=algo))
         env.close()
 
     _write_results_csv(all_episode_rows, output_path)
