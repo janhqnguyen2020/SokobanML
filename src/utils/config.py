@@ -1,38 +1,56 @@
-# src/utils/config.py
-# Shared — all members
-#
-# Central configuration for hyperparameters, paths, and experiment settings.
-#
-# Keeping all magic numbers and file paths here means changing one value
-# updates the whole project. Every other module should import from here
-# rather than hardcoding values.
-#
-#   PATHS:
-#     RESULTS_DIR = "results/"
-#     MODELS_DIR  = "models/"
-#     VIDEOS_DIR  = "videos/"
-#     LEVELS_DIR  = "data/levels/"
-#
-#   ENVIRONMENT:
-ENV_ID       = "Sokoban-v2" #"Sokoban-v0" easiest, "Sokoban-v1" medium, "Sokoban-v2" hardest
-MAX_STEPS    = 100       # max actions per episode
-NUM_EPISODES = 5
-#     NUM_ENVS     = 4         # parallel envs for PPO
-#     LEVEL_IDS    = list(range(0, 100))   ← training levels
-#     TEST_LEVELS  = list(range(900, 1000)) ← held-out eval levels
-#
-#
-#   DQN HYPERPARAMS:
-#     DQN_LR                = 1e-4
-DQN_BUFFER_SIZE       = 10_000
-#     DQN_LEARNING_STARTS   = 10_000
-#     DQN_EXPLORATION_FRAC  = 0.2
-#     DQN_EPS_FINAL         = 0.05
-#     DQN_TARGET_UPDATE     = 1000
-DQN_TOTAL_STEPS       = 10_000
-#
-#   PLANNER:
-PLANNER_TIMEOUT_SEC = 30  # max time per level for BFS/Greedy
-#
-#   REPRODUCIBILITY:
-SEED = 42
+"""
+Shared configuration for Sokoban experiments.
+"""
+
+import os
+
+# Environment
+# Keep training on the smaller 7x7 3-box distribution first. It remains the
+# cleanest place to build a stronger policy before another transfer attempt.
+ENV_ID = "Sokoban-small-v1"
+MAX_STEPS = 200
+NUM_EPISODES = 20
+HIGH_LEVEL_OBS_CANVAS_SHAPE = (10, 10)
+# The richer 422-dim observation has not beaten the simpler 412-dim setup yet,
+# so keep the stronger 412-dim observation family.
+HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES = False
+
+# Primitive DQN baseline defaults
+DQN_BUFFER_SIZE = 10_000
+DQN_TOTAL_STEPS = 50_000
+
+# High-level masked DQN defaults
+# The flat MLP path appears capped in the low-teens on fair benchmarks. The
+# next experiment keeps the same 412-dim observation format, but switches to a
+# spatial encoder so the policy can exploit board structure directly.
+HIGH_LEVEL_DQN_BACKBONE = "cnn"
+HIGH_LEVEL_DQN_CNN_FEATURES_DIM = 256
+HIGH_LEVEL_DQN_BUFFER_SIZE = 50_000
+HIGH_LEVEL_DQN_TOTAL_STEPS = 250_000
+HIGH_LEVEL_DQN_LEARNING_RATE = 1e-4
+HIGH_LEVEL_DQN_LEARNING_STARTS = 500
+HIGH_LEVEL_DQN_BATCH_SIZE = 64
+HIGH_LEVEL_DQN_GAMMA = 0.99
+HIGH_LEVEL_DQN_TRAIN_FREQ = 4
+HIGH_LEVEL_DQN_GRADIENT_STEPS = 1
+HIGH_LEVEL_DQN_TARGET_UPDATE_INTERVAL = 2_000
+# Fresh training needs broad exploration again.
+HIGH_LEVEL_DQN_EXPLORATION_INITIAL_EPS = 1.0
+HIGH_LEVEL_DQN_EXPLORATION_FRACTION = 0.30
+HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS = 0.02
+HIGH_LEVEL_DQN_POLICY_HIDDEN_SIZES = [256, 256]
+HIGH_LEVEL_DQN_EVAL_FREQ = 10_000
+# Use a larger validation sample so checkpoint selection is less noisy than the
+# earlier 20-episode runs that swung between 0% and 30%.
+HIGH_LEVEL_DQN_EVAL_EPISODES = 40
+HIGH_LEVEL_DQN_SELECTION_EPISODES = 100
+HIGH_LEVEL_DQN_EARLY_STOP_PATIENCE_EVALS = 6
+HIGH_LEVEL_DQN_EARLY_STOP_MIN_TIMESTEPS = 100_000
+HIGH_LEVEL_DQN_FINAL_VERIFY_EPISODES = 100
+# The CNN backbone is a clean architecture shift, so the next run starts fresh.
+HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
+
+# Reproducibility
+# Allow fast multi-seed sweeps from PowerShell, e.g.:
+#   $env:SOKO_SEED='43'; python main_dqn.py
+SEED = int(os.getenv("SOKO_SEED", "42"))

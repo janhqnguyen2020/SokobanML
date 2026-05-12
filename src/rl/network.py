@@ -1,42 +1,83 @@
-# src/rl/network.py
-# Member B — Shizuka Takao
-#
-# PyTorch neural network architectures for RL agents.
-#
-# Defines the policy network (PPO) and Q-network (DQN) used to map
-# Sokoban board states to action probabilities or Q-values.
-#
-# Two architecture options:
-#
-#   1. CNN-based (recommended):
-#      Input: (C, H, W) one-hot board tensor
-#      Conv layers extract spatial features (box positions, walls, goals)
-#      Flatten → fully connected → output
-#
-#   2. MLP-based (simpler baseline):
-#      Input: flattened board vector
-#      Multiple linear layers → output
-#      Faster to train, less expressive
-#
-# Classes to implement:
-#
-#   class SokobanCNN(nn.Module):
-#       __init__(self, obs_shape, n_actions)
-#           → conv layers + flatten + linear head
-#       forward(self, x) → action logits or Q-values
-#
-#   class PolicyNetwork(nn.Module):  (for PPO)
-#       → actor head: outputs action probability distribution
-#       → critic head: outputs state value V(s)
-#       → shared CNN backbone
-#
-#   class QNetwork(nn.Module):  (for DQN)
-#       → outputs Q(s, a) for each action
-#       → single CNN backbone + linear output
-#
-# Notes:
-#   - Use nn.Conv2d, nn.ReLU, nn.Flatten, nn.Linear
-#   - obs_shape from env.observation_space.shape
-#   - n_actions = 4 (up, down, left, right)
-#   - SB3 supports custom policies via policy_kwargs={"features_extractor_class": ...}
-#   - If using SB3, extend BaseFeatureExtractor instead of plain nn.Module
+import numpy as np
+import torch as th
+from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
+from torch import nn
+
+
+class HighLevelBoardExtractor(BaseFeaturesExtractor):
+    """
+    Custom feature extractor
+    Takes the flat observation vector from the HighLevelEnv and combine
+    with CNN
+
+    Notes
+    HighLevelSokobanEnv creates observation and builds one flat vector 
+    MaskedDQN receives that observation during trainig or prediction -- uses MLPpolicy
+    HighLevelBoardExtractor combines the obseration vector and combines with CNN (used inside MlPPolicy)
+    
+    Flow
+    HighLevelEnv observation
+        -> flat vector
+        -> HighLevelBoardExtractor for feature extraction
+        -> CNN on board + concat scalar/mask
+        -> MlpPolicy / Q-network
+        -> Q-values
+        -> MaskedDQN masks invalid actions
+        -> choose action
+        -> env step
+        -> store transition
+        -> train from replay buffer
+    """
+
+    def __init__(
+        self,
+        observation_space,
+        board_shape,
+        action_mask_size,
+        scalar_feature_size=0,
+        features_dim=256,
+    ):
+        self.board_shape = tuple(board_shape)
+        self.action_mask_size = int(action_mask_size)
+        self.scalar_feature_size = int(scalar_feature_size)
+        self.num_board_channels = 4
+        self.board_feature_size = int(np.prod(self.board_shape) * self.num_board_channels)
+        expected_obs_size = self.board_feature_size + self.scalar_feature_size + self.action_mask_size
+        actual_obs_size = int(observation_space.shape[0])
+        if expected_obs_size != actual_obs_size:
+            raise ValueError(
+                f"HighLevelBoardExtractor expected observation size {expected_obs_size}, "
+                f"got {actual_obs_size}"
+            )
+
+        super().__init__(observation_space, features_dim)
+        self.board_encoder = nn.Sequential(
+            nn.Conv2d(self.num_board_channels, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(64, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.Flatten(),
+        )
+
+        with th.no_grad():
+            sample_board = th.zeros((1, self.num_board_channels, *self.board_shape), dtype=th.float32)
+            encoded_board_size = int(self.board_encoder(sample_board).shape[1])
+        head_input_size = encoded_board_size + self.scalar_feature_size + self.action_mask_size
+        self.projection = nn.Sequential(
+            nn.Linear(head_input_size, features_dim),
+            nn.ReLU(),
+        )
+        self._features_dim = int(features_dim)
+
+    def forward(self, observations):
+        board_flat = observations[:, : self.board_feature_size]
+        board = board_flat.view(-1, self.num_board_channels, *self.board_shape)
+        scalar_start = self.board_feature_size
+        scalar_end = scalar_start + self.scalar_feature_size
+        scalar_features = observations[:, scalar_start:scalar_end]
+        action_mask = observations[:, scalar_end:]
+        encoded_board = self.board_encoder(board)
+        combined = th.cat([encoded_board, scalar_features, action_mask], dim=1)
+        return self.projection(combined)
