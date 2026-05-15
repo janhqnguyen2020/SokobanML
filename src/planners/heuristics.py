@@ -1,43 +1,9 @@
-# src/planners/heuristics.py
-# Member C — Joseph Nguyen
-#
-# Heuristic functions for informed search (Greedy BFS, A*).
-#
-# A heuristic estimates how far a state is from the goal without solving it.
-# For Sokoban, the most natural heuristic is the total cost to push every
-# box to its nearest goal square (lower bound on moves remaining).
-#
-# Heuristics implemented here must be:
-#   - Fast to compute (called at every expanded node)
-#   - Admissible for A* (never overestimate true cost)
-#   - Informative enough to cut down the search space
-#
-# Functions to implement:
-#   - manhattan_distance(a, b)
-#       → |row_a - row_b| + |col_a - col_b|
-#
-#   - min_box_to_goal(box_positions, goal_positions)
-#       → for each box, find its nearest goal; sum those distances
-#       → simple, fast, admissible
-#
-#   - hungarian_matching(box_positions, goal_positions)
-#       → optimal 1-to-1 assignment of boxes to goals using the Hungarian algorithm
-#       → tighter lower bound than min_box_to_goal
-#       → use scipy.optimize.linear_sum_assignment
-#
-#   - player_to_nearest_box(player_pos, box_positions)
-#       → distance from player to the closest unresolved box
-#       → small tiebreaker to prefer states where player is near work
-#
-#   - combined_heuristic(state, goals)
-#       → combines box-goal cost + player-to-box bonus
-#       → primary heuristic used by greedy.py
-#
-# Notes:
-#   - All positions as (row, col) tuples
-#   - Goal positions are fixed per puzzle; pass them in or read from config
+#how far we are from the goal
 
-def manhattan(a,b):
+import numpy as np
+from scipy.optimize import linear_sum_assignment#hungarian algo
+
+def manhattan(a, b):#∣x1​−x2​∣+∣y1​−y2​∣
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
 def min_box_to_goal(box_positions, goal_positions):
@@ -48,3 +14,26 @@ def min_box_to_goal(box_positions, goal_positions):
         total += nearest
     return total
 
+#assignment problem: find optimal 1-to-1 assignment of boxes to goals that minimizes total distance
+def hungarian_matching(box_positions, goal_positions):
+    
+    boxes = list(box_positions)
+    goals = list(goal_positions)
+
+    #build cost matrix: cost[i][j] = manhattan distance from box i to goal j
+    cost_matrix = np.array([
+        [manhattan(b, g) for g in goals]
+        for b in boxes
+    ])
+
+    #scipy finds the assignment that minimizes total cost
+    row_ind, col_ind = linear_sum_assignment(cost_matrix)
+    
+    return int(cost_matrix[row_ind, col_ind].sum())
+
+def player_to_nearest_box(player_pos, box_positions, goal_positions):
+    #distance from player to nearest box that isn't already on a goal
+    unresolved = box_positions - goal_positions
+    if not unresolved:
+        return 0
+    return min(manhattan(player_pos, box) for box in unresolved)
