@@ -24,7 +24,7 @@ def precompute_dead_squares(walls, goals, board_shape):
             #where box came from
             box_from = (row - dirRow, col - dirCol)
             #where player would need to stand
-            player_at = (row + dirRow, col + dirCol)
+            player_at = (box_from[0] - dirRow, box_from[1] - dirCol)
 
             if box_from in walls or player_at in walls:
                 continue
