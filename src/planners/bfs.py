@@ -1,3 +1,4 @@
+# src/planners/bfs.py
 """
 BFS Agent for solving Sokoban
 This file implements a breadth-first search over box configurations,
@@ -7,6 +8,8 @@ while using BFS to validate movement and deadlock detection to prune bad states.
 from collections import deque # queue structure (FIFO needed for bfs)
 import numpy as np
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
+from src.planners.reasoning import ReasoningPlanner
+from src.planners.heuristics import manhattan
 
 _DIR = {
     1: (-1, 0),
@@ -17,12 +20,13 @@ _DIR = {
 
 class BFSAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
-    def __init__(self, env):
+    def __init__(self, env, reasoning=None):
         self.env = env
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.reasoning = reasoning or ReasoningPlanner(env)
 
     def reset(self):
         #clear everything for new episode
@@ -107,6 +111,8 @@ class BFSAgent:
     def _solve(self, max_nodes=200_000):
         #get board info from environment
         player_pos, box_positions, goals, walls, board_shape = self._get_board()
+        if box_positions == goals:#if already solved, return empty plan
+            return []
 
         #find dead squares for pruning
         dead_squares = precompute_dead_squares(walls, goals, board_shape)
@@ -115,14 +121,8 @@ class BFSAgent:
         self.deadlocks_pruned = 0
 
         init_state = (player_pos, box_positions)#start state is player position + box positions
-        
-        if box_positions == goals:#if already solved, return empty plan
-            return []
-
         queue = deque([init_state])#defines BFS (FIFO queue)
-
         came_from = {init_state: (None, None)}
-
         while queue:#keep exploring until solution found or queue empty
             if self.nodes_expanded >= max_nodes:
                 return None
@@ -131,8 +131,12 @@ class BFSAgent:
             state = queue.popleft()#removes oldest state from queue for exploration
             player, boxes = state# expand state 
 
-            #try pushing boxes in every direction
-            for box in boxes:
+            # Explore promising boxes first by action ordering
+            assignment = self.reasoning.plan(boxes, goals) # returns dictionary with key=position of boxes, val=position of goals -- Note that box-to-goal matching can change depending on the current state
+            sorted_boxes = sorted(boxes, key=lambda b: manhattan(b, assignment[b]))
+
+            for box in sorted_boxes:
+                #try pushing boxes in every direction
                 for action, (dirRow, dirCol) in _DIR.items():
                     
                     #compute push positions
@@ -152,10 +156,12 @@ class BFSAgent:
                     #create new state to simulate push
                     new_boxes = frozenset((box_target if b == box else b) for b in boxes)
 
+                    # ensure this push does not lead to deadlock
                     if has_deadlock(new_boxes, dead_squares, walls, goals):
                         self.deadlocks_pruned += 1
                         continue
 
+                    # after push, player stands in where the box was, and the boxes are in new_boxes (list of coordinates)
                     next_state = (box, new_boxes)
 
                     #avoid duplicates (no loops)
@@ -178,12 +184,12 @@ class BFSAgent:
         state = goal_state
 
         while came_from[state][0] is not None:#walk backwards from goal to loc
-
             parent, action = came_from[state]#state came from parent via action
             sequence.append((parent, state, action))#build sequence
             state = parent
         sequence.reverse()
 
+        # after reconstructing the path, move the player following the sequence
         all_actions = []
         for from_state, to_state, action in sequence:
             player, boxes = from_state

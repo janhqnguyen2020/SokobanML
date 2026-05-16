@@ -48,3 +48,13 @@ def min_box_to_goal(box_positions, goal_positions):
         total += nearest
     return total
 
+def assignment_heuristic(box_positions, assignment):
+    """
+    Sum distance from each box to its assigned goal.
+    """
+
+    total = 0
+    for box, goal in assignment.items():
+        total += manhattan(box, goal)
+
+    return total
