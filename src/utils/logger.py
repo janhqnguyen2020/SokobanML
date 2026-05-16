@@ -1,33 +1,22 @@
-# src/utils/logger.py
-# Member C — Joseph Nguyen
-#
-# CSV logging utilities for experiment results.
-#
-# Both planners and RL evaluation scripts call these functions to persist
-# results to disk. Keeping logging centralized ensures consistent file
-# formats that the notebooks can read without preprocessing.
-#
-# Functions to implement:
-#   - init_csv(output_path, fieldnames)
-#       → create a new CSV file with header row
-#       → if file exists, warn but overwrite (or append with flag)
-#
-#   - append_row(output_path, row_dict)
-#       → append one result dict to existing CSV
-#       → used inside planner_runner.py and evaluate.py loops
-#
-#   - load_results(csv_path)
-#       → read CSV into Pandas DataFrame
-#       → auto-cast columns to correct types (bool, int, float)
-#       → returns DataFrame ready for metrics.py
-#
-#   - log_training_step(log_path, timestep, reward, success)
-#       → lightweight logger for RL training curves
-#       → appends one row: {timestep, mean_reward, success_rate}
-#       → called from callbacks.py
-#
-# Notes:
-#   - Use Python's csv module for writing (no Pandas dep for writing)
-#   - Use Pandas for reading (load_results) — richer dtype handling
-#   - All output files go to results/
-#   - Thread-safe writes not required (single-process logging)
+import csv
+import os
+from datetime import datetime
+
+_FIELDS = [
+    "timestamp", "planner", "mode",
+    "map_height", "map_width", "num_boxes",
+    "solved", "total_reward",
+    "primitive_steps", "box_pushes",
+    "nodes_expanded", "deadlocks_pruned", "dead_squares",
+    "solve_time_ms",
+]
+
+def log_run(record, filepath="results/planner_log.csv"):
+    os.makedirs(os.path.dirname(os.path.abspath(filepath)), exist_ok=True)
+    new_file = not os.path.exists(filepath)
+    record.setdefault("timestamp", datetime.now().isoformat(timespec="seconds"))
+    with open(filepath, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=_FIELDS, extrasaction="ignore")
+        if new_file:
+            writer.writeheader()
+        writer.writerow({k: record.get(k, "") for k in _FIELDS})

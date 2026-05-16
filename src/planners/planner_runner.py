@@ -6,6 +6,7 @@ import time#measure how long each episode took
 
 from src.planners.bfs import BFSAgent
 from src.planners.greedy import GreedyAgent
+from src.planners.astar import AStarAgent
 
 from src.utils.metrics import compute_metrics
 from src.utils.config import NUM_EPISODES

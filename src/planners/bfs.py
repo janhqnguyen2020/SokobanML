@@ -17,12 +17,15 @@ _DIR = {
 
 class BFSAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
-    def __init__(self, env):
+    def __init__(self, env, mode="push"):
         self.env = env
+        self.mode = mode
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.pushes = 0
+        self.solution_length = 0
 
     def reset(self):
         #clear everything for new episode
@@ -30,6 +33,8 @@ class BFSAgent:
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.pushes = 0
+        self.solution_length = 0
 
     #how environment interacts with agent, returns action to take
     def __call__(self, _obs):
@@ -167,7 +172,9 @@ class BFSAgent:
 
                     #reconstruct solution if we reached goal
                     if new_boxes == goals:
-                        return self._reconstruct(came_from, next_state, walls)
+                        result = self._reconstruct(came_from, next_state, walls)
+                        self.solution_length = len(result)
+                        return result
 
                     queue.append(next_state)
 
@@ -183,6 +190,7 @@ class BFSAgent:
             sequence.append((parent, state, action))#build sequence
             state = parent
         sequence.reverse()
+        self.pushes = len(sequence)
 
         all_actions = []
         for from_state, to_state, action in sequence:

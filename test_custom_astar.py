@@ -3,7 +3,7 @@ import time
 import matplotlib.pyplot as plt
 
 from src.env.custom_env import SimpleCustomSokobanEnv
-from src.planners.bfs import BFSAgent
+from src.planners.astar import AStarAgent
 from src.utils.logger import log_run
 
 LOG_PATH = "results/planner_log.csv"
@@ -23,7 +23,7 @@ def parse_positions(text):
 def print_metrics(agent, args, solve_time_ms, total_reward, done):
     mode = agent.mode
     print("\n" + "-" * 38)
-    print(f"  BFS  |  {mode}")
+    print(f"  A*  |  {mode}")
     print("-" * 38)
     print(f"  Solved            {done}")
     print(f"  Total reward      {total_reward:.3f}")
@@ -35,7 +35,7 @@ def print_metrics(agent, args, solve_time_ms, total_reward, done):
     print(f"  Solve time        {solve_time_ms:.1f} ms")
     print("-" * 38)
     log_run({
-        "planner":          "bfs",
+        "planner":          "astar",
         "mode":             mode,
         "map_height":       args.height,
         "map_width":        args.width,
@@ -77,7 +77,7 @@ def main():
     parser.add_argument("--boxes",     type=parse_positions, default=[(1, 4)])
     parser.add_argument("--goals",     type=parse_positions, default=[(1, 10)])
     parser.add_argument("--max-steps", type=int,            default=100)
-    
+   
     parser.add_argument("--manual",    action="store_true",
                         help="step manually with Space / Enter / right-arrow")
     parser.add_argument("--no-vis",    action="store_true",
@@ -105,14 +105,14 @@ def main():
         fig, ax = plt.subplots(figsize=(fig_w, fig_h))
         image = ax.imshow(obs)
         ax.axis("off")
-        ax.set_title("Initial Board  --  BFS solving...")
+        ax.set_title("Initial Board  --  A* solving...")
         fig.canvas.draw()
         fig.canvas.flush_events()
         plt.pause(0.1)
         wait = make_stepper(fig)
 
     # --- solve ---
-    agent = BFSAgent(env)
+    agent = AStarAgent(env)
     agent.reset()
 
     start = time.perf_counter()
@@ -123,9 +123,9 @@ def main():
     done = False
 
     if plan is None:
-        print("BFS could not find a solution.")
+        print("A* could not find a solution.")
         if not args.no_vis:
-            ax.set_title("BFS: no solution found")
+            ax.set_title("A*: no solution found")
             fig.canvas.draw()
             fig.canvas.flush_events()
             plt.pause(args.hold)
@@ -134,11 +134,11 @@ def main():
         print_metrics(agent, args, solve_time_ms, total_reward, done)
         return
 
-    print(f"BFS found a solution. {len(plan)} steps, {agent.pushes} pushes.")
+    print(f"A* found a solution. {len(plan)} steps, {agent.pushes} pushes.")
 
     if not args.no_vis:
-        title = f"BFS ready  --  {len(plan)} steps  [Space / -> to begin]" if args.manual \
-                else f"BFS: solution found  --  {len(plan)} steps, {agent.pushes} pushes"
+        title = f"A* ready  --  {len(plan)} steps  [Space / -> to begin]" if args.manual \
+                else f"A*: solution found  --  {len(plan)} steps, {agent.pushes} pushes"
         ax.set_title(title)
         fig.canvas.draw()
         fig.canvas.flush_events()

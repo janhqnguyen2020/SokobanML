@@ -1,16 +1,14 @@
 """
-Greedy Agent for solving Sokoban
-This file implements a greedy search over box configurations,
-while using BFS to validate movement and deadlock detection to prune bad states.
+A* Agent for solving Sokoban
+
+f(n) = g(n) + h(n)  where g = box pushes so far, h = hungarian_matching estimate
 """
 
-
 from collections import deque
-import heapq #priority queue needed for greedy
+import heapq
 import numpy as np
 
-from src.planners.heuristics import min_box_to_goal#heuristic function
-
+from src.planners.heuristics import hungarian_matching
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
 
 _DIR = {
@@ -20,8 +18,8 @@ _DIR = {
     4: (0, 1),
 }
 
-class GreedyAgent:
-    #constructor - initializes agent with environment and sets up variables to track performance
+
+class AStarAgent:
     def __init__(self, env, mode="push"):
         self.env = env
         self.mode = mode
@@ -33,7 +31,6 @@ class GreedyAgent:
         self.solution_length = 0
 
     def reset(self):
-        #clear everything for new episode
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
@@ -41,28 +38,21 @@ class GreedyAgent:
         self.pushes = 0
         self.solution_length = 0
 
-    #how environment interacts with agent, returns action to take
     def __call__(self, _obs):
-        
-        #if no plan exists, compute one
         if not self.action_queue:
-            actions = self._solve()#run solver
-            self.action_queue = list(actions) if actions else []#store full solution
-
+            actions = self._solve()
+            self.action_queue = list(actions) if actions else []
         if self.action_queue:
-            return self.action_queue.pop(0) #return one action at a time
+            return self.action_queue.pop(0)
         return 0
 
-    #reads sokoban grid from environment
     def _get_board(self):
-        
         room_state = self.env.unwrapped.room_state
         room_fixed = self.env.unwrapped.room_fixed
 
-        player_arr = np.argwhere(room_state == 5)# find player in grid
+        player_arr = np.argwhere(room_state == 5)
         player_pos = (int(player_arr[0][0]), int(player_arr[0][1]))
 
-        #store all box locations with a hash
         box_positions = frozenset(
             (int(p[0]), int(p[1])) for p in np.argwhere((room_state == 3) | (room_state == 4))
         )
@@ -72,7 +62,6 @@ class GreedyAgent:
 
         return player_pos, box_positions, goals, walls, board_shape
 
-    #helper function (BFS), can player walk from A to B
     def _can_reach(self, start, target, boxes, walls):
         if start == target:
             return True
@@ -80,10 +69,8 @@ class GreedyAgent:
         visited = {start}
         while queue:
             pos = queue.popleft()
-            for dr, dc in _DIR.values():
-                nxt = (pos[0] + dr, pos[1] + dc)
-
-                #cannot walk thru walls & boxes
+            for dirRow, dirCol in _DIR.values():
+                nxt = (pos[0] + dirRow, pos[1] + dirCol)
                 if nxt in visited or nxt in walls or nxt in boxes:
                     continue
                 if nxt == target:
@@ -92,7 +79,6 @@ class GreedyAgent:
                 queue.append(nxt)
         return False
 
-    #finds actual movement path, returning list of actions
     def _walk_to(self, start, target, boxes, walls):
         if start == target:
             return []
@@ -100,8 +86,8 @@ class GreedyAgent:
         visited = {start: None}
         while queue:
             pos = queue.popleft()
-            for action, (dr, dc) in _DIR.items():
-                nxt = (pos[0] + dr, pos[1] + dc)
+            for action, (dirRow, dirCol) in _DIR.items():
+                nxt = (pos[0] + dirRow, pos[1] + dirCol)
                 if nxt in visited or nxt in walls or nxt in boxes:
                     continue
                 visited[nxt] = (pos, action)
@@ -116,57 +102,49 @@ class GreedyAgent:
                 queue.append(nxt)
         return []
 
-    #core solver
-    def _solve(self, max_nodes=10_000):
-        #get board
+    def _solve(self, max_nodes=200_000):
         player_pos, box_positions, goals, walls, board_shape = self._get_board()
-
-        #find all positions hwere box is stuck forever
         dead_squares = precompute_dead_squares(walls, goals, board_shape)
+
         self.dead_squares_count = len(dead_squares)
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
 
-        init_state = (player_pos, box_positions)#starting point of search
-        
-        if box_positions == goals:#if already solved, stop
+        if box_positions == goals:
             return []
 
+        init_state = (player_pos, box_positions)
+        h0 = hungarian_matching(box_positions, goals)
+
         counter = 0
-        heuristicValue = min_box_to_goal(box_positions, goals)#estimate how close to solution
-        
-        #creates a priority queue (stores staes sorted by heuristic)
-        heap = [(heuristicValue, counter, init_state)]
-        
+        heap = [(h0, 0, counter, init_state)]
         came_from = {init_state: (None, None)}
+        g_cost = {init_state: 0}
 
         while heap:
             if self.nodes_expanded >= max_nodes:
                 return None
-            self.nodes_expanded += 1
 
-            _, _, state = heapq.heappop(heap) #pop best state (always choose lowest heuristic)
+            f, g, _, state = heapq.heappop(heap)
+
+            if g > g_cost.get(state, float('inf')):
+                continue
+
+            self.nodes_expanded += 1
             player, boxes = state
 
-            #try pushing box in every direction
             for box in boxes:
                 for action, (dirRow, dirCol) in _DIR.items():
-
-                    #compute push positions
                     push_from = (box[0] - dirRow, box[1] - dirCol)
                     box_target = (box[0] + dirRow, box[1] + dirCol)
 
-                    #make sure we cant push into obstacle
                     if box_target in walls or box_target in boxes:
                         continue
                     if push_from in walls or push_from in boxes:
                         continue
-
-                    #ensure player can actually get there
                     if not self._can_reach(player, push_from, boxes, walls):
                         continue
-                    
-                    #create new state to simulate push
+
                     new_boxes = frozenset((box_target if b == box else b) for b in boxes)
 
                     if has_deadlock(new_boxes, dead_squares, walls, goals):
@@ -174,27 +152,25 @@ class GreedyAgent:
                         continue
 
                     next_state = (box, new_boxes)
+                    new_g = g + 1
 
-                    #avoid duplicates (no loops)
-                    if next_state in came_from:
+                    if new_g >= g_cost.get(next_state, float('inf')):
                         continue
 
-                    #parent tracking - stores where each state came from & what action led there
+                    g_cost[next_state] = new_g
                     came_from[next_state] = (state, action)
 
-                    #reconstruct solution
                     if new_boxes == goals:
                         result = self._reconstruct(came_from, next_state, walls)
                         self.solution_length = len(result)
                         return result
 
+                    h = hungarian_matching(new_boxes, goals)
                     counter += 1
-                    h = min_box_to_goal(new_boxes, goals)
-                    heapq.heappush(heap, (h, counter, next_state))#push to heap
+                    heapq.heappush(heap, (new_g + h, new_g, counter, next_state))
 
         return None
 
-    #backtracks using bfs  and builds full action sequence
     def _reconstruct(self, came_from, goal_state, walls):
         sequence = []
         state = goal_state
@@ -208,15 +184,9 @@ class GreedyAgent:
         all_actions = []
         for from_state, to_state, action in sequence:
             player, boxes = from_state
-            dirRow, dirCol = _DIR[action]
-            push_from = (to_state[0][0] - dirRow, to_state[0][1] - dirCol)
-            
-            #convert abstract pushes -> real movements
+            dr, dc = _DIR[action]
+            push_from = (to_state[0][0] - dr, to_state[0][1] - dc)
             all_actions.extend(self._walk_to(player, push_from, boxes, walls))
             all_actions.append(action)
 
         return all_actions
-
-
-def greedy_policy(_obs):
-    return 0
