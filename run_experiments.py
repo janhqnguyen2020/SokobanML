@@ -137,10 +137,11 @@ def run_custom_groups(args, source_names, algorithm_names):
 
 
 def choose_custom_group(map_name):
-    """Place the first ten maps in core and the rest in additional."""
-    map_number = int(map_name.split("_")[1])
-    if map_number <= 10:
-        return "custom_core"
+    """Return the correct custom group based on the map naming style."""
+    if map_name.startswith("map_"):
+        map_number = int(map_name.split("_")[1])
+        if map_number <= 10:
+            return "custom_core"
     return "custom_additional"
 
 
