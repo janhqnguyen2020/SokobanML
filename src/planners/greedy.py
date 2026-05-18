@@ -28,6 +28,7 @@ class GreedyAgent:
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.failure_reason = ""
 
     def reset(self):
         #clear everything for new episode
@@ -35,6 +36,7 @@ class GreedyAgent:
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.failure_reason = ""
 
     #how environment interacts with agent, returns action to take
     def __call__(self, _obs):

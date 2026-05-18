@@ -26,6 +26,7 @@ class BFSAgent:
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.failure_reason = ""
         self.reasoning = reasoning or ReasoningPlanner(env)
 
     def reset(self):
@@ -34,6 +35,7 @@ class BFSAgent:
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.failure_reason = ""
 
     #how environment interacts with agent, returns action to take
     def __call__(self, _obs):
