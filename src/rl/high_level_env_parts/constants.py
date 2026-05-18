@@ -3,7 +3,7 @@ Shared constants for the high-level Sokoban environment
 """
 
 # direction
-DIRECTION = {
+DIRECTION_DELTAS = {
     1: (-1, 0),
     2: (1, 0),
     3: (0, -1),

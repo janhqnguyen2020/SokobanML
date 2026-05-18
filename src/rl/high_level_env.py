@@ -55,7 +55,7 @@ class HighLevelSokobanEnv(gym.Env):
         use_shaped_reward=True,
     ):
         super().__init__()
-        self.env = env if env is not None else initialize_env(use_tiny_observation=False)
+        self.env = env if env is not None else initialize_env()
         self.num_boxes = self.env.unwrapped.num_boxes
         self.action_space = Discrete(self.num_boxes * 4)
         self.board_shape = tuple(self.env.unwrapped.room_state.shape)
