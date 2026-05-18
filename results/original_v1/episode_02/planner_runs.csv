@@ -1,0 +1,5 @@
+source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
+original,original_v1,Sokoban-v1,episode_02,Sokoban-v1,2,greedy,102,True,,,,,7.6,64,661.6104,26,30,10
+original,original_v1,Sokoban-v1,episode_02,Sokoban-v1,2,bfs,102,True,,,,,11.6,24,526.8011,741,525,5
+original,original_v1,Sokoban-v1,episode_02,Sokoban-v1,2,greedy,102,True,,,,,12.3,17,303.6947,776,526,2
+original,original_v1,Sokoban-v1,episode_02,Sokoban-v1,2,astar,102,True,,,,,12.5,15,255.7518,26,8,9

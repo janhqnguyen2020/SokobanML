@@ -1,0 +1,21 @@
+{
+  "success_rate": 0.33,
+  "solved_count": 33,
+  "total_episodes": 100,
+  "avg_reward": 2.468,
+  "best_reward": 12.700000000000001,
+  "avg_steps": 7.65,
+  "min_steps": 3,
+  "max_steps": 15,
+  "avg_time_ms": 267.5510859489441,
+  "min_time_ms": 48.73037338256836,
+  "max_time_ms": 637.9754543304443,
+  "avg_boxes_on_target": 1.66,
+  "avg_best_boxes_on_target": 2.1,
+  "one_step_dead_end_count": 0,
+  "termination_counts": {
+    "dead_end": 40,
+    "solved": 33,
+    "repeated_state": 27
+  }
+}

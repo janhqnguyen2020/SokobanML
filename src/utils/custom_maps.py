@@ -40,9 +40,18 @@ def build_additional_custom_maps():
         build_map("hard_3box", "Hard-3box", 15, 15, (1, 1), [(2, 2), (3, 3), (5, 7)], [(4, 9), (10, 5), (12, 7)]),
     ]
 
+def build_dqn_test_maps():
+    """3-box symmetric maps sized for the DQN 10x10 canvas (6-7 rows x 9 cols)."""
+    return [
+        build_map("dqn_map_1", "DQN-3box", 7, 9, (5, 4), [(2, 4), (3, 4), (4, 4)], [(1, 4), (3, 2), (3, 6)]),
+        build_map("dqn_map_2", "DQN-3box", 6, 9, (3, 4), [(2, 4), (3, 2), (3, 6)], [(1, 2), (1, 6), (4, 4)]),
+        build_map("dqn_map_3", "DQN-3box", 6, 9, (4, 4), [(2, 4), (3, 2), (3, 6)], [(1, 2), (1, 4), (1, 6)]),
+    ]
+
+
 def build_all_custom_maps():
     """Return every custom benchmark map."""
-    return build_core_custom_maps() + build_additional_custom_maps()
+    return build_core_custom_maps() + build_additional_custom_maps() + build_dqn_test_maps()
 
 
 def select_custom_maps(source_names, selected_names):
@@ -52,6 +61,8 @@ def select_custom_maps(source_names, selected_names):
         maps.extend(build_core_custom_maps())
     if "custom_additional" in source_names:
         maps.extend(build_additional_custom_maps())
+    if "dqn_custom" in source_names:
+        maps.extend(build_dqn_test_maps())
     return filter_maps_by_name(maps, selected_names)
 
 

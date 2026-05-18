@@ -28,6 +28,14 @@ def finish_plot():
     plt.show()
 
 
+def build_title(algo, map_type, map_name, step, reward, status=""):
+    """Build a consistent display title for all solver visualizations."""
+    parts = [algo, map_type, map_name, f"Step {step}", f"Reward: {reward:.2f}"]
+    if status:
+        parts.append(status)
+    return " | ".join(parts)
+
+
 def print_step(step, action, action_name, reward, done):
     """Print one executed planner action in a readable format."""
     print(

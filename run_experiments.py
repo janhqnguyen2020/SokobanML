@@ -12,10 +12,20 @@ from src.utils.result_paths import build_algorithm_runs_path
 from src.utils.result_paths import build_algorithm_summary_path
 from src.utils.result_paths import build_board_csv_path
 from src.utils.result_paths import ensure_parent_folder
+from src.utils.show_ui import build_title
 from src.utils.show_ui import create_plot
 from src.utils.show_ui import finish_plot
 from src.utils.show_ui import print_step
 from src.utils.show_ui import update_plot
+
+GROUP_DISPLAY_NAMES = {
+    "custom_core": "custom_shizuka",
+    "custom_additional": "custom_joseph",
+    "dqn_custom": "dqn_compatible",
+    "original_v0": "v0",
+    "original_v1": "v1",
+    "original_v2": "v2",
+}
 
 
 RUN_FIELDS = [
@@ -113,7 +123,7 @@ def run_selected_benchmarks(args):
     sources = expand_sources(args.sources)
     algorithms = expand_algorithms(args.algorithms)
 
-    if "custom_core" in sources or "custom_additional" in sources:
+    if "custom_core" in sources or "custom_additional" in sources or "dqn_custom" in sources:
         results.extend(run_custom_groups(args, sources, algorithms))
     if "original" in sources:
         results.extend(run_original_groups(args, algorithms))
@@ -138,6 +148,8 @@ def run_custom_groups(args, source_names, algorithm_names):
 
 def choose_custom_group(map_name):
     """Return the correct custom group based on the map naming style."""
+    if map_name.startswith("dqn_map_"):
+        return "dqn_custom"
     if map_name.startswith("map_"):
         map_number = int(map_name.split("_")[1])
         if map_number <= 10:
@@ -148,8 +160,9 @@ def choose_custom_group(map_name):
 def run_custom_case(config, group_name, algorithm_name, args):
     """Run one planner on one fixed custom map."""
     planner_label, planner_class = PLANNER_REGISTRY[algorithm_name]
+    map_type = GROUP_DISPLAY_NAMES.get(group_name, group_name)
     env = create_custom_env(config)
-    row = run_board(env, planner_class, planner_label, args.show_ui, args.delay)
+    row = run_board(env, planner_class, planner_label, map_type, config["map_name"], args.show_ui, args.delay)
     env.close()
     return add_custom_metadata(row, config, group_name, algorithm_name)
 
@@ -214,8 +227,10 @@ def build_episode_name(episode):
 def run_original_case(env_id, group_name, episode, seed, algorithm_name, args):
     """Run one planner on one seeded original Sokoban episode."""
     planner_label, planner_class = PLANNER_REGISTRY[algorithm_name]
+    map_type = GROUP_DISPLAY_NAMES.get(group_name, group_name)
+    map_name = build_episode_name(episode)
     env = initialize_env(env_id=env_id, seed=seed)
-    row = run_board(env, planner_class, planner_label, args.show_ui, args.delay)
+    row = run_board(env, planner_class, planner_label, map_type, map_name, args.show_ui, args.delay)
     env.close()
     return add_original_metadata(row, env_id, group_name, episode, seed, algorithm_name)
 
@@ -236,26 +251,27 @@ def add_original_metadata(row, env_id, group_name, episode, seed, algorithm_name
     return row
 
 
-def run_board(env, planner_class, planner_label, show_ui, delay):
+def run_board(env, planner_class, planner_label, map_type, map_name, show_ui, delay):
     """Run one planner on one board and return the measured row fields."""
     planner = planner_class(env)
     observation = env.reset()
     planner.reset()
     map_code = encode_map(env)
-    fig, ax, image = start_ui(observation, show_ui, planner_label)
-    reward_sum, steps = play_episode(env, planner, fig, ax, image, show_ui, delay)
+    fig, ax, image = start_ui(observation, show_ui, planner_label, map_type, map_name)
+    reward_sum, steps = play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay)
     finish_ui(show_ui)
     return build_run_row(planner, reward_sum, steps, map_code)
 
 
-def start_ui(observation, show_ui, planner_label):
+def start_ui(observation, show_ui, planner_label, map_type, map_name):
     """Create a matplotlib window only when the user asks for it."""
     if not show_ui:
         return None, None, None
-    return create_plot(observation, f"{planner_label} - Initial Board")
+    title = build_title(planner_label, map_type, map_name, 0, 0.0)
+    return create_plot(observation, title)
 
 
-def play_episode(env, planner, fig, ax, image, show_ui, delay):
+def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay):
     """Step through the environment until the planner finishes."""
     done = False
     steps = 0
@@ -264,7 +280,7 @@ def play_episode(env, planner, fig, ax, image, show_ui, delay):
 
     while not done:
         observation, reward, done, info = run_step(env, planner)
-        update_ui(fig, ax, image, observation, steps, reward, done, info, show_ui, delay)
+        update_ui(fig, ax, image, observation, steps, reward_sum + reward, done, info, planner_label, map_type, map_name, show_ui, delay)
         reward_sum += reward
         steps += 1
 
@@ -278,13 +294,15 @@ def run_step(env, planner):
     return env.step(action)
 
 
-def update_ui(fig, ax, image, observation, steps, reward, done, info, show_ui, delay):
+def update_ui(fig, ax, image, observation, steps, reward_sum, done, info, planner_label, map_type, map_name, show_ui, delay):
     """Refresh the board window after one environment step."""
     if not show_ui:
         return
     action_name = info.get("action.name", "unknown")
-    print_step(steps, 0, action_name, reward, done)
-    update_plot(fig, ax, image, observation, f"Step {steps + 1}: {action_name}", delay)
+    print_step(steps, 0, action_name, reward_sum, done)
+    status = "SOLVED!" if info.get("all_boxes_on_target") else ("FAILED" if done else "")
+    title = build_title(planner_label, map_type, map_name, steps + 1, reward_sum, status)
+    update_plot(fig, ax, image, observation, title, delay)
 
 
 def finish_ui(show_ui):
