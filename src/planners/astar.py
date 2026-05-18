@@ -30,6 +30,7 @@ class AStarAgent:
         self.pushes = 0
         self.solution_length = 0
         self.failure_reason = ""
+        self._failed = False
 
     def reset(self):
         self.action_queue = []
@@ -39,11 +40,15 @@ class AStarAgent:
         self.pushes = 0
         self.solution_length = 0
         self.failure_reason = ""
+        self._failed = False
 
     def __call__(self, _obs):
-        if not self.action_queue:
+        if not self.action_queue and not self._failed:
             actions = self._solve()
-            self.action_queue = list(actions) if actions else []
+            if actions:
+                self.action_queue = list(actions)
+            else:
+                self._failed = True
         if self.action_queue:
             return self.action_queue.pop(0)
         return 0

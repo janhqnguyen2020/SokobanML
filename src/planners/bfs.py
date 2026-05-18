@@ -27,6 +27,7 @@ class BFSAgent:
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
         self.failure_reason = ""
+        self._failed = False
         self.reasoning = reasoning or ReasoningPlanner(env)
 
     def reset(self):
@@ -36,15 +37,20 @@ class BFSAgent:
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
         self.failure_reason = ""
+        self._failed = False
 
     #how environment interacts with agent, returns action to take
     def __call__(self, _obs):
 
         #if no plan exists, compute one
-        if not self.action_queue:
-            actions = self._solve()#run solver
-            self.action_queue = list(actions) if actions else []
-        
+        if not self.action_queue and not self._failed:
+            actions = self._solve()
+            if actions:
+                self.action_queue = list(actions)
+            else:
+                self._failed = True
+                self.failure_reason = "node_limit"
+
         if self.action_queue:
             return self.action_queue.pop(0)#return one action at a time
         return 0
