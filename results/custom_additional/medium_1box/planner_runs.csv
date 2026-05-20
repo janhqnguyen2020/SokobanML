@@ -26,3 +26,6 @@ custom,custom_additional,custom_env,medium_1box,Medium,0,astar,,True,,9,9,1,9.7,
 custom,custom_additional,custom_env,medium_1box,Medium,0,bfs,,True,,9,9,1,9.7,13,7376.5714,95,29,13
 custom,custom_additional,custom_env,medium_1box,Medium,0,greedy,,True,,9,9,1,9.7,13,7143.1627,8,1,13
 custom,custom_additional,custom_env,medium_1box,Medium,0,astar,,True,,9,9,1,9.7,13,7073.3061,34,4,13
+custom,custom_additional,custom_env,medium_1box,Medium,0,bfs,,True,,9,9,1,9.7,13,154.2163,95,29,13
+custom,custom_additional,custom_env,medium_1box,Medium,0,greedy,,True,,9,9,1,9.7,13,171.782,8,1,13
+custom,custom_additional,custom_env,medium_1box,Medium,0,astar,,True,,9,9,1,9.7,13,157.7652,34,4,13
