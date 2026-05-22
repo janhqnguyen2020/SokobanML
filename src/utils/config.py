@@ -55,7 +55,7 @@ HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
 # Action mask always padded to MAX_BOXES*4=12 so 1-box and 2-box episodes are
 # compatible with the same network weights as 3-box episodes.
 CURRICULUM_DQN_CANVAS_SHAPE = (15, 15)
-CURRICULUM_DQN_MAX_BOXES = 3
+CURRICULUM_DQN_MAX_BOXES = 5               # fixed for all phases: 1-box→2-box→5-box
 CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.4   # fraction of episodes from small-v1
 CURRICULUM_DQN_TOTAL_STEPS = 200_000
 CURRICULUM_DQN_BUFFER_SIZE = 100_000

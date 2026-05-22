@@ -1,14 +1,14 @@
-"""Training pipeline for the curriculum / generalized DQN.
+"""
+Curriculum DQN training pipeline.
 
 Unlike train_dqn.py (which trains only on Sokoban-small-v1), this pipeline
-mixes procedural small-v1 episodes with fixed curriculum maps so the agent
-learns across 1-, 2-, and 3-box layouts of varying sizes.
+uses a CurriculumTeacher to mix procedural and fixed maps so the agent
+trains across 1-, 2-, and 3-box layouts of varying sizes.
 
 Key differences from train_dqn.py:
-  - Canvas: 15x15  (vs 10x10)
-  - Action space: always 12 = MAX_BOXES*4  (padded with zeros for <3-box maps)
-  - Observation: 912 dims = 4*225 + 12  (vs 412)
-  - Training env samples from procedural + curriculum maps each episode
+  - Canvas: 15x15 (vs 10x10)
+  - Action space: MAX_BOXES*4, padded for smaller maps
+  - Difficulty phases from easy (1-box) to hard (3-box) as training progresses
   - Results saved under results/rl_tests/curriculum_dqn/
 """
 
@@ -35,7 +35,6 @@ from src.utils.config import (
     CURRICULUM_DQN_LEARNING_STARTS,
     CURRICULUM_DQN_MAX_BOXES,
     CURRICULUM_DQN_PROCEDURAL_FRACTION,
-    CURRICULUM_DQN_SELECTION_EPISODES,
     CURRICULUM_DQN_TOTAL_STEPS,
     HIGH_LEVEL_DQN_BACKBONE,
     HIGH_LEVEL_DQN_CNN_FEATURES_DIM,
@@ -50,76 +49,83 @@ from src.utils.config import (
     HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
     SEED,
 )
-from src.utils.custom_maps import build_curriculum_maps
+from src.utils.generated_maps import build_generated_1box_maps
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 LOGGER = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
-# Curriculum map sampler
-# ---------------------------------------------------------------------------
+# Curriculum teacher — decides which map difficulty to show each episode
 
-class CurriculumSampler:
-    """Callable that returns None (procedural) or a map_config dict each call.
+class CurriculumTeacher:
+    """Decides what to train on each episode based on how far training has progressed.
 
-    Curriculum schedule — fraction of episodes from each difficulty tier
-    changes as training progresses:
-
-      Phase          | Procedural | Easy (1-box) | Medium (2-box) | Hard (3-box)
-      ---------------+-----------+--------------+----------------+-------------
-      early  (0-30%) |    40%    |     35%      |      20%       |      5%
-      mid   (30-70%) |    40%    |     15%      |      25%       |     20%
-      late  (70-100%)|    40%    |      5%      |      15%       |     40%
+    Difficulty schedule:
+      Phase          | Procedural | 1-box | 2-box | 3-box
+      early  (0-30%) |    40%    |  35%  |  20%  |   5%
+      mid   (30-70%) |    40%    |  15%  |  25%  |  20%
+      late  (70-100%)|    40%    |   5%  |  15%  |  40%
     """
 
-    def __init__(self, maps, procedural_fraction=CURRICULUM_DQN_PROCEDURAL_FRACTION):
-        self._maps = maps
-        self._procedural_fraction = procedural_fraction
-        self._step = 0
-        self._total_steps = max(CURRICULUM_DQN_TOTAL_STEPS, 1)
+    def __init__(self, maps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION):
+        self.allMaps = maps
+        self.proceduralFraction = proceduralFraction
+        self.currentTrainingStep = 0
+        self.totalTrainingSteps = max(CURRICULUM_DQN_TOTAL_STEPS, 1)
 
-        # pre-split by box count for curriculum weighting
-        self._easy   = [m for m in maps if len(m["boxes"]) == 1]
-        self._medium = [m for m in maps if len(m["boxes"]) == 2]
-        self._hard   = [m for m in maps if len(m["boxes"]) == 3]
+        self.oneBoxMaps   = [m for m in maps if len(m["boxes"]) == 1]
+        self.twoBoxMaps   = [m for m in maps if len(m["boxes"]) == 2]
+        self.threeBoxMaps = [m for m in maps if len(m["boxes"]) == 3]
 
-    def update_step(self, step):
-        self._step = step
+    def updateTrainingProgress(self, step):
+        self.currentTrainingStep = step
 
-    def __call__(self):
-        if random.random() < self._procedural_fraction:
-            return None  # use procedural small-v1
+    def sampleNextMap(self):
+        if random.random() < self.proceduralFraction:
+            return None  # fall back to procedural small-v1
 
-        progress = self._step / self._total_steps
-        if progress < 0.30:
-            weights = (0.35, 0.20, 0.05)
-        elif progress < 0.70:
-            weights = (0.15, 0.25, 0.20)
+        trainingProgressPercent = self.currentTrainingStep / self.totalTrainingSteps
+        if trainingProgressPercent < 0.30:
+            difficultyWeights = (0.35, 0.20, 0.05)
+        elif trainingProgressPercent < 0.70:
+            difficultyWeights = (0.15, 0.25, 0.20)
         else:
-            weights = (0.05, 0.15, 0.40)
+            difficultyWeights = (0.05, 0.15, 0.40)
 
-        pool = random.choices(
-            [self._easy, self._medium, self._hard],
-            weights=weights,
+        selectedMapPool = random.choices(
+            [self.oneBoxMaps, self.twoBoxMaps, self.threeBoxMaps],
+            weights=difficultyWeights,
             k=1,
         )[0]
-        if not pool:
-            pool = self._maps
-        return random.choice(pool)
+        if not selectedMapPool:
+            selectedMapPool = self.allMaps
+        return random.choice(selectedMapPool)
+
+    def __call__(self):
+        return self.sampleNextMap()
 
 
-# ---------------------------------------------------------------------------
-# Env factories
-# ---------------------------------------------------------------------------
+# Callback that keeps CurriculumTeacher's step counter in sync with training
 
-def _build_env(use_shaped_reward, map_sampler=None, seed=None):
+class CurriculumProgressCallback:
+    """Notifies the CurriculumTeacher of training progress each step."""
+
+    def __init__(self, curriculumTeacher):
+        self.curriculumTeacher = curriculumTeacher
+
+    def on_step(self, num_timesteps):
+        self.curriculumTeacher.updateTrainingProgress(num_timesteps)
+
+
+# Environment factories
+
+def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=None):
     env = HighLevelSokobanEnv(
         observation_board_shape=CURRICULUM_DQN_CANVAS_SHAPE,
         use_extra_scalar_features=HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
         use_shaped_reward=use_shaped_reward,
         max_boxes=CURRICULUM_DQN_MAX_BOXES,
-        map_sampler=map_sampler,
+        map_sampler=curriculumTeacher,
     )
     if seed is not None:
         env.seed(seed)
@@ -127,60 +133,58 @@ def _build_env(use_shaped_reward, map_sampler=None, seed=None):
     return env
 
 
-def make_train_env(sampler):
-    return _build_env(use_shaped_reward=True, map_sampler=sampler, seed=SEED)
+def createTrainingEnvironment(curriculumTeacher):
+    return createSokobanEnvironment(use_shaped_reward=True, curriculumTeacher=curriculumTeacher, seed=SEED)
 
 
-def make_eval_env():
-    """Eval env uses procedural small-v1 only (no curriculum) for fair comparison."""
-    return _build_env(use_shaped_reward=False, map_sampler=None, seed=SEED + 1)
+def createEvaluationEnvironment():
+    """Procedural small-v1 only — no curriculum, for fair baseline comparison."""
+    return createSokobanEnvironment(use_shaped_reward=False, curriculumTeacher=None, seed=SEED + 1)
 
 
-def make_curriculum_eval_env(maps):
-    """Eval env that cycles through all curriculum maps deterministically."""
+def createCurriculumEvalEnvironment(trainingCurriculumMaps):
+    """Cycles through all curriculum maps deterministically for consistent eval."""
     idx = {"i": 0}
 
-    def round_robin():
-        config = maps[idx["i"] % len(maps)]
+    def cycleThroughMaps():
+        config = trainingCurriculumMaps[idx["i"] % len(trainingCurriculumMaps)]
         idx["i"] += 1
         return config
 
-    return _build_env(use_shaped_reward=False, map_sampler=round_robin, seed=SEED + 2)
+    return createSokobanEnvironment(use_shaped_reward=False, curriculumTeacher=cycleThroughMaps, seed=SEED + 2)
 
 
-# ---------------------------------------------------------------------------
-# Training
-# ---------------------------------------------------------------------------
+# Model and path builders
 
-def _build_run_paths(run_id):
-    run_dir = os.path.join(PROJECT_ROOT, "results", "rl_tests", "curriculum_dqn", run_id)
+def buildRunPaths(run_id):
+    runDirectory = os.path.join(PROJECT_ROOT, "results", "rl_tests", "curriculum_dqn", run_id)
     return {
-        "run_dir": run_dir,
-        "tensorboard_dir": os.path.join(run_dir, "tensorboard"),
-        "model_path": os.path.join(run_dir, "curriculum_dqn_final"),
-        "best_model_path": os.path.join(run_dir, "curriculum_dqn_best"),
+        "run_dir":         runDirectory,
+        "tensorboard_dir": os.path.join(runDirectory, "tensorboard"),
+        "model_path":      os.path.join(runDirectory, "curriculum_dqn_final"),
+        "best_model_path": os.path.join(runDirectory, "curriculum_dqn_best"),
     }
 
 
-def _build_policy_kwargs(env):
-    policy_kwargs = {"net_arch": HIGH_LEVEL_DQN_POLICY_HIDDEN_SIZES}
+def buildPolicyConfig(env):
+    policyConfig = {"net_arch": HIGH_LEVEL_DQN_POLICY_HIDDEN_SIZES}
     if HIGH_LEVEL_DQN_BACKBONE == "cnn":
-        policy_kwargs["features_extractor_class"] = HighLevelBoardExtractor
-        policy_kwargs["features_extractor_kwargs"] = {
-            "board_shape": env.observation_board_shape,
-            "action_mask_size": env.action_space.n,
+        policyConfig["features_extractor_class"] = HighLevelBoardExtractor
+        policyConfig["features_extractor_kwargs"] = {
+            "board_shape":         env.observation_board_shape,
+            "action_mask_size":    env.action_space.n,
             "scalar_feature_size": env.scalar_feature_size,
-            "features_dim": HIGH_LEVEL_DQN_CNN_FEATURES_DIM,
+            "features_dim":        HIGH_LEVEL_DQN_CNN_FEATURES_DIM,
         }
-    return policy_kwargs
+    return policyConfig
 
 
-def _build_model(env, paths, sampler):
-    model = MaskedDQN(
+def createMaskedDQNModel(env, trainingOutputPaths):
+    return MaskedDQN(
         "MlpPolicy",
         env,
         action_mask_size=env.action_space.n,
-        tensorboard_log=paths["tensorboard_dir"],
+        tensorboard_log=trainingOutputPaths["tensorboard_dir"],
         buffer_size=CURRICULUM_DQN_BUFFER_SIZE,
         learning_rate=CURRICULUM_DQN_LEARNING_RATE,
         learning_starts=CURRICULUM_DQN_LEARNING_STARTS,
@@ -192,41 +196,35 @@ def _build_model(env, paths, sampler):
         exploration_initial_eps=HIGH_LEVEL_DQN_EXPLORATION_INITIAL_EPS,
         exploration_fraction=HIGH_LEVEL_DQN_EXPLORATION_FRACTION,
         exploration_final_eps=HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS,
-        policy_kwargs=_build_policy_kwargs(env),
+        policy_kwargs=buildPolicyConfig(env),
         verbose=1,
         device="auto",
         seed=SEED,
     )
-    return model
 
 
-class _StepSyncCallback:
-    """Keeps the CurriculumSampler's step counter in sync with training."""
-
-    def __init__(self, sampler):
-        self._sampler = sampler
-
-    def on_step(self, num_timesteps):
-        self._sampler.update_step(num_timesteps)
-
+# Main training entry point
 
 def train():
     set_random_seed(SEED)
 
     run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
-    paths = _build_run_paths(run_id)
-    os.makedirs(paths["run_dir"], exist_ok=True)
-    os.makedirs(paths["tensorboard_dir"], exist_ok=True)
+    trainingOutputPaths = buildRunPaths(run_id)
+    os.makedirs(trainingOutputPaths["run_dir"], exist_ok=True)
+    os.makedirs(trainingOutputPaths["tensorboard_dir"], exist_ok=True)
 
-    curriculum_maps = build_curriculum_maps()
-    sampler = CurriculumSampler(curriculum_maps)
+    # Phase 1: 1-box only (procedural env defaults to 3-box, too hard to start on)
+    # Phase 2 (future): swap in build_generated_1box_maps() + build_generated_2box_maps()
+    trainingCurriculumMaps = build_generated_1box_maps()
+    curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=0.0)
 
-    env = make_train_env(sampler)
-    model = _build_model(env, paths, sampler)
+    env = createTrainingEnvironment(curriculumTeacher)
+    model = createMaskedDQNModel(env, trainingOutputPaths)
 
-    callback = PeriodicEvalCallback(
-        best_model_path=paths["best_model_path"],
-        eval_env_factory=make_eval_env,
+    # Eval on the same pool used for training so success_rate is meaningful
+    evalCallback = PeriodicEvalCallback(
+        best_model_path=trainingOutputPaths["best_model_path"],
+        eval_env_factory=lambda: createCurriculumEvalEnvironment(trainingCurriculumMaps),
         eval_seed_base=SEED + 10_000,
         eval_freq=CURRICULUM_DQN_EVAL_FREQ,
         n_eval_episodes=CURRICULUM_DQN_EVAL_EPISODES,
@@ -234,7 +232,7 @@ def train():
         early_stop_min_timesteps=CURRICULUM_DQN_EARLY_STOP_MIN_TIMESTEPS,
     )
 
-    LOGGER.info("Starting curriculum DQN training  run_dir=%s", paths["run_dir"])
+    LOGGER.info("Starting curriculum DQN  run_dir=%s", trainingOutputPaths["run_dir"])
     LOGGER.info(
         "Canvas=%s  max_boxes=%d  obs_dims=%d  action_dims=%d",
         CURRICULUM_DQN_CANVAS_SHAPE,
@@ -244,18 +242,18 @@ def train():
     )
     LOGGER.info(
         "Training on %d curriculum maps + %.0f%% procedural small-v1",
-        len(curriculum_maps),
+        len(trainingCurriculumMaps),
         CURRICULUM_DQN_PROCEDURAL_FRACTION * 100,
     )
 
     model.learn(
         total_timesteps=CURRICULUM_DQN_TOTAL_STEPS,
-        callback=callback,
+        callback=evalCallback,
         reset_num_timesteps=True,
     )
 
-    model.save(paths["model_path"])
+    model.save(trainingOutputPaths["model_path"])
     env.close()
 
-    LOGGER.info("Curriculum DQN training finished — saved to %s", paths["run_dir"])
-    return model, paths["run_dir"]
+    LOGGER.info("Curriculum DQN finished — saved to %s", trainingOutputPaths["run_dir"])
+    return model, trainingOutputPaths["run_dir"]

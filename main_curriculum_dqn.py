@@ -26,7 +26,7 @@ from src.rl.train_curriculum_dqn import (
     make_curriculum_eval_env,
     train,
 )
-from src.utils.custom_maps import build_curriculum_maps
+from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps
 
 
 def _configure_logging():
@@ -97,7 +97,8 @@ def main():
     best_path  = os.path.join(run_dir, "curriculum_dqn_best.zip")
     seeds = _make_episode_seeds(30_000, CURRICULUM_DQN_SELECTION_EPISODES)
 
-    curriculum_maps = build_curriculum_maps()
+    # Keep in sync with the phase set in train_curriculum_dqn.py
+    curriculum_maps = build_generated_1box_maps()
 
     # evaluate on procedural small-v1 (same distribution as Shizuka's baseline)
     selected, final_summary, best_summary = _select_checkpoint(

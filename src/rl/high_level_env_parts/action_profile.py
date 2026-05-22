@@ -73,7 +73,7 @@ def safe_action_data_entry(action_data, goal_positions, wall_positions, dead_squ
     """
     Return enriched safe-action data or None when the push deadlocks
     """
-    if dead_squares and has_deadlock(action_data["new_boxes"], dead_squares, wall_positions, goal_positions): # action_data["new_boxes"] stores the box positions after the current candidate push
+    if has_deadlock(action_data["new_boxes"], dead_squares, wall_positions, goal_positions): # action_data["new_boxes"] stores the box positions after the current candidate push
         return None
     enriched_action_data = dict(action_data)
     solved = count_boxes_on_target(action_data["new_boxes"], goal_positions) == num_boxes
@@ -135,8 +135,7 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
         return action_profile_summary(viable_safe_action_data, "viable_safe", physical_action_data, safe_action_data, viable_safe_action_data)
     if safe_action_data:
         return action_profile_summary(safe_action_data, "safe", physical_action_data, safe_action_data, viable_safe_action_data)
-    pool_name = "physical_fallback" if physical_action_data else "none"
-    return action_profile_summary(physical_action_data, pool_name, physical_action_data, safe_action_data, viable_safe_action_data)
+    return action_profile_summary({}, "none", physical_action_data, safe_action_data, viable_safe_action_data)
 
 
 def board_profile(env, dead_squares, num_boxes, direction):

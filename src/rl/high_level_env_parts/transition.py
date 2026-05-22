@@ -6,6 +6,7 @@ Helps decide what happens after one macro-action
 
 from src.rl.high_level_env_parts.state import termination_reason
 from src.rl.high_level_env_parts.constants import (
+    BOX_LEFT_GOAL_PENALTY,
     BOX_PROGRESS_REWARD,
     DEAD_END_PENALTY,
     DISTANCE_PROGRESS_REWARD,
@@ -48,6 +49,8 @@ def select_reward(use_shaped_reward, raw_reward, box_progress_delta, distance_pr
     if not use_shaped_reward: 
         return raw_reward   # use original reward from original Sokoban env
     reward = raw_reward + BOX_PROGRESS_REWARD * box_progress_delta + DISTANCE_PROGRESS_REWARD * distance_progress
+    if box_progress_delta < 0:
+        reward += BOX_LEFT_GOAL_PENALTY
     if state_visit_count > 1:
         reward += STATE_REVISIT_PENALTY * (state_visit_count - 1)
     if solved:
