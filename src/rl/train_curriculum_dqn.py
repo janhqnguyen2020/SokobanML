@@ -1,10 +1,6 @@
 """
 Curriculum DQN training pipeline.
 
-Unlike train_dqn.py (which trains only on Sokoban-small-v1), this pipeline
-uses a CurriculumTeacher to mix procedural and fixed maps so the agent
-trains across 1-, 2-, and 3-box layouts of varying sizes.
-
 Key differences from train_dqn.py:
   - Canvas: 15x15 (vs 10x10)
   - Action space: MAX_BOXES*4, padded for smaller maps
@@ -49,7 +45,8 @@ from src.utils.config import (
     HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
     SEED,
 )
-from src.utils.generated_maps import build_generated_1box_maps
+
+from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 LOGGER = logging.getLogger(__name__)
@@ -213,9 +210,7 @@ def train():
     os.makedirs(trainingOutputPaths["run_dir"], exist_ok=True)
     os.makedirs(trainingOutputPaths["tensorboard_dir"], exist_ok=True)
 
-    # Phase 1: 1-box only (procedural env defaults to 3-box, too hard to start on)
-    # Phase 2 (future): swap in build_generated_1box_maps() + build_generated_2box_maps()
-    trainingCurriculumMaps = build_generated_1box_maps()
+    trainingCurriculumMaps = build_generated_1box_maps() + build_generated_2box_maps() + build_generated_3box_maps()
     curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=0.0)
 
     env = createTrainingEnvironment(curriculumTeacher)

@@ -18,14 +18,14 @@ import logging
 import os
 import shutil
 
-from src.rl.evaluate import evaluate_model
+from src.rl.evaluate import evaluate_episode, evaluate_model, load_model, summarize_results
 from src.rl.callbacks import summary_rank
 from src.rl.train_curriculum_dqn import (
-    CURRICULUM_DQN_SELECTION_EPISODES,
-    make_eval_env,
-    make_curriculum_eval_env,
+    createCurriculumEvalEnvironment as make_curriculum_eval_env,
+    createEvaluationEnvironment as make_eval_env,
     train,
 )
+from src.utils.config import CURRICULUM_DQN_SELECTION_EPISODES
 from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps
 
 
@@ -112,17 +112,17 @@ def main():
         if os.path.exists(src):
             shutil.copyfile(src, canonical.replace(".csv", ext))
 
-    # also evaluate on all curriculum maps
+    # also evaluate on all curriculum maps — one env reused across all episodes
+    # so the map cycler advances (map 0, 1, 2 ...) instead of resetting each time
     curriculum_eval_out = os.path.join(run_dir, "eval_results_curriculum.csv")
-    curriculum_summary = evaluate_model(
-        model_path=selected["model_path"],
-        algo="dqn",
-        level_ids=["curriculum_maps"],
-        n_episodes=len(curriculum_maps),
-        output_path=curriculum_eval_out,
-        env_factory=lambda: make_curriculum_eval_env(curriculum_maps),
-        episode_seeds=list(range(len(curriculum_maps))),
-    )
+    curriculum_model = load_model(selected["model_path"], "dqn")
+    curr_env = make_curriculum_eval_env(curriculum_maps)
+    try:
+        curr_results = [evaluate_episode(curriculum_model, curr_env, log_progress=False)
+                        for _ in range(len(curriculum_maps))]
+    finally:
+        curr_env.close()
+    curriculum_summary = summarize_results(curr_results)
 
     with open(os.path.join(run_dir, "selected_model.json"), "w") as f:
         json.dump(
