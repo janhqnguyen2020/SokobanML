@@ -153,21 +153,55 @@ def _print_group_summary(label, results):
 # Save helpers
 # ---------------------------------------------------------------------------
 
-def _save_results(mode, boxes_filter, per_map_results, summary):
+def _build_metadata(model_path, mode, boxes_filter, episodes, note):
+    """Collect everything needed to identify this eval run later."""
+    model_path = os.path.normpath(model_path)
+    run_dir = os.path.dirname(model_path)
+    run_id = os.path.basename(run_dir)
+    checkpoint_type = "best" if "best" in os.path.basename(model_path) else "final"
+
+    meta = {
+        "eval_timestamp":  datetime.now().strftime("%Y-%m-%d_%H-%M-%S"),
+        "model_path":      model_path,
+        "training_run_id": run_id,
+        "checkpoint_type": checkpoint_type,
+        "training_note":   note or "unset — re-run with --note to label training phase",
+        "eval_mode":       mode,
+        "eval_boxes":      boxes_filter,
+        "episodes":        episodes,
+        "canvas_shape":    list(CURRICULUM_DQN_CANVAS_SHAPE),
+        "max_boxes":       CURRICULUM_DQN_MAX_BOXES,
+        "action_space":    CURRICULUM_DQN_MAX_BOXES * 4,
+    }
+
+    # Pull training summary from the run's selected_model.json if it exists
+    selected_json = os.path.join(run_dir, "selected_model.json")
+    if os.path.exists(selected_json):
+        with open(selected_json) as f:
+            sel = json.load(f)
+        meta["training_procedural_eval"] = sel.get("procedural_eval_summary")
+        meta["training_selected_label"]  = sel.get("selected_label")
+
+    return meta
+
+
+def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary):
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
     os.makedirs(out_dir, exist_ok=True)
 
     tag = f"{mode}_boxes{boxes_filter}"
+    metadata = _build_metadata(model_path, mode, boxes_filter, episodes, note)
+
     rows = [
         {"map": name, "episode": ep, **r}
         for name, ep_results in per_map_results.items()
         for ep, r in enumerate(ep_results)
     ]
     with open(os.path.join(out_dir, f"eval_{tag}.json"), "w") as f:
-        json.dump(rows, f, indent=2)
+        json.dump({"metadata": metadata, "episodes": rows}, f, indent=2)
     with open(os.path.join(out_dir, f"eval_{tag}_summary.json"), "w") as f:
-        json.dump(summary, f, indent=2)
+        json.dump({"metadata": metadata, "summary": summary}, f, indent=2)
     print(f"\n  Saved to: {out_dir}/eval_{tag}*.json")
 
 
@@ -205,6 +239,11 @@ def main():
         action="store_true",
         help="Save result JSONs to results/rl_tests/curriculum_dqn/evals/",
     )
+    parser.add_argument(
+        "--note",
+        default=None,
+        help="Label what training phase produced this model, e.g. 'phase2_1box+2box'",
+    )
     args = parser.parse_args()
 
     model_path = args.model or _find_latest_model()
@@ -220,6 +259,7 @@ def main():
         f"action_space={CURRICULUM_DQN_MAX_BOXES * 4}"
     )
     print(f"  mode     : {args.mode}  |  boxes: {args.boxes}  |  episodes: {args.episodes}")
+    print(f"  note     : {args.note or '(none — use --note to label training phase)'}")
     print()
 
     per_map_results = {}
@@ -273,7 +313,7 @@ def main():
         print(f"  {k:<34} {v:.4f}" if isinstance(v, float) else f"  {k:<34} {v}")
 
     if args.save:
-        _save_results(args.mode, args.boxes, per_map_results, summary)
+        _save_results(model_path, args.mode, args.boxes, args.episodes, args.note, per_map_results, summary)
 
 
 if __name__ == "__main__":
