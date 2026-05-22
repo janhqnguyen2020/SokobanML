@@ -1,6 +1,4 @@
-# .gitignore
-
-# Python cache
+# Python
 __pycache__/
 *.py[cod]
 *.pyc
@@ -8,50 +6,64 @@ __pycache__/
 *.pyd
 .Python
 
-# Virtual environments
+# Virtual Environments
 venv/
 .venv/
-
+env/
+   
 # Jupyter
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Trained model weights (large binary files — store on shared drive or release)
-models/*.zip
-models/*.pt
-models/*.pth
-# Exception: keep the best model if small enough
-# !models/best_model.zip
-
-# Experiment results CSVs (generated — do not commit raw data)
-results/*.csv
-
-# Videos and GIFs (large — do not commit)
-videos/*.mp4
-videos/*.gif
-videos/*.avi
-
-# Report PDFs (share via Google Drive or upload separately)
-report/*.pdf
-report/*.pptx
-
-# OS files
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# IDE settings
+# IDE / Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
 # Logs
 *.log
-tensorboard_logs/
 logs/
+tensorboard_logs/
+runs/
 
-# Pytest / coverage
+# TensorBoard event files
+events.out.tfevents.*
+
+# RL / ML Training Artifacts
+# Training outputs
+results/
+
+# Saved models / checkpoints
+*.zip
+*.pt
+*.pth
+*.ckpt
+
+# Replay buffers / datasets
+*.pkl
+*.npy
+*.npz
+
+# Videos / renders
+videos/
+*.mp4
+*.gif
+*.avi
+
+# Reports / Presentation Exports
+report/*.pdf
+report/*.pptx
+
+# Testing / Coverage
 .pytest_cache/
 htmlcov/
 .coverage
+coverage.xml
+
+!.gitkeep
