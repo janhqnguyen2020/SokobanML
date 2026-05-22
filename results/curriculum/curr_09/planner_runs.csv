@@ -1,0 +1,10 @@
+source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
+custom,curriculum,custom_env,curr_09,Hard-3box,0,bfs,,True,,10,12,3,9.2,38,44453.4178,59714,106610,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,astar,,True,,10,12,3,10.2,28,602.428,127,507,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,greedy,,True,,10,12,3,9.0,40,932.9126,11,49,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,bfs,,True,,10,12,3,9.2,38,56810.4329,59714,106610,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,astar,,True,,10,12,3,10.2,28,1909.2557,127,507,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,greedy,,True,,10,12,3,9.0,40,1551.2874,11,49,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,bfs,,True,,10,12,3,9.2,38,103431.1323,59714,106610,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,astar,,True,,10,12,3,10.2,28,17598.0082,127,507,32
+custom,curriculum,custom_env,curr_09,Hard-3box,0,greedy,,True,,10,12,3,9.0,40,28833.6604,11,49,32

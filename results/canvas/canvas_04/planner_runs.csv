@@ -1,0 +1,16 @@
+source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
+custom,canvas,custom_env,canvas_04,Hard-2box,0,bfs,,True,,9,9,2,9.6,24,253.1083,542,602,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,greedy,,True,,9,9,2,9.6,24,205.3719,6,13,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,astar,,True,,9,9,2,9.6,24,201.35,13,23,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,bfs,,True,,9,9,2,9.6,24,13940.1414,542,602,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,greedy,,True,,9,9,2,9.6,24,13898.7856,6,13,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,astar,,True,,9,9,2,9.6,24,14017.6947,13,23,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,bfs,,True,,9,9,2,9.6,24,1208.7071,542,602,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,greedy,,True,,9,9,2,9.6,24,873.9324,6,13,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,astar,,True,,9,9,2,9.6,24,894.877,13,23,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,bfs,,True,,9,9,2,9.6,24,985.836,542,602,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,greedy,,True,,9,9,2,9.6,24,717.5949,6,13,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,astar,,True,,9,9,2,9.6,24,716.017,13,23,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,bfs,,True,,9,9,2,9.6,24,311.1415,542,602,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,greedy,,True,,9,9,2,9.6,24,253.747,6,13,14
+custom,canvas,custom_env,canvas_04,Hard-2box,0,astar,,True,,9,9,2,9.6,24,212.616,13,23,14

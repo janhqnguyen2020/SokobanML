@@ -1,0 +1,10 @@
+source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,bfs,,True,,8,10,3,10.7,23,4822.8271,8306,15144,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,astar,,True,,8,10,3,10.5,25,695.5576,129,319,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,greedy,,True,,8,10,3,9.9,31,787.158,8,23,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,bfs,,True,,8,10,3,10.7,23,4076.5209,8306,15144,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,astar,,True,,8,10,3,10.5,25,558.913,129,319,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,greedy,,True,,8,10,3,9.9,31,714.8027,8,23,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,bfs,,True,,8,10,3,10.7,23,15499.9068,8306,15144,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,astar,,True,,8,10,3,10.5,25,14587.7762,129,319,18
+custom,curriculum,custom_env,curr_06,MedHard-3box,0,greedy,,True,,8,10,3,9.9,31,17938.4949,8,23,18

@@ -47,22 +47,25 @@ def add_box_pushes(valid_action_data, reachable_parents, selected_box_position, 
             valid_action_data[action_data["macro_action"]] = action_data
 
 
-def build_physical_action_data(player_pos, box_positions, wall_positions, direction_deltas):
+def build_physical_action_data(player_pos, box_positions, wall_positions, direction_deltas, goal_positions=None):
     """
-    Return every one-push action the player can physically execute
+    Return every one-push action the player can physically execute.
+    Boxes already on a goal are skipped — once placed they are frozen.
     """
     reachable_parents = get_reachable_parents(player_pos, box_positions, wall_positions, direction_deltas)
     valid_action_data = {}
     for box_index, selected_box_position in enumerate(sorted(list(box_positions))):
+        if goal_positions and selected_box_position in goal_positions:
+            continue  # box is on its goal — do not allow pushing it off
         add_box_pushes(valid_action_data, reachable_parents, selected_box_position, box_index, box_positions, wall_positions, direction_deltas)
     return valid_action_data
 
 
-def future_push_count(action_data, wall_positions, direction_deltas):
+def future_push_count(action_data, wall_positions, direction_deltas, goal_positions=None):
     """
     Count physical pushes available after one candidate push
     """
-    next_actions = build_physical_action_data(action_data["new_player_pos"], action_data["new_boxes"], wall_positions, direction_deltas)
+    next_actions = build_physical_action_data(action_data["new_player_pos"], action_data["new_boxes"], wall_positions, direction_deltas, goal_positions)
     return len(next_actions)
 
 
@@ -71,10 +74,10 @@ def safe_action_data_entry(action_data, goal_positions, wall_positions, dead_squ
     Return enriched safe-action data or None when the push deadlocks
     """
     if dead_squares and has_deadlock(action_data["new_boxes"], dead_squares, wall_positions, goal_positions): # action_data["new_boxes"] stores the box positions after the current candidate push
-        return None 
+        return None
     enriched_action_data = dict(action_data)
     solved = count_boxes_on_target(action_data["new_boxes"], goal_positions) == num_boxes
-    enriched_action_data["future_physical_pushes"] = 0 if solved else future_push_count(action_data, wall_positions, direction_deltas) # after this push, how many push is possible?
+    enriched_action_data["future_physical_pushes"] = 0 if solved else future_push_count(action_data, wall_positions, direction_deltas, goal_positions) # after this push, how many push is possible?
     return enriched_action_data
 
 
@@ -119,7 +122,7 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
     """
     Build the selected macro-action pool for the current board
     """
-    physical_action_data = build_physical_action_data(player_pos, box_positions, wall_positions, direction)
+    physical_action_data = build_physical_action_data(player_pos, box_positions, wall_positions, direction, goal_positions)
     safe_action_data, viable_safe_action_data = split_safe_actions(
         physical_action_data,
         goal_positions,

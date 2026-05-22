@@ -1,3 +1,3 @@
 algorithm,group,total_runs,solved_runs,success_rate,avg_steps,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
-greedy,custom_additional,3,3,1.0,25.3333,13872.3585,18.0,24.3333
-greedy,all,3,3,1.0,25.3333,13872.3585,18.0,24.3333
+greedy,curriculum,10,10,1.0,28.1,18494.9855,7.4,18.7
+greedy,all,10,10,1.0,28.1,18494.9855,7.4,18.7

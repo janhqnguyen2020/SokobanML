@@ -1,0 +1,149 @@
+"""Entry point for the curriculum / generalized DQN experiment.
+
+Trains a new DQN model that generalises across:
+  - 1-box maps  (Easy)
+  - 2-box maps  (Medium)
+  - 3-box maps  (Hard)
+  - procedural Sokoban-small-v1 maps (40% of episodes)
+
+Results are saved to results/rl_tests/curriculum_dqn/<run>/  and do NOT
+affect Shizuka's existing high_level_dqn results.
+
+Usage:
+    python main_curriculum_dqn.py
+"""
+
+import json
+import logging
+import os
+import shutil
+
+from src.rl.evaluate import evaluate_model
+from src.rl.callbacks import summary_rank
+from src.rl.train_curriculum_dqn import (
+    CURRICULUM_DQN_SELECTION_EPISODES,
+    make_eval_env,
+    make_curriculum_eval_env,
+    train,
+)
+from src.utils.custom_maps import build_curriculum_maps
+
+
+def _configure_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    )
+
+
+def _make_episode_seeds(base_seed, n):
+    return [base_seed + i for i in range(n)]
+
+
+def _copy_eval_artifacts(src, dst):
+    for suffix in ("", ".replace('.csv', '.json')", "_summary.json"):
+        s = src if suffix == "" else src.replace(".csv", suffix.strip("\"'"))
+        d = dst if suffix == "" else dst.replace(".csv", suffix.strip("\"'"))
+        if os.path.exists(s):
+            shutil.copyfile(s, d)
+
+
+def _evaluate_checkpoint(model_path, output_path, episode_seeds, env_factory):
+    from src.utils.config import CURRICULUM_DQN_SELECTION_EPISODES as N
+    return evaluate_model(
+        model_path=model_path,
+        algo="dqn",
+        level_ids=["curriculum_eval"],
+        n_episodes=N,
+        output_path=output_path,
+        env_factory=env_factory,
+        episode_seeds=episode_seeds,
+    )
+
+
+def _select_checkpoint(run_dir, final_path, best_path, seeds, env_factory):
+    final_out = os.path.join(run_dir, "eval_results_final.csv")
+    final_summary = _evaluate_checkpoint(final_path, final_out, seeds, env_factory)
+
+    selected = {
+        "label": "final",
+        "model_path": final_path,
+        "output_path": final_out,
+        "summary": final_summary,
+    }
+    best_summary = None
+
+    if os.path.exists(best_path):
+        best_out = os.path.join(run_dir, "eval_results_best.csv")
+        best_summary = _evaluate_checkpoint(best_path, best_out, seeds, env_factory)
+        if summary_rank(best_summary) > summary_rank(final_summary):
+            selected = {
+                "label": "best",
+                "model_path": best_path,
+                "output_path": best_out,
+                "summary": best_summary,
+            }
+
+    return selected, final_summary, best_summary
+
+
+def main():
+    _configure_logging()
+    print("=== CURRICULUM DQN ===")
+
+    _, run_dir = train()
+
+    final_path = os.path.join(run_dir, "curriculum_dqn_final.zip")
+    best_path  = os.path.join(run_dir, "curriculum_dqn_best.zip")
+    seeds = _make_episode_seeds(30_000, CURRICULUM_DQN_SELECTION_EPISODES)
+
+    curriculum_maps = build_curriculum_maps()
+
+    # evaluate on procedural small-v1 (same distribution as Shizuka's baseline)
+    selected, final_summary, best_summary = _select_checkpoint(
+        run_dir, final_path, best_path, seeds, make_eval_env
+    )
+
+    canonical = os.path.join(run_dir, "eval_results.csv")
+    shutil.copyfile(selected["output_path"], canonical)
+    for ext in (".json", "_summary.json"):
+        src = selected["output_path"].replace(".csv", ext)
+        if os.path.exists(src):
+            shutil.copyfile(src, canonical.replace(".csv", ext))
+
+    # also evaluate on all curriculum maps
+    curriculum_eval_out = os.path.join(run_dir, "eval_results_curriculum.csv")
+    curriculum_summary = evaluate_model(
+        model_path=selected["model_path"],
+        algo="dqn",
+        level_ids=["curriculum_maps"],
+        n_episodes=len(curriculum_maps),
+        output_path=curriculum_eval_out,
+        env_factory=lambda: make_curriculum_eval_env(curriculum_maps),
+        episode_seeds=list(range(len(curriculum_maps))),
+    )
+
+    with open(os.path.join(run_dir, "selected_model.json"), "w") as f:
+        json.dump(
+            {
+                "selected_label": selected["label"],
+                "selected_model_path": selected["model_path"],
+                "procedural_eval_summary": selected["summary"],
+                "curriculum_eval_summary": curriculum_summary,
+                "final_model_path": final_path,
+                "final_summary": final_summary,
+                "best_model_path": best_path if os.path.exists(best_path) else None,
+                "best_summary": best_summary,
+            },
+            f,
+            indent=2,
+        )
+
+    print("\nProcedural eval summary:", selected["summary"])
+    print("Curriculum eval summary:", curriculum_summary)
+    print("Selected checkpoint:", selected["model_path"])
+    print("Run artifacts saved to:", run_dir)
+
+
+if __name__ == "__main__":
+    main()

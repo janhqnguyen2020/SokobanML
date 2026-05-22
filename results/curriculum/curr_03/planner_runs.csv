@@ -1,0 +1,10 @@
+source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,bfs,,True,,6,8,2,11.1,9,144.4912,2,3,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,astar,,True,,6,8,2,11.1,9,291.594,2,2,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,greedy,,True,,6,8,2,11.1,9,204.7613,2,2,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,bfs,,True,,6,8,2,11.1,9,207.7811,2,3,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,astar,,True,,6,8,2,11.1,9,130.2636,2,2,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,greedy,,True,,6,8,2,11.1,9,162.9159,2,2,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,bfs,,True,,6,8,2,11.1,9,5355.3905,2,3,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,astar,,True,,6,8,2,11.1,9,4949.7409,2,2,12
+custom,curriculum,custom_env,curr_03,EasyMed-2box,0,greedy,,True,,6,8,2,11.1,9,5148.1724,2,2,12

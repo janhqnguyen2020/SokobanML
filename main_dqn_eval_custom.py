@@ -1,4 +1,4 @@
-"""Evaluate the trained DQN on custom 3-box maps (designed to fit DQN canvas)."""
+"""Evaluate the trained DQN on all canvas-compatible maps (fit the 10x10 observation canvas)."""
 
 import argparse
 import glob
@@ -8,39 +8,26 @@ from src.env.custom_env import SimpleCustomSokobanEnv
 from src.rl.high_level_env import HighLevelSokobanEnv
 from src.rl.masked_dqn import MaskedDQN
 from src.utils.config import HIGH_LEVEL_OBS_CANVAS_SHAPE, HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES
+from src.utils.custom_maps import build_all_canvas_maps
 from src.utils.show_ui import build_title, create_plot, finish_plot, update_plot
 
 DELAY = 0.3
 
-DQN_CUSTOM_MAPS = [
-    {
-        "name": "dqn_map_1",
-        "height": 7,
-        "width": 9,
-        "player": (5, 4),
-        "boxes": [(2, 4), (3, 4), (4, 4)],
-        "goals": [(1, 4), (3, 2), (3, 6)],
+def _to_eval_config(m):
+    return {
+        "name": m["map_name"],
+        "height": m["height"],
+        "width": m["width"],
+        "player": m["player"],
+        "boxes": m["boxes"],
+        "goals": m["goals"],
         "max_steps": 150,
-    },
-    {
-        "name": "dqn_map_2",
-        "height": 6,
-        "width": 9,
-        "player": (3, 4),
-        "boxes": [(2, 4), (3, 2), (3, 6)],
-        "goals": [(1, 2), (1, 6), (4, 4)],
-        "max_steps": 150,
-    },
-    {
-        "name": "dqn_map_3",
-        "height": 6,
-        "width": 9,
-        "player": (4, 4),
-        "boxes": [(2, 4), (3, 2), (3, 6)],
-        "goals": [(1, 2), (1, 4), (1, 6)],
-        "max_steps": 150,
-    },
-]
+    }
+
+# DQN was trained on 3-box environments (obs size 412). Only evaluate on maps
+# that match this box count — 1-box and 2-box canvas maps produce obs size 404/408
+# and are incompatible with the saved model weights.
+DQN_CUSTOM_MAPS = [_to_eval_config(m) for m in build_all_canvas_maps() if len(m["boxes"]) == 3]
 
 
 def find_latest_model():

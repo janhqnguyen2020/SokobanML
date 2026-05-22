@@ -9,8 +9,8 @@ from collections import deque
 import heapq #priority queue needed for greedy
 import numpy as np
 
-from src.planners.heuristics import min_box_to_goal#heuristic function
-
+from src.planners.heuristics import assignment_heuristic
+from src.planners.reasoning import ReasoningPlanner
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
 
 _DIR = {
@@ -30,6 +30,7 @@ class GreedyAgent:
         self.dead_squares_count = 0
         self.failure_reason = ""
         self._failed = False
+        self.reasoning = ReasoningPlanner(env)
 
     def reset(self):
         #clear everything for new episode
@@ -120,7 +121,7 @@ class GreedyAgent:
         return []
 
     #core solver
-    def _solve(self, max_nodes=10_000):
+    def _solve(self, max_nodes=200_000):
         #get board
         player_pos, box_positions, goals, walls, board_shape = self._get_board()
 
@@ -131,14 +132,18 @@ class GreedyAgent:
         self.deadlocks_pruned = 0
 
         init_state = (player_pos, box_positions)#starting point of search
-        
+
         if box_positions == goals:#if already solved, stop
             return []
 
         counter = 0
-        heuristicValue = min_box_to_goal(box_positions, goals)#estimate how close to solution
-        
-        #creates a priority queue (stores staes sorted by heuristic)
+        # assignment_heuristic with ReasoningPlanner: assigns each box a unique goal
+        # (no two boxes compete for the same goal), giving a better distance estimate
+        # than min_box_to_goal which allows conflicts.
+        assignment = self.reasoning.plan(box_positions, goals)
+        heuristicValue = assignment_heuristic(box_positions, assignment)
+
+        #creates a priority queue (stores states sorted by heuristic)
         heap = [(heuristicValue, counter, init_state)]
         
         came_from = {init_state: (None, None)}
@@ -190,8 +195,9 @@ class GreedyAgent:
                         return self._reconstruct(came_from, next_state, walls)
 
                     counter += 1
-                    h = min_box_to_goal(new_boxes, goals)
-                    heapq.heappush(heap, (h, counter, next_state))#push to heap
+                    new_assignment = self.reasoning.plan(new_boxes, goals)
+                    h = assignment_heuristic(new_boxes, new_assignment)
+                    heapq.heappush(heap, (h, counter, next_state))
 
         return None
 

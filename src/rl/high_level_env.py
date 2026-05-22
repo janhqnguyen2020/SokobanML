@@ -13,6 +13,7 @@ import gym
 import numpy as np
 from gym.spaces import Box, Discrete
 
+from src.env.custom_env import SimpleCustomSokobanEnv
 from src.env.sokoban_env import initialize_env
 from src.planners.deadlock import precompute_dead_squares
 from src.rl.high_level_env_parts.action_profile import board_profile
@@ -53,11 +54,27 @@ class HighLevelSokobanEnv(gym.Env):
         observation_board_shape=None,
         use_extra_scalar_features=False,
         use_shaped_reward=True,
+        max_boxes=None,
+        map_sampler=None,
     ):
+        """
+        max_boxes:   Fix the action-space size to max_boxes*4 regardless of how
+                     many boxes the current episode has.  Required when training
+                     across maps with different box counts so the network input
+                     stays constant.  Defaults to the box count of the first env.
+        map_sampler: Callable() → None | map_config_dict.  Called at the start
+                     of every reset().  None means use the procedural env;
+                     a dict is forwarded to SimpleCustomSokobanEnv.
+        """
         super().__init__()
-        self.env = env if env is not None else initialize_env()
+        self._map_sampler = map_sampler
+        self._procedural_env = env if env is not None else initialize_env()
+        self.env = self._procedural_env
+
         self.num_boxes = self.env.unwrapped.num_boxes
-        self.action_space = Discrete(self.num_boxes * 4)
+        _max_boxes = max_boxes if max_boxes is not None else self.num_boxes
+        self.action_space = Discrete(_max_boxes * 4)
+
         self.board_shape = tuple(self.env.unwrapped.room_state.shape)
         self.observation_board_shape = tuple(observation_board_shape or self.board_shape)
         self.use_extra_scalar_features = bool(use_extra_scalar_features)
@@ -98,16 +115,34 @@ class HighLevelSokobanEnv(gym.Env):
         if seed is not None:
             self.seed(seed)
 
-        # reset all counters used for reward/penality
+        # swap underlying env when a map_sampler is configured
+        if self._map_sampler is not None:
+            map_config = self._map_sampler()
+            if map_config is not None:
+                self.env = SimpleCustomSokobanEnv(
+                    height=map_config["height"],
+                    width=map_config["width"],
+                    player_position=map_config["player"],
+                    box_positions=map_config["boxes"],
+                    goal_positions=map_config["goals"],
+                    max_steps=map_config.get("max_steps", 200),
+                )
+            else:
+                self.env = self._procedural_env
+            # update num_boxes for the new map (action_space.n stays fixed)
+            self.num_boxes = self.env.unwrapped.num_boxes
+            self.board_shape = tuple(self.env.unwrapped.room_state.shape)
+
+        # reset all counters used for reward/penalty
         self.invalid_action_streak = 0
         self.no_progress_steps = 0
         self.best_boxes_on_target = 0
         self.state_visit_counts = {}
-        
+
         # reset the board until there is at least one valid macro-move
         player_pos, box_positions, goals, _, action_profile = self._reset_to_valid_state()
-        self.state_visit_counts = {state_key(player_pos, box_positions): 1} # mark the starting state as visited
-        self.best_boxes_on_target = count_boxes_on_target(box_positions, goals) # count how many boxes are on goals initially for later comparison used to determine penalities/rewards
+        self.state_visit_counts = {state_key(player_pos, box_positions): 1}
+        self.best_boxes_on_target = count_boxes_on_target(box_positions, goals)
         return self._observation(action_profile)
 
 

@@ -8,7 +8,7 @@ from collections import deque
 import heapq
 import numpy as np
 
-from src.planners.heuristics import hungarian_matching
+from src.planners.heuristics import hungarian_matching, player_to_nearest_box
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
 
 _DIR = {
@@ -125,7 +125,11 @@ class AStarAgent:
         h0 = hungarian_matching(box_positions, goals)
 
         counter = 0
-        heap = [(h0, 0, counter, init_state)]
+        # Heap entry: (f, g, player_dist, counter, state)
+        # player_dist is a tiebreaker — when f and g are equal, prefer states
+        # where the player is already close to an unresolved box.
+        p0 = player_to_nearest_box(player_pos, box_positions, goals)
+        heap = [(h0, 0, p0, counter, init_state)]
         came_from = {init_state: (None, None)}
         g_cost = {init_state: 0}
 
@@ -134,7 +138,7 @@ class AStarAgent:
                 self.failure_reason = "node_limit"
                 return None
 
-            f, g, _, state = heapq.heappop(heap)
+            f, g, _, _, state = heapq.heappop(heap)
 
             if g > g_cost.get(state, float('inf')):
                 continue
@@ -175,8 +179,10 @@ class AStarAgent:
                         return result
 
                     h = hungarian_matching(new_boxes, goals)
+                    # after push, player stands where the box was
+                    new_player_dist = player_to_nearest_box(box, new_boxes, goals)
                     counter += 1
-                    heapq.heappush(heap, (new_g + h, new_g, counter, next_state))
+                    heapq.heappush(heap, (new_g + h, new_g, new_player_dist, counter, next_state))
 
         self.failure_reason = "no_solution_found"
         return None

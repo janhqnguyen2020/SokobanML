@@ -9,6 +9,7 @@ from collections import deque # queue structure (FIFO needed for bfs)
 import numpy as np
 from src.planners.deadlock import precompute_dead_squares, has_deadlock
 from src.planners.reasoning import ReasoningPlanner
+from src.planners.backward_hints import BackwardHintGenerator
 from src.planners.heuristics import manhattan
 
 _DIR = {
@@ -29,6 +30,7 @@ class BFSAgent:
         self.failure_reason = ""
         self._failed = False
         self.reasoning = reasoning or ReasoningPlanner(env)
+        self.backward_hints = BackwardHintGenerator()
 
     def reset(self):
         #clear everything for new episode
@@ -139,9 +141,13 @@ class BFSAgent:
             state = queue.popleft()#removes oldest state from queue for exploration
             player, boxes = state# expand state 
 
-            # Explore promising boxes first by action ordering
-            assignment = self.reasoning.plan(boxes, goals) # returns dictionary with key=position of boxes, val=position of goals -- Note that box-to-goal matching can change depending on the current state
-            sorted_boxes = sorted(boxes, key=lambda b: manhattan(b, assignment[b]))
+            # Explore promising boxes first: primary = distance to assigned goal,
+            # secondary = prefer boxes already adjacent to a goal (backward hint).
+            assignment = self.reasoning.plan(boxes, goals)
+            sorted_boxes = sorted(
+                boxes,
+                key=lambda b: (manhattan(b, assignment[b]), -self.backward_hints.compute_overlap({b}, goals))
+            )
 
             for box in sorted_boxes:
                 #try pushing boxes in every direction

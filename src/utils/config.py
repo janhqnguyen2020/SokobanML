@@ -50,6 +50,24 @@ HIGH_LEVEL_DQN_FINAL_VERIFY_EPISODES = 100
 # The CNN backbone is a clean architecture shift, so the next run starts fresh.
 HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
 
+# Curriculum / Generalized DQN  (parallel model — does NOT affect high_level_dqn)
+# Canvas is 15x15 so all 10 curriculum maps fit (largest is 11x13).
+# Action mask always padded to MAX_BOXES*4=12 so 1-box and 2-box episodes are
+# compatible with the same network weights as 3-box episodes.
+CURRICULUM_DQN_CANVAS_SHAPE = (15, 15)
+CURRICULUM_DQN_MAX_BOXES = 3
+CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.4   # fraction of episodes from small-v1
+CURRICULUM_DQN_TOTAL_STEPS = 200_000
+CURRICULUM_DQN_BUFFER_SIZE = 100_000
+CURRICULUM_DQN_LEARNING_RATE = 1e-4
+CURRICULUM_DQN_LEARNING_STARTS = 1_000
+CURRICULUM_DQN_BATCH_SIZE = 64
+CURRICULUM_DQN_EVAL_FREQ = 20_000
+CURRICULUM_DQN_EVAL_EPISODES = 40
+CURRICULUM_DQN_EARLY_STOP_PATIENCE_EVALS = 8
+CURRICULUM_DQN_EARLY_STOP_MIN_TIMESTEPS = 80_000
+CURRICULUM_DQN_SELECTION_EPISODES = 100
+
 # Reproducibility
 # Allow fast multi-seed sweeps from PowerShell, e.g.:
 #   $env:SOKO_SEED='43'; python main_dqn.py

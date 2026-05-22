@@ -25,3 +25,12 @@ custom,custom_core,custom_env,map_02,Medium-1box,0,astar,,True,,5,12,1,10.3,7,38
 custom,custom_core,custom_env,map_02,Medium-1box,0,bfs,,True,,5,12,1,10.3,7,66.0768,8,16,22
 custom,custom_core,custom_env,map_02,Medium-1box,0,greedy,,True,,5,12,1,10.3,7,78.7525,4,8,22
 custom,custom_core,custom_env,map_02,Medium-1box,0,astar,,True,,5,12,1,10.3,7,75.5844,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,bfs,,True,,5,12,1,10.3,7,57.5364,8,16,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,greedy,,True,,5,12,1,10.3,7,68.1047,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,astar,,True,,5,12,1,10.3,7,93.2734,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,bfs,,True,,5,12,1,10.3,7,65.0094,8,16,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,greedy,,True,,5,12,1,10.3,7,83.4601,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,astar,,True,,5,12,1,10.3,7,79.0141,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,bfs,,True,,5,12,1,10.3,7,82.2227,8,16,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,greedy,,True,,5,12,1,10.3,7,76.9572,4,8,22
+custom,custom_core,custom_env,map_02,Medium-1box,0,astar,,True,,5,12,1,10.3,7,70.3943,4,8,22

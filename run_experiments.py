@@ -20,11 +20,14 @@ from src.utils.show_ui import update_plot
 
 GROUP_DISPLAY_NAMES = {
     "custom_core": "custom_shizuka",
-    "custom_additional": "custom_joseph",
-    "dqn_custom": "dqn_compatible",
+    "canvas":      "canvas_dqn_compatible",
+    "dqn_custom":  "dqn_compatible",
+    "curriculum":  "curriculum",
     "original_v0": "v0",
     "original_v1": "v1",
     "original_v2": "v2",
+    # archived — only used when --sources archived is passed explicitly
+    "archived":    "archived_joseph",
 }
 
 
@@ -79,9 +82,9 @@ def parse_args():
 
 
 def expand_sources(source_names):
-    """Replace all with every supported benchmark source."""
+    """Replace all with every active benchmark source (archived excluded)."""
     if "all" in source_names:
-        return ["custom_core", "custom_additional", "original"]
+        return ["custom_core", "canvas", "original"]
     return source_names
 
 
@@ -123,7 +126,8 @@ def run_selected_benchmarks(args):
     sources = expand_sources(args.sources)
     algorithms = expand_algorithms(args.algorithms)
 
-    if "custom_core" in sources or "custom_additional" in sources or "dqn_custom" in sources:
+    custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "archived"}
+    if custom_sources.intersection(sources):
         results.extend(run_custom_groups(args, sources, algorithms))
     if "original" in sources:
         results.extend(run_original_groups(args, algorithms))
@@ -147,14 +151,14 @@ def run_custom_groups(args, source_names, algorithm_names):
 
 
 def choose_custom_group(map_name):
-    """Return the correct custom group based on the map naming style."""
-    if map_name.startswith("dqn_map_"):
-        return "dqn_custom"
+    """Return the group label for a map based on its naming prefix."""
+    if map_name.startswith("dqn_map_") or map_name.startswith("canvas_"):
+        return "canvas"
     if map_name.startswith("map_"):
-        map_number = int(map_name.split("_")[1])
-        if map_number <= 10:
-            return "custom_core"
-    return "custom_additional"
+        return "custom_core"
+    if map_name.startswith("curr_"):
+        return "curriculum"
+    return "archived"
 
 
 def run_custom_case(config, group_name, algorithm_name, args):

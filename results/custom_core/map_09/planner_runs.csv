@@ -24,3 +24,12 @@ custom,custom_core,custom_env,map_09,Hard-3box,0,astar,,True,,7,15,3,7.3,57,3225
 custom,custom_core,custom_env,map_09,Hard-3box,0,bfs,,True,,7,15,3,10.5,25,4174.9115,20930,6452,10
 custom,custom_core,custom_env,map_09,Hard-3box,0,greedy,,True,,7,15,3,9.7,33,492.8143,185,308,10
 custom,custom_core,custom_env,map_09,Hard-3box,0,astar,,True,,7,15,3,7.3,57,755.1186,254,159,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,bfs,,True,,7,15,3,10.5,25,4111.3181,20930,6452,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,greedy,,True,,7,15,3,9.7,33,507.2703,185,308,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,astar,,True,,7,15,3,7.3,57,528.4264,254,159,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,bfs,,True,,7,15,3,10.5,25,12447.5963,20930,6452,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,greedy,,True,,7,15,3,7.3,57,2238.4715,12,6,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,astar,,True,,7,15,3,10.5,25,1310.8852,254,159,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,bfs,,True,,7,15,3,10.5,25,11471.133,20930,6452,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,greedy,,True,,7,15,3,7.3,57,1773.1078,12,6,10
+custom,custom_core,custom_env,map_09,Hard-3box,0,astar,,True,,7,15,3,10.5,25,976.3205,254,159,10

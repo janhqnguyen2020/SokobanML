@@ -2,3 +2,9 @@ source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failu
 original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,bfs,103,True,,,,,9.9,51,7390.8308,30271,74358,13
 original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,greedy,103,True,,,,,11.5,35,462.7602,146,45,6
 original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,astar,103,True,,,,,7.9,71,3716.1806,6016,5583,8
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,bfs,103,True,,,,,9.5,55,9907.5532,66812,81656,9
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,greedy,103,True,,,,,10.2,48,1472.1181,178,169,6
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,astar,103,True,,,,,10.0,50,1575.3582,1544,1098,4
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,bfs,103,True,,,,,11.4,36,36715.4989,126294,287700,15
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,greedy,103,False,node_limit,,,,-20.0,200,3172.7428,10000,16875,15
+original,original_v2,Sokoban-v2,episode_03,Sokoban-v2,3,astar,103,True,,,,,11.6,34,223.0244,144,432,12
