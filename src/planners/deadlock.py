@@ -7,6 +7,7 @@ Prune (Skip)
 """
 
 from collections import deque
+from src.planners.heuristics import hungarian_matching
 
 _DIRS = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
@@ -20,6 +21,10 @@ def has_deadlock(box_positions, dead_squares, walls, goals):
             return True
         if is_freeze_deadlock(box, box_positions, walls):
             return True
+        
+    #if assignment_deadlock(box_positions, goals):
+    #    return True
+    
     return False
 
 # --- Helpers for has_deadlock() ---
@@ -170,3 +175,41 @@ def can_push_down(box_pos, box_positions, walls):
     destination_open = (row + 1, col) not in walls and (row + 1, col) not in box_positions
     pusher_space_open = (row - 1, col) not in walls and (row - 1, col) not in box_positions
     return destination_open and pusher_space_open
+
+"""
+def assignment_deadlock(box_positions, goal_positions):
+
+    #Detect impossible global assignments.
+
+    unresolved_boxes = [
+        box for box in box_positions
+        if box not in goal_positions
+    ]
+
+    unresolved_goals = [
+        goal for goal in goal_positions
+        if goal not in box_positions
+    ]
+
+    if len(unresolved_boxes) != len(unresolved_goals):
+        return False
+    
+    if not unresolved_boxes:
+        return False
+    
+    #impossible if any box cannot reasonably reach any goal
+    for box in unresolved_boxes:
+        reachable = False
+
+        for goal in unresolved_goals:
+            dist = abs(box[0] - goal[0]) + abs(box[1] - goal[1])
+
+            if dist < 999:
+                reachable = True
+                break
+
+        if not reachable:
+            return True
+        
+    return False
+"""

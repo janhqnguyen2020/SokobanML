@@ -1,3 +1,4 @@
+# main_curriculum_dqn.py
 """Entry point for the curriculum / generalized DQN experiment.
 
 Trains a new DQN model that generalises across:

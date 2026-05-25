@@ -1,3 +1,4 @@
+# src/rl/train_curriculum_dqn.py
 """
 Curriculum DQN training pipeline.
 

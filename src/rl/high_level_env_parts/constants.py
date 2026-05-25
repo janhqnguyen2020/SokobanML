@@ -1,3 +1,5 @@
+# src/rl/high_level_env_parts/constant.py
+
 """
 Shared constants for the high-level Sokoban environment
 """
@@ -20,10 +22,11 @@ REPEATED_STATE_LIMIT = 3
 INVALID_ACTION_PENALTY = -2.0
 INVALID_STREAK_TERMINATION_PENALTY = -8.0 # penality if more than 10 macro-steps attempts leads to invalid actions
 DEAD_END_PENALTY = -10.0
-REPEATED_STATE_PENALTY = -14.0
-STATE_REVISIT_PENALTY = -0.75
+REPEATED_STATE_PENALTY = -25.0
+STATE_REVISIT_PENALTY = -2.5
 BOX_PROGRESS_REWARD = 12.0
 BOX_LEFT_GOAL_PENALTY = -15.0
 FILLED_GOAL_DISTANCE_PENALTY = 6 # make less attractive to move if goal is taken by box
 DISTANCE_PROGRESS_REWARD = 1.0
 SUCCESS_REWARD = 60.0
+REVERSE_MOVE_PENALTY = -6.0

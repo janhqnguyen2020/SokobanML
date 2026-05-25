@@ -1,3 +1,4 @@
+# src/utils/config.py
 """
 Shared configuration for Sokoban experiments.
 """

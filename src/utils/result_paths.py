@@ -1,3 +1,5 @@
+# src/utils/result_paths.py
+
 """Path helpers for benchmark result files."""
 
 import os

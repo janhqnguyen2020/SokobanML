@@ -1,3 +1,4 @@
+# src/utils/benchmark_registry.py
 """Planner registry for benchmark selection."""
 
 from src.planners.astar import AStarAgent

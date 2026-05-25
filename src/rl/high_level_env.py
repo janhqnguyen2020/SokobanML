@@ -1,3 +1,4 @@
+# src/rl/high_level_env.py
 """
 Higher-level Sokoban wrapper for DQN.
 
@@ -32,6 +33,7 @@ from src.rl.high_level_env_parts.state import (
     read_board,
     record_state_visit,
     state_key,
+    forced_box_failure,
 )
 from src.rl.high_level_env_parts.transition import (
     dead_end_info,
@@ -138,6 +140,7 @@ class HighLevelSokobanEnv(gym.Env):
         self.no_progress_steps = 0
         self.best_boxes_on_target = 0
         self.state_visit_counts = {}
+        self.last_macro_action = None # for adding previous move tracking to avoid RL oscillations 
 
         # reset the board until there is at least one valid macro-move
         player_pos, box_positions, goals, _, action_profile = self._reset_to_valid_state()
@@ -159,7 +162,7 @@ class HighLevelSokobanEnv(gym.Env):
         Apply one macro push action and return the next state
         """
         action = int(action)
-        _, box_positions, goals, _, action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
+        player_pos, box_positions, goals, walls, action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
         if not action_profile["selected"]:
             return self._dead_end_result(action_profile) # if there are no valid macro-action, the state is a dead-end
         if action not in action_profile["selected"]:
@@ -168,9 +171,41 @@ class HighLevelSokobanEnv(gym.Env):
 
         # log current board, execute next move, and log new board
         before_progress = progress_snapshot(box_positions, goals) 
+        current_action_data = action_profile["selected"][action] # for adding previous move tracking to avoid RL oscillations 
         raw_reward, env_done, env_info = self._execute_macro_action(action_profile["selected"][action]) # raw reward is the reward in original Sokoban env (eg. -0.1 for each step)
+        # for adding previous move tracking to avoid RL oscillations 
+        reverse_move = False
+        if self.last_macro_action is not None:
+            prev_box = self.last_macro_action["box_index"]
+            prev_dir = self.last_macro_action["direction"]
+
+            curr_box = current_action_data["box_index"]
+            curr_dir = current_action_data["direction"]
+
+            opposite = {
+                1: 2,
+                2: 1,
+                3: 4,
+                4: 3,
+            }
+        
+            reverse_move = (
+                prev_box == curr_box and
+                opposite.get(prev_dir) == curr_dir
+            )
+        self.last_macro_action = current_action_data
+
         next_player_pos, next_box_positions, goals, _, next_action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
         after_progress = progress_snapshot(next_box_positions, goals)
+
+
+        solvability_damage = forced_box_failure(
+            box_positions,
+            next_box_positions,
+            goals,
+            walls,
+            DIRECTION_DELTAS
+        )
 
         # compute additional rewards
         self.best_boxes_on_target = max(self.best_boxes_on_target, after_progress["boxes_on_target"])
@@ -188,6 +223,8 @@ class HighLevelSokobanEnv(gym.Env):
             no_progress,
             dead_end,
             state_visit_count,
+            reverse_move,
+            solvability_damage
         )
 
         # log for observational purposes

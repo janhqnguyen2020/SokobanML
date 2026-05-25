@@ -1,3 +1,4 @@
+# src/env/map_generator.py
 """Generates guaranteed-solvable 1-box and 2-box Sokoban maps.
 
 Maps use only outer-border walls (no interior walls), matching all existing

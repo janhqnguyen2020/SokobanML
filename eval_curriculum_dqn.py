@@ -1,3 +1,4 @@
+# eval_curriculum_dqn.py
 """Evaluate the curriculum DQN on custom, generated, or procedural maps.
 
 The env always uses CURRICULUM_DQN_CANVAS_SHAPE / CURRICULUM_DQN_MAX_BOXES from

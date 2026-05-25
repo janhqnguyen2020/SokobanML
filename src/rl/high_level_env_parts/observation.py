@@ -1,3 +1,4 @@
+# src/rl/high_level_env_parts/observation.py
 """Observation-building helpers for the high-level Sokoban environment."""
 
 import numpy as np

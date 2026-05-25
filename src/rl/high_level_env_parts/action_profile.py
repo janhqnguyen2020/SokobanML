@@ -1,3 +1,4 @@
+# src/rl/high_level_env_parts/action_profile.py
 """
 Action helpers for the high-level Sokoban environment
 """
@@ -22,6 +23,9 @@ def build_macro_action(reachable_parents, selected_box_position, box_index, dire
         return None
     return {
         "macro_action": box_index * 4 + direction_index,
+        # for previous move tracking to avoid RL oscillations
+        "box_index": box_index,
+
         "direction": push_direction,
         "walk_actions": reconstruct_path(reachable_parents, player_push_position),
         "new_player_pos": selected_box_position,

@@ -1,3 +1,4 @@
+# src/rl/high_level_env_parts/transition.py
 """
 Helps decide what happens after one macro-action
 1. whether the episode should end
@@ -18,8 +19,8 @@ from src.rl.high_level_env_parts.constants import (
     REPEATED_STATE_PENALTY,
     STATE_REVISIT_PENALTY,
     SUCCESS_REWARD,
+    REVERSE_MOVE_PENALTY,
 )
-
 
 def update_no_progress(no_progress_steps, before_progress, after_progress):
     """
@@ -42,7 +43,7 @@ def done_flags(env_done, solved, state_visit_count, next_action_profile, no_prog
     return done, repeated_state, no_progress, dead_end
 
 
-def select_reward(use_shaped_reward, raw_reward, box_progress_delta, distance_progress, solved, repeated_state, no_progress, dead_end, state_visit_count):
+def select_reward(use_shaped_reward, raw_reward, box_progress_delta, distance_progress, solved, repeated_state, no_progress, dead_end, state_visit_count, reverse_move, solvability_damage):
     """
     Return the training reward or the raw env reward
     """
@@ -53,6 +54,10 @@ def select_reward(use_shaped_reward, raw_reward, box_progress_delta, distance_pr
         reward += BOX_LEFT_GOAL_PENALTY
     if state_visit_count > 1:
         reward += STATE_REVISIT_PENALTY * (state_visit_count - 1)
+    if reverse_move:
+        reward += REVERSE_MOVE_PENALTY
+    if solvability_damage > 0:
+        reward -= 18 * solvability_damage
     if solved:
         return reward + SUCCESS_REWARD
     if repeated_state:
