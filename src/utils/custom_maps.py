@@ -62,7 +62,7 @@ def build_canvas_maps():
         # Easy: boxes aligned, all push straight down 1 step, player starts above
         build_map("canvas_05", "Easy-3box",   5, 9, (1, 4), [(2, 2), (2, 4), (2, 6)], [(3, 2), (3, 4), (3, 6)]),
         # Medium: boxes push in mixed directions, moderate distances
-        build_map("canvas_02", "Medium-3box", 7, 9, (5, 1), [(4, 2), (2, 5), (4, 7)], [(1, 2), (5, 5), (1, 7)]),
+        build_map("canvas_02", "Medium-3box", 7, 9, (5, 1), [(4, 2), (2, 5), (4, 7)], [(1, 2), (5, 5), (2, 7)]),
         # Medium: all boxes push right, but player starts on the wrong (right) side
         build_map("canvas_06", "Medium-3box", 7, 8, (3, 6), [(1, 2), (3, 2), (5, 2)], [(1, 5), (3, 5), (5, 5)]),
         # Hard: long push distances, player must navigate around boxes

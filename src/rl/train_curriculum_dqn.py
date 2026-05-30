@@ -48,6 +48,8 @@ from src.utils.config import (
 )
 
 from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps
+from src.rl.video_wrapper import VideoWrapper
+from src.rl.video_recorder import EpisodeVideoRecorder
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 LOGGER = logging.getLogger(__name__)
@@ -132,7 +134,28 @@ def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=Non
 
 
 def createTrainingEnvironment(curriculumTeacher):
-    return createSokobanEnvironment(use_shaped_reward=True, curriculumTeacher=curriculumTeacher, seed=SEED)
+    run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
+
+    save_dir = os.path.join(
+        "results",
+        "rl_tests",
+        "curriculum_dqn",
+        run_id,
+        "videos"
+    )
+
+    recorder = EpisodeVideoRecorder(
+        save_dir=save_dir,
+        fps=5,
+    )
+
+    env = createSokobanEnvironment(
+        use_shaped_reward=True,
+        curriculumTeacher=curriculumTeacher,
+        seed=SEED,
+    )
+
+    return VideoWrapper(env, recorder)
 
 
 def createEvaluationEnvironment():

@@ -22,8 +22,8 @@ def has_deadlock(box_positions, dead_squares, walls, goals):
         if is_freeze_deadlock(box, box_positions, walls):
             return True
         
-    #if assignment_deadlock(box_positions, goals):
-    #    return True
+    if assignment_deadlock(box_positions, goals):
+        return True
     
     return False
 
@@ -176,7 +176,7 @@ def can_push_down(box_pos, box_positions, walls):
     pusher_space_open = (row - 1, col) not in walls and (row - 1, col) not in box_positions
     return destination_open and pusher_space_open
 
-"""
+
 def assignment_deadlock(box_positions, goal_positions):
 
     #Detect impossible global assignments.
@@ -212,4 +212,3 @@ def assignment_deadlock(box_positions, goal_positions):
             return True
         
     return False
-"""

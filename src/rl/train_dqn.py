@@ -33,6 +33,10 @@ from src.utils.config import (
     HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
     SEED,
 )
+from src.rl.video_recorder import EpisodeVideoRecorder
+from src.rl.video_wrapper import VideoWrapper
+#from stable_baselines3.common.monitor import Monitor
+
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 LOGGER = logging.getLogger(__name__)
@@ -62,7 +66,33 @@ def _create_high_level_env(use_shaped_reward, seed=None):
     return _seed_env(env, seed)
 
 def make_train_env():
-    return _create_high_level_env(use_shaped_reward=True, seed=SEED)
+    run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
+
+    save_dir = os.path.join(
+        "results",
+        "rl_tests",
+        "high_level_dqn",
+        run_id,
+        "videos"
+    )
+
+    recorder = EpisodeVideoRecorder(
+        save_dir=save_dir,
+        fps=5,
+    )
+
+    env = HighLevelSokobanEnv(
+        observation_board_shape=HIGH_LEVEL_OBS_CANVAS_SHAPE,
+        use_extra_scalar_features=HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
+        use_shaped_reward=True,
+    )
+
+    #env = Monitor(env)
+
+    env = VideoWrapper(env, recorder)
+    env = _seed_env(env, SEED)
+
+    return env
 
 def make_eval_env():
     return _create_high_level_env(use_shaped_reward=False, seed=SEED + 1)

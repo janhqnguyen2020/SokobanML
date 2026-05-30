@@ -29,7 +29,6 @@ from src.rl.train_curriculum_dqn import (
 from src.utils.config import CURRICULUM_DQN_SELECTION_EPISODES
 from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps
 
-
 def _configure_logging():
     logging.basicConfig(
         level=logging.INFO,

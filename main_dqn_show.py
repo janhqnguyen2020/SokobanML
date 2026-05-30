@@ -1,4 +1,4 @@
-# main_dqn_eval_show.py
+# main_dqn_show.py
 import glob
 import os
 
