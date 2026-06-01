@@ -1,5 +1,6 @@
 # run_experiments.py
 """Batch benchmark runner for custom and original Sokoban environments."""
+# python run_experiments.py --sources curriculum --algorithms all
 
 import argparse
 import csv
@@ -27,6 +28,12 @@ GROUP_DISPLAY_NAMES = {
     "original_v0": "v0",
     "original_v1": "v1",
     "original_v2": "v2",
+    "original_small_v0": "small_v0",
+    "original_small_v1": "small_v1",
+    "original_large_v0": "large_v0",
+    "original_large_v1": "large_v1",
+    "original_large_v2": "large_v2",
+    "original_huge_v0": "huge_v0",
     # archived — only used when --sources archived is passed explicitly
     "archived":    "archived_joseph",
 }
@@ -97,8 +104,17 @@ def expand_algorithms(algorithm_names):
 
 
 def expand_envs(env_names):
-    """Convert short env labels into real Gym environment ids."""
-    env_map = {"v0": "Sokoban-v0", "v1": "Sokoban-v1", "v2": "Sokoban-v2"}
+    env_map = {
+        "v0": "Sokoban-v0",
+        "v1": "Sokoban-v1",
+        "v2": "Sokoban-v2",
+        "small_v0": "Sokoban-small-v0",
+        "small_v1": "Sokoban-small-v1",
+        "large_v0": "Sokoban-large-v0",
+        "large_v1": "Sokoban-large-v1",
+        "large_v2": "Sokoban-large-v2",
+        "huge_v0": "Sokoban-huge-v0",
+    }
     return [env_map[name] for name in env_names]
 
 
