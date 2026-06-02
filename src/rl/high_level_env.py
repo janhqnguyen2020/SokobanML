@@ -127,6 +127,7 @@ class HighLevelSokobanEnv(gym.Env):
                     player_position=map_config["player"],
                     box_positions=map_config["boxes"],
                     goal_positions=map_config["goals"],
+                    wall_positions=map_config.get("walls", []),
                     max_steps=map_config.get("max_steps", 200),
                 )
             else:

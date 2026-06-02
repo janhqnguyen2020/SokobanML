@@ -11,7 +11,7 @@ import os
 ENV_ID = "Sokoban-small-v1"
 MAX_STEPS = 200
 NUM_EPISODES = 20
-HIGH_LEVEL_OBS_CANVAS_SHAPE = (10, 10)
+HIGH_LEVEL_OBS_CANVAS_SHAPE = (15, 15)
 # The richer 422-dim observation has not beaten the simpler 412-dim setup yet,
 # so keep the stronger 412-dim observation family.
 HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES = False
@@ -27,7 +27,7 @@ DQN_TOTAL_STEPS = 50_000
 HIGH_LEVEL_DQN_BACKBONE = "cnn"
 HIGH_LEVEL_DQN_CNN_FEATURES_DIM = 256
 HIGH_LEVEL_DQN_BUFFER_SIZE = 50_000
-HIGH_LEVEL_DQN_TOTAL_STEPS = 50_000
+HIGH_LEVEL_DQN_TOTAL_STEPS = 300_000
 HIGH_LEVEL_DQN_LEARNING_RATE = 1e-4
 HIGH_LEVEL_DQN_LEARNING_STARTS = 500
 HIGH_LEVEL_DQN_BATCH_SIZE = 64
@@ -56,9 +56,9 @@ HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
 # Action mask always padded to MAX_BOXES*4=12 so 1-box and 2-box episodes are
 # compatible with the same network weights as 3-box episodes.
 CURRICULUM_DQN_CANVAS_SHAPE = (15, 15)
-CURRICULUM_DQN_MAX_BOXES = 5               # fixed for all phases: 1-box→2-box→5-box
-CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.4   # fraction of episodes from small-v1
-CURRICULUM_DQN_TOTAL_STEPS = 200_000
+CURRICULUM_DQN_MAX_BOXES = 3               # fixed for all phases: 1-box→2-box→5-box
+CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.20  # fraction of episodes from small-v1
+CURRICULUM_DQN_TOTAL_STEPS = 500_000
 CURRICULUM_DQN_BUFFER_SIZE = 100_000
 CURRICULUM_DQN_LEARNING_RATE = 1e-4
 CURRICULUM_DQN_LEARNING_STARTS = 1_000

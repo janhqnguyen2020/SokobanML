@@ -62,6 +62,7 @@ def _create_high_level_env(use_shaped_reward, seed=None):
         observation_board_shape=HIGH_LEVEL_OBS_CANVAS_SHAPE,
         use_extra_scalar_features=HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
         use_shaped_reward=use_shaped_reward,
+        max_boxes=3,
     )
     return _seed_env(env, seed)
 

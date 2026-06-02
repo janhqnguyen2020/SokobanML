@@ -1,0 +1,9222 @@
+{
+  "1box": [
+    {
+      "map_name": "custom1b_001",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [
+        3,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          4
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_002",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [
+        1,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_003",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [
+        2,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_004",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        4,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_005",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        3,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_006",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [
+        1,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          4
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_007",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [
+        2,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_008",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [
+        3,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_009",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        2,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          4
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_010",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [
+        3,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_011",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_012",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        1,
+        6
+      ],
+      "boxes": [
+        [
+          4,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_013",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [
+        4,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          7
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_014",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        2,
+        7
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          5,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_015",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        3,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          4
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_016",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_017",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        4,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          5,
+          7
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_018",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        1,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_019",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_020",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [
+        3,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_021",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_022",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        1,
+        5
+      ],
+      "boxes": [
+        [
+          5,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_023",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        4,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_024",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        5,
+        7
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_025",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 9,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_026",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        2,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          3
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_027",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        5,
+        8
+      ],
+      "boxes": [
+        [
+          6,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_028",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 8,
+      "player": [
+        1,
+        4
+      ],
+      "boxes": [
+        [
+          5,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_029",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        3,
+        7
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          7,
+          8
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_030",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        4,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          7
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_031",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [
+        1,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_032",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [
+        3,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_033",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        4,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          4
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_034",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [
+        2,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_035",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [
+        2,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_036",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_037",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        2,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_038",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        4,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          5,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_039",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        3,
+        2
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_040",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [
+        4,
+        7
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_041",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_042",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        5,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          3
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_043",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        2,
+        7
+      ],
+      "boxes": [
+        [
+          5,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_044",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 9,
+      "player": [
+        7,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_045",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        4,
+        8
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_046",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          3,
+          5
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_047",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [
+        3,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_048",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_049",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [
+        3,
+        7
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          4,
+          1
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "custom1b_050",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        6,
+        3
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          8
+        ]
+      ],
+      "max_steps": 120
+    },
+    {
+      "map_name": "csp1b_001",
+      "difficulty": "CSP-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_002",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 8,
+      "player": [
+        6,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_003",
+      "difficulty": "CSP-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        7
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_004",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_005",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 8,
+      "player": [
+        6,
+        5
+      ],
+      "boxes": [
+        [
+          4,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_006",
+      "difficulty": "CSP-1box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_007",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_008",
+      "difficulty": "CSP-1box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_009",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 8,
+      "player": [
+        6,
+        2
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_010",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        7
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_011",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 9,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_012",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_013",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        7
+      ],
+      "boxes": [
+        [
+          4,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_014",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_015",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 9,
+      "player": [
+        7,
+        5
+      ],
+      "boxes": [
+        [
+          4,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_016",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_017",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_018",
+      "difficulty": "CSP-1box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_019",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        8
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp1b_020",
+      "difficulty": "CSP-1box",
+      "height": 9,
+      "width": 9,
+      "player": [
+        7,
+        3
+      ],
+      "boxes": [
+        [
+          4,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 150
+    }
+  ],
+  "2box": [
+    {
+      "map_name": "custom2b_001",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        2,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_002",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        4,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_003",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        3,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_004",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        1,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          1
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_005",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_006",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        2,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_007",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        4,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_008",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        1,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          2
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_009",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        3,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_010",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_011",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        5,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_012",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        2,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_013",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_014",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        3,
+        7
+      ],
+      "boxes": [
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_015",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_016",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        2,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_017",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        5,
+        7
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_018",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 10,
+      "player": [
+        3,
+        8
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_019",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        4,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_020",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_021",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_022",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        2,
+        8
+      ],
+      "boxes": [
+        [
+          4,
+          3
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_023",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        5,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_024",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_025",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        4,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_026",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        6,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_027",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        2,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_028",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          4
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_029",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        5,
+        5
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_030",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        3,
+        8
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_031",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        2,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_032",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_033",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [
+        1,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_034",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 7,
+      "player": [
+        4,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_035",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_036",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        2,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_037",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [
+        5,
+        7
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_038",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        3,
+        1
+      ],
+      "boxes": [
+        [
+          4,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_039",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 10,
+      "player": [
+        5,
+        4
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          4,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_040",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        4,
+        7
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_041",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        7
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_042",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        2,
+        8
+      ],
+      "boxes": [
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_043",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        5,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_044",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        6,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          4
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_045",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        4,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_046",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [
+        3,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          5
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_047",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [
+        5,
+        6
+      ],
+      "boxes": [
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_048",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [
+        6,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_049",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 10,
+      "player": [
+        2,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "custom2b_050",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "max_steps": 150
+    },
+    {
+      "map_name": "csp2b_001",
+      "difficulty": "CSP-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_002",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_003",
+      "difficulty": "CSP-2box",
+      "height": 8,
+      "width": 11,
+      "player": [
+        6,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_004",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_005",
+      "difficulty": "CSP-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_006",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_007",
+      "difficulty": "CSP-2box",
+      "height": 8,
+      "width": 10,
+      "player": [
+        6,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_008",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_009",
+      "difficulty": "CSP-2box",
+      "height": 8,
+      "width": 11,
+      "player": [
+        6,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_010",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_011",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_012",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_013",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_014",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_015",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 12,
+      "player": [
+        7,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_016",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_017",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_018",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_019",
+      "difficulty": "CSP-2box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp2b_020",
+      "difficulty": "CSP-2box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    }
+  ],
+  "3box": [
+    {
+      "map_name": "wall3b_031",
+      "difficulty": "Medium-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_032",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        1,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          9,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_033",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_034",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        2,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_035",
+      "difficulty": "Medium-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_036",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        9,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_037",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_038",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_039",
+      "difficulty": "Medium-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        1,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_040",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_041",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_042",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        1,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_043",
+      "difficulty": "Medium-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_044",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        9,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_045",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        1,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_046",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_047",
+      "difficulty": "Medium-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        1,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_048",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          9,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_049",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_050",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_051",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        1,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_052",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        7,
+        3
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_053",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        1,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          4
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_054",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [
+        6,
+        8
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_055",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          6,
+          9
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_056",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_057",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        7,
+        9
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_058",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [
+        1,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_059",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          7
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_060",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        1,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          7
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_061",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_062",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 10,
+      "player": [
+        4,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          3
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          6
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_063",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_064",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_065",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_066",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        2,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_067",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          6,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_068",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          8
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_069",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        1,
+        4
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_070",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_071",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        1,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_072",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_073",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        9,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          5
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          4
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_074",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        1,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          8,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          9
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_075",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        9,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_076",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        5,
+        9
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          7
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_077",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        2
+      ],
+      "boxes": [
+        [
+          2,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_078",
+      "difficulty": "Hard-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        1,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          8,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          10
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          9,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_079",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        1,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          2,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "wall3b_080",
+      "difficulty": "Hard-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        5,
+        10
+      ],
+      "boxes": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          10
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          3,
+          5
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "max_steps": 180
+    },
+    {
+      "map_name": "csp3b_001",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          8,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_002",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          9,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_003",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        9
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_004",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 13,
+      "player": [
+        9,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          9,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_005",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          8,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_006",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          9,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_007",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        5
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          3
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          6
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_008",
+      "difficulty": "CSP-3box",
+      "height": 12,
+      "width": 12,
+      "player": [
+        10,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_009",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_010",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 13,
+      "player": [
+        9,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          9,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_011",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_012",
+      "difficulty": "CSP-3box",
+      "height": 12,
+      "width": 13,
+      "player": [
+        10,
+        11
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          10,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_013",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 12,
+      "player": [
+        9,
+        3
+      ],
+      "boxes": [
+        [
+          3,
+          6
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          9
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_014",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_015",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 11,
+      "player": [
+        9,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          8
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          9,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_016",
+      "difficulty": "CSP-3box",
+      "height": 12,
+      "width": 12,
+      "player": [
+        10,
+        2
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          8,
+          5
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          6
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_017",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 11,
+      "player": [
+        8,
+        8
+      ],
+      "boxes": [
+        [
+          3,
+          2
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_018",
+      "difficulty": "CSP-3box",
+      "height": 11,
+      "width": 13,
+      "player": [
+        9,
+        10
+      ],
+      "boxes": [
+        [
+          3,
+          5
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          7,
+          4
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          9,
+          2
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_019",
+      "difficulty": "CSP-3box",
+      "height": 10,
+      "width": 12,
+      "player": [
+        8,
+        1
+      ],
+      "boxes": [
+        [
+          3,
+          4
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          7,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          10
+        ],
+        [
+          8,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ]
+      ],
+      "max_steps": 220
+    },
+    {
+      "map_name": "csp3b_020",
+      "difficulty": "CSP-3box",
+      "height": 12,
+      "width": 13,
+      "player": [
+        10,
+        6
+      ],
+      "boxes": [
+        [
+          3,
+          3
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          8,
+          9
+        ]
+      ],
+      "goals": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          11
+        ],
+        [
+          10,
+          10
+        ]
+      ],
+      "walls": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ]
+      ],
+      "max_steps": 220
+    }
+  ]
+}

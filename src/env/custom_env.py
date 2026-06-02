@@ -1,4 +1,6 @@
 # src/env/custome_env.py
+from collections import deque
+
 import numpy as np
 from gym_sokoban.envs.sokoban_env import SokobanEnv
 
@@ -35,6 +37,7 @@ class SimpleCustomSokobanEnv(SokobanEnv):
         player_position=(1, 1),
         box_positions= [(1, 5)],
         goal_positions=[(1, 11)],
+        wall_positions=None,
         max_steps=200,
     ):
 
@@ -43,6 +46,7 @@ class SimpleCustomSokobanEnv(SokobanEnv):
         self.initial_player_position = tuple(player_position)
         self.initial_box_positions = [tuple(pos) for pos in box_positions]
         self.initial_goal_positions = [tuple(pos) for pos in goal_positions]
+        self.initial_wall_positions = [tuple(pos) for pos in (wall_positions or [])]
 
         # inherit from SokobenEnv - initialize base Sokoban environment
         # Reference: https://github.com/mpSchrader/gym-sokoban/blob/default/gym_sokoban/envs/sokoban_env.py
@@ -85,6 +89,11 @@ class SimpleCustomSokobanEnv(SokobanEnv):
         self.room_state[-1, :] = 0
         self.room_state[:, 0] = 0
         self.room_state[:, -1] = 0
+
+        # Add interior walls
+        for r, c in self.initial_wall_positions:
+            self.room_fixed[r, c] = 0
+            self.room_state[r, c] = 0
 
         # Add goals
         for r, c in self.initial_goal_positions:
@@ -150,4 +159,36 @@ class SimpleCustomSokobanEnv(SokobanEnv):
         if len(set(self.initial_box_positions)) != len(self.initial_box_positions):
             raise ValueError("Duplicate box positions are not allowed.")
         if len(set(self.initial_goal_positions)) != len(self.initial_goal_positions):
-            raise ValueError("Duplicate goal positions are not allowed.")#
+            raise ValueError("Duplicate goal positions are not allowed.")
+
+        # Check interior walls don't overlap with player/boxes/goals and don't trap any cell
+        if self.initial_wall_positions:
+            wall_set = set(self.initial_wall_positions)
+            occupied = set(self.initial_box_positions) | set(self.initial_goal_positions) | {self.initial_player_position}
+            overlap = wall_set & occupied
+            if overlap:
+                raise ValueError(f"Wall positions overlap with player/box/goal: {overlap}")
+            if not self._all_cells_reachable(wall_set):
+                raise ValueError("Interior walls create an unreachable area on the board.")
+
+    def _all_cells_reachable(self, wall_set):
+        """BFS from player position — every non-wall interior cell must be reachable."""
+        passable = {
+            (r, c)
+            for r in range(1, self.height - 1)
+            for c in range(1, self.width - 1)
+            if (r, c) not in wall_set
+        }
+        if not passable:
+            return True
+        start = self.initial_player_position
+        visited = {start}
+        queue = deque([start])
+        while queue:
+            r, c = queue.popleft()
+            for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                nb = (r + dr, c + dc)
+                if nb in passable and nb not in visited:
+                    visited.add(nb)
+                    queue.append(nb)
+        return visited == passable

@@ -47,7 +47,10 @@ from src.utils.config import (
     SEED,
 )
 
-from src.utils.generated_maps import build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps
+from src.utils.generated_maps import (
+    build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps,
+    build_walled_1box_maps, build_walled_2box_maps, build_walled_3box_maps,
+)
 from src.rl.video_wrapper import VideoWrapper
 from src.rl.video_recorder import EpisodeVideoRecorder
 
@@ -234,8 +237,12 @@ def train():
     os.makedirs(trainingOutputPaths["run_dir"], exist_ok=True)
     os.makedirs(trainingOutputPaths["tensorboard_dir"], exist_ok=True)
 
-    trainingCurriculumMaps = build_generated_1box_maps() + build_generated_2box_maps() + build_generated_3box_maps()
-    curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=0.0)
+    trainingCurriculumMaps = (
+        build_generated_1box_maps() + build_walled_1box_maps() +
+        build_generated_2box_maps() + build_walled_2box_maps() +
+        build_generated_3box_maps() + build_walled_3box_maps()
+    )
+    curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION)
 
     env = createTrainingEnvironment(curriculumTeacher)
     model = createMaskedDQNModel(env, trainingOutputPaths)
