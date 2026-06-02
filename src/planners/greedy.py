@@ -52,7 +52,6 @@ class GreedyAgent:
                 self.action_queue = list(actions)
             else:
                 self._failed = True
-                self.failure_reason = "node_limit"
 
         if self.action_queue:
             return self.action_queue.pop(0) #return one action at a time
@@ -135,6 +134,7 @@ class GreedyAgent:
         init_state = (player_pos, box_positions)#starting point of search
 
         if box_positions == goals:#if already solved, stop
+            self.failure_reason = "solved"
             return []
 
         counter = 0
@@ -151,6 +151,7 @@ class GreedyAgent:
 
         while heap:
             if self.nodes_expanded >= max_nodes:
+                self.failure_reason = "node_limit"
                 return None
             self.nodes_expanded += 1
 
@@ -200,6 +201,7 @@ class GreedyAgent:
                     h = assignment_heuristic(new_boxes, new_assignment)
                     heapq.heappush(heap, (h, counter, next_state))
 
+        self.failure_reason = "no_solution_found"
         return None
 
     #backtracks using bfs  and builds full action sequence

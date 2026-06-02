@@ -51,7 +51,6 @@ class BFSAgent:
                 self.action_queue = list(actions)
             else:
                 self._failed = True
-                self.failure_reason = "node_limit"
 
         if self.action_queue:
             return self.action_queue.pop(0)#return one action at a time
@@ -122,6 +121,7 @@ class BFSAgent:
         #get board info from environment
         player_pos, box_positions, goals, walls, board_shape = self._get_board()
         if box_positions == goals:#if already solved, return empty plan
+            self.failure_reason = "solved"
             return []
 
         #find dead squares for pruning
@@ -135,6 +135,7 @@ class BFSAgent:
         came_from = {init_state: (None, None)}
         while queue:#keep exploring until solution found or queue empty
             if self.nodes_expanded >= max_nodes:
+                self.failure_reason = "node_limit"
                 return None
             self.nodes_expanded += 1
 
@@ -191,6 +192,7 @@ class BFSAgent:
 
                     queue.append(next_state)
 
+        self.failure_reason = "no_solution_found"
         return None
 
     def _reconstruct(self, came_from, goal_state, walls):

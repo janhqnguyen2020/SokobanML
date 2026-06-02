@@ -42,17 +42,17 @@ RUN_FIELDS = [
     "algorithm",
     "seed",
     "solved",
+    "steps",
+    "runtime_ms",
+    "nodes_expanded",
     "failure_reason",
+    "deadlocks_pruned",
+    "dead_squares",
     # "map_code",
     "height",
     "width",
     "num_boxes",
-    "total_reward",
-    "steps",
-    "runtime_ms",
-    "nodes_expanded",
-    "deadlocks_pruned",
-    "dead_squares",
+    "total_reward"
 ]
 
 SUMMARY_FIELDS = [
@@ -75,7 +75,7 @@ def parse_args():
     parser.add_argument("--algorithms", nargs="+", default=["all"])
     parser.add_argument("--envs", nargs="+", default=["v0", "v1", "v2"])
     parser.add_argument("--maps", nargs="+", default=[])
-    parser.add_argument("--episodes", type=int, default=5)
+    parser.add_argument("--episodes", type=int, default=20)
     parser.add_argument("--seed-base", type=int, default=100)
     parser.add_argument("--show-ui", action="store_true")
     parser.add_argument("--delay", type=float, default=0.5)
@@ -219,8 +219,9 @@ def run_original_groups(args, algorithm_names):
 
 
 def build_original_group_name(env_id):
-    """Turn Sokoban-v0 into a cleaner folder name like original_v0."""
-    suffix = env_id.split("-")[1].lower()
+    """Turn a Gym Sokoban env id into a folder name like original_small_v0."""
+    suffix_parts = env_id.split("-")[1:]
+    suffix = "_".join(part.lower() for part in suffix_parts)
     return f"original_{suffix}"
 
 
@@ -263,9 +264,11 @@ def run_board(env, planner_class, planner_label, map_type, map_name, show_ui, de
     planner.reset()
     map_code = encode_map(env)
     fig, ax, image = start_ui(observation, show_ui, planner_label, map_type, map_name)
-    reward_sum, steps = play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay)
+    reward_sum, steps, solved = play_episode(
+        env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay
+    )
     finish_ui(show_ui)
-    return build_run_row(planner, reward_sum, steps, map_code)
+    return build_run_row(planner, reward_sum, steps, solved, map_code)
 
 
 def start_ui(observation, show_ui, planner_label, map_type, map_name):
@@ -281,16 +284,21 @@ def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name
     done = False
     steps = 0
     reward_sum = 0
+    solved = False
     planner.start_time = time.time()
 
     while not done:
         observation, reward, done, info = run_step(env, planner)
-        update_ui(fig, ax, image, observation, steps, reward_sum + reward, done, info, planner_label, map_type, map_name, show_ui, delay)
+        update_ui(
+            fig, ax, image, observation, steps, reward_sum + reward, done, info,
+            planner_label, map_type, map_name, show_ui, delay
+        )
         reward_sum += reward
         steps += 1
+        solved = info.get("all_boxes_on_target", False)
 
     planner.runtime_ms = (time.time() - planner.start_time) * 1000
-    return reward_sum, steps
+    return reward_sum, steps, solved
 
 
 def run_step(env, planner):
@@ -316,10 +324,10 @@ def finish_ui(show_ui):
         finish_plot()
 
 
-def build_run_row(planner, reward_sum, steps, map_code):
+def build_run_row(planner, reward_sum, steps, solved, map_code):
     """Store one finished planner run in a plain dictionary."""
     return {
-        "solved": reward_sum > 0,
+        "solved": solved,
         "failure_reason": planner.failure_reason,
         # "map_code": map_code,
         "total_reward": round(reward_sum, 4),
@@ -399,8 +407,6 @@ def summarize_algorithm_runs(algorithm_name, rows):
     for group_name in groups:
         group_rows = [row for row in rows if row["group"] == group_name]
         summaries.append(build_summary_row(algorithm_name, group_name, group_rows))
-
-    summaries.append(build_summary_row(algorithm_name, "all", rows))
     return summaries
 
 
@@ -445,11 +451,12 @@ def average_value(rows, field_name):
 
 
 def save_algorithm_summaries(summary_rows_by_algorithm):
-    """Write one summary CSV file for each algorithm."""
+    """Append summary rows instead of replacing old ones."""
     for algorithm_name, rows in summary_rows_by_algorithm.items():
         file_path = build_algorithm_summary_path(algorithm_name)
         ensure_csv_header(file_path, SUMMARY_FIELDS)
-        rewrite_csv(file_path, SUMMARY_FIELDS, rows)
+        for row in rows:
+            append_csv_row(file_path, SUMMARY_FIELDS, row)
 
 
 def rewrite_csv(file_path, fieldnames, rows):

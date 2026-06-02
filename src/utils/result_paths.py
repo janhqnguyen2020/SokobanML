@@ -6,8 +6,8 @@ import os
 
 
 def build_board_csv_path(group_name, board_name):
-    """Return the detailed file for one map or one seeded episode."""
-    folder = os.path.join("results", group_name, board_name)
+    """Return one detailed CSV file for a full benchmark group."""
+    folder = os.path.join("results", group_name)
     return os.path.join(folder, "planner_runs.csv")
 
 
