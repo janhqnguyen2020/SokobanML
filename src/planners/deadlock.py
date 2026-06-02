@@ -19,8 +19,8 @@ def has_deadlock(box_positions, dead_squares, walls, goals):
             return True
         if is_corner_deadlock(box, walls):
             return True
-        if is_freeze_deadlock(box, box_positions, walls):
-            return True
+        # if is_freeze_deadlock(box, box_positions, walls):
+        #     return True
         
     if assignment_deadlock(box_positions, goals):
         return True
