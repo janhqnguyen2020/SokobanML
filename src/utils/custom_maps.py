@@ -5,15 +5,14 @@ Active map groups
 -----------------
 custom_core   — 10 open-grid maps by Shizuka (map_01..map_10), widths 12-15.
                 Used for classical-planner-only benchmarks.
-canvas        — 10 maps all within the DQN 10x10 observation canvas (≤9x9).
-                7 new maps (canvas_01..canvas_07) + 3 original dqn_custom maps.
-                Used for the full 4-algorithm comparison.
+curriculum    — 10 hand-crafted curriculum maps (curr_01..curr_10).
+                Used to design and validate the curriculum progression.
+                Considered seen/training-adjacent — not a held-out test set.
 
 Archived map groups (kept for reference, not used in active benchmarks)
 -----------------------------------------------------------------------
 custom_additional — 5 maps (easy_1box, medium_1box, large_1box, medium_2box,
-                    hard_3box). Replaced by the canvas set for DQN-compatible
-                    evaluation. Widths up to 15x15 exceed the DQN canvas.
+                    hard_3box). Widths up to 15x15 exceed the DQN canvas.
 """
 
 
@@ -50,54 +49,12 @@ def build_core_custom_maps():
     ]
 
 
-def build_canvas_maps():
-    """7 DQN-compatible 3-box maps — all ≤9x9, obs size 412, action space 12.
-
-    Covers a range of push complexity and navigation difficulty. All maps use
-    exactly 3 boxes to match the trained model's fixed input size.
-    """
-    return [
-        # Easy: boxes aligned, all push straight up 2 steps
-        build_map("canvas_01", "Easy-3box",   6, 9, (4, 4), [(3, 2), (3, 4), (3, 6)], [(1, 2), (1, 4), (1, 6)]),
-        # Easy: boxes aligned, all push straight down 1 step, player starts above
-        build_map("canvas_05", "Easy-3box",   5, 9, (1, 4), [(2, 2), (2, 4), (2, 6)], [(3, 2), (3, 4), (3, 6)]),
-        # Medium: boxes push in mixed directions, moderate distances
-        build_map("canvas_02", "Medium-3box", 7, 9, (5, 1), [(4, 2), (2, 5), (4, 7)], [(1, 2), (5, 5), (2, 7)]),
-        # Medium: all boxes push right, but player starts on the wrong (right) side
-        build_map("canvas_06", "Medium-3box", 7, 8, (3, 6), [(1, 2), (3, 2), (5, 2)], [(1, 5), (3, 5), (5, 5)]),
-        # Hard: long push distances, player must navigate around boxes
-        build_map("canvas_03", "Hard-3box",   8, 9, (6, 1), [(5, 2), (3, 5), (1, 7)], [(1, 2), (6, 5), (6, 7)]),
-        # Hard: scattered boxes, mixed push directions (right/left/right)
-        build_map("canvas_07", "Hard-3box",   8, 9, (5, 5), [(2, 3), (4, 6), (6, 3)], [(2, 7), (4, 3), (6, 7)]),
-        # Very Hard: full 9x9 grid, maximum push distances, most planning required
-        build_map("canvas_04", "VHard-3box",  9, 9, (7, 4), [(5, 2), (4, 5), (2, 7)], [(1, 2), (7, 5), (6, 7)]),
-    ]
-
-
-def build_dqn_test_maps():
-    """3 symmetric 3-box maps within 9x9 — original DQN training-compatible maps."""
-    return [
-        build_map("dqn_map_1", "Hard-3box", 7, 9, (5, 4), [(2, 4), (3, 4), (4, 4)], [(1, 4), (3, 2), (3, 6)]),
-        build_map("dqn_map_2", "Hard-3box", 6, 9, (3, 4), [(2, 4), (3, 2), (3, 6)], [(1, 2), (1, 6), (4, 4)]),
-        build_map("dqn_map_3", "Hard-3box", 6, 9, (4, 4), [(2, 4), (3, 2), (3, 6)], [(1, 2), (1, 4), (1, 6)]),
-    ]
-
-
-def build_all_canvas_maps():
-    """Full 10-map canvas set: canvas_01-07 + dqn_map_1-3. All ≤9x9."""
-    return build_canvas_maps() + build_dqn_test_maps()
-
-
 # ---------------------------------------------------------------------------
 # Archived groups (not used in active benchmarks)
 # ---------------------------------------------------------------------------
 
 def build_archived_maps():
-    """Archived: original custom_additional maps (widths up to 15x15, exceed DQN canvas).
-
-    Replaced by build_canvas_maps() + build_dqn_test_maps() for DQN-compatible
-    evaluation. Kept here for reference and reproducibility of earlier results.
-    """
+    """Archived: original custom_additional maps (widths up to 15x15, exceed DQN canvas)."""
     return [
         build_map("easy_1box",   "Easy",        3,  12, (1, 1), [(1, 4)],            [(1, 10)]),
         build_map("medium_1box", "Medium",       9,   9, (1, 1), [(2, 4)],            [(7, 7)]),
@@ -154,18 +111,14 @@ def build_curriculum_maps():
 # ---------------------------------------------------------------------------
 
 def build_all_custom_maps():
-    """All active maps: core (classical) + canvas (DQN-compatible)."""
-    return build_core_custom_maps() + build_all_canvas_maps()
+    """All active maps: core (classical) + curriculum."""
+    return build_core_custom_maps() + build_curriculum_maps()
 
 
 def select_custom_maps(source_names, selected_names):
     maps = []
     if "custom_core" in source_names:
         maps.extend(build_core_custom_maps())
-    if "canvas" in source_names:
-        maps.extend(build_all_canvas_maps())
-    if "dqn_custom" in source_names:
-        maps.extend(build_dqn_test_maps())
     if "curriculum" in source_names:
         maps.extend(build_curriculum_maps())
     if "archived" in source_names:
