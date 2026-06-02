@@ -66,8 +66,9 @@ def _create_high_level_env(use_shaped_reward, seed=None):
     )
     return _seed_env(env, seed)
 
-def make_train_env():
-    run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
+def make_train_env(run_id=None):
+    if run_id is None:
+        run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
 
     save_dir = os.path.join(
         "results",
@@ -184,7 +185,7 @@ def _prepare_run():
     paths = _build_run_paths(run_id)
     os.makedirs(paths["run_dir"], exist_ok=True)
     os.makedirs(paths["tensorboard_dir"], exist_ok=True)
-    env = make_train_env()
+    env = make_train_env(run_id=run_id)
     return paths, env
 
 def _build_model(env, paths):

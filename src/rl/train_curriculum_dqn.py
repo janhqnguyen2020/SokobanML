@@ -136,8 +136,9 @@ def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=Non
     return env
 
 
-def createTrainingEnvironment(curriculumTeacher):
-    run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
+def createTrainingEnvironment(curriculumTeacher, run_id=None):
+    if run_id is None:
+        run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
 
     save_dir = os.path.join(
         "results",
@@ -244,7 +245,7 @@ def train():
     )
     curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION)
 
-    env = createTrainingEnvironment(curriculumTeacher)
+    env = createTrainingEnvironment(curriculumTeacher, run_id=run_id)
     model = createMaskedDQNModel(env, trainingOutputPaths)
 
     # Eval on the same pool used for training so success_rate is meaningful
