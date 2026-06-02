@@ -94,3 +94,31 @@ def test_is_freeze_deadlock():
         (3, 3)
     }
     assert is_freeze_deadlock((4, 2), box_positions, walls) is True  
+
+def test_small_v1_episode_18_freeze_case():
+    walls = {
+        (0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6),
+        (1, 0), (1, 1), (1, 2), (1, 3),                 (1, 6),
+        (2, 0), (2, 1), (2, 2), (2, 3),                 (2, 6),
+        (3, 0), (3, 1), (3, 2), (3, 3),                 (3, 6),
+        (4, 0),                                         (4, 6),
+        (5, 0),         (5, 2),                         (5, 6),
+        (6, 0), (6, 1), (6, 2), (6, 3),                 (6, 6),
+        (7, 0), (7, 1), (7, 2), (7, 3), (7, 4), (7, 5), (7, 6),
+    }
+
+    goals = {
+        (4, 3),
+        (6, 4),
+        (6, 5),
+    }
+
+    box_positions = {
+        (2, 4),
+        (2, 5),
+        (3, 4),
+    }
+
+    assert is_freeze_deadlock((2, 4), box_positions, walls) is False
+    assert is_freeze_deadlock((2, 5), box_positions, walls) is False
+    assert is_freeze_deadlock((3, 4), box_positions, walls) is False
