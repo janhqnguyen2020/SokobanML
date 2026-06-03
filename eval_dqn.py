@@ -23,6 +23,7 @@ import argparse
 import glob
 import json
 import os
+import time
 from datetime import datetime
 
 from src.rl.evaluate import evaluate_episode, summarize_results
@@ -100,6 +101,7 @@ def _run_episode_ui(model, env, map_name, episode_num):
     steps = 0
     total_reward = 0.0
     info = {}
+    start_time = time.time()
 
     frame = env.render(mode="rgb_array")
     fig, ax, image = create_plot(frame, build_title("DQN", "eval", map_name, 0, 0.0))
@@ -120,6 +122,7 @@ def _run_episode_ui(model, env, map_name, episode_num):
     return {
         "solved": bool(info.get("all_boxes_on_target", False)),
         "steps": steps,
+        "runtime_ms": (time.time() - start_time) * 1000.0,
         "total_reward": round(float(total_reward), 3),
         "termination_reason": str(info.get("termination_reason", "unknown")),
         "boxes_on_target": info.get("boxes_on_target", 0),
@@ -195,7 +198,7 @@ def _print_group_summary(label, results):
 # Save helpers
 # ---------------------------------------------------------------------------
 
-def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary):
+def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None):
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
     os.makedirs(out_dir, exist_ok=True)
@@ -231,7 +234,11 @@ def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_result
     with open(os.path.join(out_dir, f"eval_{tag}.json"), "w") as f:
         json.dump({"metadata": metadata, "episodes": rows}, f, indent=2)
     with open(os.path.join(out_dir, f"eval_{tag}_summary.json"), "w") as f:
-        json.dump({"metadata": metadata, "summary": summary}, f, indent=2)
+        json.dump({
+            "metadata": metadata,
+            "summary_by_group": group_summaries or {},
+            "summary": summary,
+        }, f, indent=2)
     print(f"\n  Saved to: {out_dir}/")
 
 
@@ -299,6 +306,7 @@ def main():
     print()
 
     per_map_results = {}
+    group_summaries = {}
     all_results = []
 
     if args.mode == "procedural":
@@ -310,6 +318,7 @@ def main():
         per_map_results["procedural"] = results
         all_results = results
         _print_group_summary("Sokoban-small-v1", results)
+        group_summaries["procedural"] = summarize_results(results)
 
     else:  # currTrain
         groups = _build_curr_train_groups(args.boxes)
@@ -330,6 +339,7 @@ def main():
                     _print_row(m["map_name"], ep, r)
                 group_results.extend(ep_results)
             _print_group_summary(group_label, group_results)
+            group_summaries[group_label] = summarize_results(group_results)
             all_results.extend(group_results)
 
     print(f"\n{'=' * 60}")
@@ -345,7 +355,7 @@ def main():
 
     if args.save:
         _save_results(model_path, args.mode, args.boxes, args.episodes,
-                      args.note, per_map_results, summary)
+                      args.note, per_map_results, summary, group_summaries)
 
 
 if __name__ == "__main__":

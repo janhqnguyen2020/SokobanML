@@ -5,8 +5,8 @@ Active map groups
 -----------------
 custom_core   — 10 open-grid maps by Shizuka (map_01..map_10), widths 12-15.
                 Used for classical-planner-only benchmarks.
-curriculum    — 10 hand-crafted curriculum maps (curr_01..curr_10).
-                Used to design and validate the curriculum progression.
+curriculum    — 60 progressive curriculum maps (curr_01-10 baseline +
+                curr_prog_01-50 staged 1/2/3-box progression).
                 Considered seen/training-adjacent — not a held-out test set.
 
 Archived map groups (kept for reference, not used in active benchmarks)
@@ -69,40 +69,117 @@ def build_archived_maps():
 # ---------------------------------------------------------------------------
 
 def build_curriculum_maps():
-    """10 hand-crafted maps for curriculum DQN training and evaluation.
+    """60 progressive curriculum maps spanning 1-box through 3-box difficulty.
 
-    Difficulty progression: 2 easy (1-box) → 3 medium (2-box) →
-    1 medium-hard + 4 hard (3-box). All verified solvable by a simple
-    push sequence with no blocking conflicts.
+    Original baseline (curr_01-10): 10 maps used in early training runs.
+    Progressive stages (curr_prog_01-50): 8 staged difficulty groups.
 
-    Map       Size    Boxes  Difficulty    Solution sketch
-    curr_01   5x7     1      Easy          right x2, up x1
-    curr_02   6x8     1      Easy          right x2, up x1
-    curr_03   6x8     2      Easy-Med      up x1 each
-    curr_04   7x9     2      Medium        right x4 / left x4
-    curr_05   7x9     2      Medium        right x4 / left x4 (edge rows)
-    curr_06   8x10    3      Medium-Hard   right x5, down x1, up x4
-    curr_07   9x10    3      Hard          right x6, up x2, left x2
-    curr_08   9x11    3      Hard          right x4, down x2, right x3
-    curr_09   10x12   3      Hard          right x6, down x2, up x5
-    curr_10   11x13   3      Hard          right x7, down x3, right x4
+    Stage 0 — baseline (curr_01-10):         original 1/2/3-box set
+    Stage 1 — 1-box easy (curr_prog_01-05):  basic push mechanics
+    Stage 2 — 1-box planning (06-10):        navigation, longer distances
+    Stage 3 — 1-box CSP-lite (11-15):        single-box routing pressure
+    Stage 4 — 2-box easy (16-20):            coordination basics
+    Stage 5 — 2-box planning (21-30):        bottlenecks, ordering
+    Stage 6 — 2-box CSP (31-40):             assignment reasoning
+    Stage 7 — 3-box planning (41-45):        multi-box navigation
+    Stage 8 — 3-box CSP (46-50):             full assignment + commitment
     """
     return [
-        # --- Easy: 1 box ---
-        build_map("curr_01", "Easy-1box",   5,  7, (3, 1), [(2, 2)],                    [(1, 4)]),
-        build_map("curr_02", "Easy-1box",   6,  8, (4, 1), [(2, 3)],                    [(1, 5)]),
-        # --- Easy-Med: 2 boxes ---
+        # ================================================================
+        # STAGE 0 — ORIGINAL BASELINE (curr_01-10)
+        # ================================================================
+        build_map("curr_01", "Easy-1box",    5,  7, (3, 1), [(2, 2)],                   [(1, 4)]),
+        build_map("curr_02", "Easy-1box",    6,  8, (4, 1), [(2, 3)],                   [(1, 5)]),
         build_map("curr_03", "EasyMed-2box", 6,  8, (4, 3), [(2, 2), (2, 5)],           [(1, 2), (1, 5)]),
-        # --- Medium: 2 boxes ---
-        build_map("curr_04", "Medium-2box", 7,  9, (5, 4), [(2, 2), (4, 6)],            [(2, 6), (4, 2)]),
-        build_map("curr_05", "Medium-2box", 7,  9, (3, 4), [(1, 2), (5, 6)],            [(1, 6), (5, 2)]),
-        # --- Medium-Hard: 3 boxes ---
+        build_map("curr_04", "Medium-2box",  7,  9, (5, 4), [(2, 2), (4, 6)],           [(2, 6), (4, 2)]),
+        build_map("curr_05", "Medium-2box",  7,  9, (3, 4), [(1, 2), (5, 6)],           [(1, 6), (5, 2)]),
         build_map("curr_06", "MedHard-3box", 8, 10, (3, 5), [(2, 2), (4, 7), (5, 3)],  [(2, 7), (5, 7), (1, 3)]),
-        # --- Hard: 3 boxes ---
-        build_map("curr_07", "Hard-3box",   9, 10, (5, 5), [(2, 2), (4, 5), (6, 7)],   [(2, 8), (2, 5), (6, 5)]),
-        build_map("curr_08", "Hard-3box",   9, 11, (4, 5), [(2, 3), (4, 8), (6, 2)],   [(2, 7), (6, 8), (6, 5)]),
-        build_map("curr_09", "Hard-3box",  10, 12, (5, 6), [(2, 3), (5, 9), (7, 2)],   [(2, 9), (7, 9), (2, 2)]),
-        build_map("curr_10", "Hard-3box",  11, 13, (6, 6), [(2, 3), (6, 10), (9, 4)],  [(2, 10), (9, 10), (9, 8)]),
+        build_map("curr_07", "Hard-3box",    9, 10, (5, 5), [(2, 2), (4, 5), (6, 7)],  [(2, 8), (2, 5), (6, 5)]),
+        build_map("curr_08", "Hard-3box",    9, 11, (4, 5), [(2, 3), (4, 8), (6, 2)],  [(2, 7), (6, 8), (6, 5)]),
+        build_map("curr_09", "Hard-3box",   10, 12, (5, 6), [(2, 3), (5, 9), (7, 2)],  [(2, 9), (7, 9), (2, 2)]),
+        build_map("curr_10", "Hard-3box",   11, 13, (6, 6), [(2, 3), (6, 10), (9, 4)], [(2, 10), (9, 10), (9, 8)]),
+
+        # ================================================================
+        # STAGE 1 — 1-BOX EASY (curr_prog_01-05)
+        # ================================================================
+        build_map("curr_prog_01", "Easy-1box",   5,  7, (3, 1), [(2, 2)], [(1, 4)]),
+        build_map("curr_prog_02", "Easy-1box",   6,  8, (4, 1), [(2, 3)], [(1, 5)]),
+        build_map("curr_prog_03", "Easy-1box",   6,  8, (4, 4), [(3, 2)], [(1, 6)]),
+        build_map("curr_prog_04", "Easy-1box",   7,  9, (5, 3), [(4, 4)], [(1, 7)]),
+        build_map("curr_prog_05", "Easy-1box",   7,  9, (5, 5), [(3, 3)], [(1, 5)]),
+
+        # ================================================================
+        # STAGE 2 — 1-BOX PLANNING (curr_prog_06-10)
+        # ================================================================
+        build_map("curr_prog_06", "Medium-1box",  8,  9, (6, 1), [(4, 3)], [(1, 7)]),
+        build_map("curr_prog_07", "Medium-1box",  8, 10, (6, 5), [(3, 2)], [(1, 8)]),
+        build_map("curr_prog_08", "Medium-1box",  9, 10, (7, 3), [(5, 5)], [(1, 7)]),
+        build_map("curr_prog_09", "Medium-1box",  9, 11, (7, 8), [(4, 3)], [(1, 9)]),
+        build_map("curr_prog_10", "Medium-1box", 10, 11, (8, 5), [(5, 5)], [(1, 8)]),
+
+        # ================================================================
+        # STAGE 3 — 1-BOX CSP-LITE (curr_prog_11-15)
+        # ================================================================
+        build_map("curr_prog_11", "CSPLite-1box",  8,  9, (6, 2), [(4, 4)], [(1, 7)]),
+        build_map("curr_prog_12", "CSPLite-1box",  9, 10, (7, 1), [(4, 5)], [(1, 8)]),
+        build_map("curr_prog_13", "CSPLite-1box",  9, 11, (7, 4), [(5, 3)], [(1, 9)]),
+        build_map("curr_prog_14", "CSPLite-1box", 10, 11, (8, 7), [(4, 4)], [(1, 8)]),
+        build_map("curr_prog_15", "CSPLite-1box", 10, 12, (8, 2), [(5, 5)], [(1, 10)]),
+
+        # ================================================================
+        # STAGE 4 — 2-BOX EASY (curr_prog_16-20)
+        # ================================================================
+        build_map("curr_prog_16", "Easy-2box", 6,  8, (4, 3), [(2, 2), (2, 5)], [(1, 2), (1, 5)]),
+        build_map("curr_prog_17", "Easy-2box", 7,  9, (5, 4), [(2, 2), (4, 6)], [(2, 6), (4, 2)]),
+        build_map("curr_prog_18", "Easy-2box", 7,  9, (3, 4), [(1, 2), (5, 6)], [(1, 6), (5, 2)]),
+        build_map("curr_prog_19", "Easy-2box", 8, 10, (6, 5), [(3, 3), (5, 7)], [(1, 3), (1, 7)]),
+        build_map("curr_prog_20", "Easy-2box", 8, 10, (6, 2), [(3, 4), (5, 6)], [(1, 4), (1, 8)]),
+
+        # ================================================================
+        # STAGE 5 — 2-BOX PLANNING (curr_prog_21-30)
+        # ================================================================
+        build_map("curr_prog_21", "Medium-2box",  8, 10, (5, 5), [(2, 2), (4, 7)],  [(2, 7), (5, 7)]),
+        build_map("curr_prog_22", "Medium-2box",  9, 10, (5, 5), [(2, 2), (6, 7)],  [(2, 8), (6, 5)]),
+        build_map("curr_prog_23", "Medium-2box",  9, 11, (4, 5), [(2, 3), (4, 8)],  [(2, 7), (6, 8)]),
+        build_map("curr_prog_24", "Medium-2box", 10, 12, (5, 6), [(2, 3), (5, 9)],  [(2, 9), (7, 9)]),
+        build_map("curr_prog_25", "Medium-2box", 11, 13, (6, 6), [(2, 3), (6, 10)], [(2, 10), (9, 10)]),
+        build_map("curr_prog_26", "Medium-2box",  9, 10, (7, 3), [(2, 2), (5, 6)],  [(2, 7), (6, 7)]),
+        build_map("curr_prog_27", "Medium-2box", 10, 11, (8, 2), [(2, 3), (6, 7)],  [(2, 8), (7, 5)]),
+        build_map("curr_prog_28", "Medium-2box",  9, 10, (7, 6), [(2, 4), (5, 2)],  [(2, 7), (5, 8)]),
+        build_map("curr_prog_29", "Medium-2box", 10, 11, (8, 8), [(2, 2), (5, 5)],  [(2, 8), (6, 2)]),
+        build_map("curr_prog_30", "Medium-2box", 11, 12, (9, 6), [(2, 4), (6, 9)],  [(2, 9), (7, 4)]),
+
+        # ================================================================
+        # STAGE 6 — 2-BOX CSP (curr_prog_31-40)
+        # ================================================================
+        build_map("curr_prog_31", "CSP-2box",  9, 10, (7, 2), [(3, 3), (6, 7)], [(1, 2), (1, 8)]),
+        build_map("curr_prog_32", "CSP-2box", 10, 11, (8, 1), [(3, 5), (6, 4)], [(1, 7), (7, 7)]),
+        build_map("curr_prog_33", "CSP-2box",  9, 11, (7, 8), [(3, 3), (5, 7)], [(1, 2), (1, 9)]),
+        build_map("curr_prog_34", "CSP-2box", 10, 12, (8, 3), [(3, 6), (6, 4)], [(1, 9), (1, 2)]),
+        build_map("curr_prog_35", "CSP-2box",  9, 10, (7, 2), [(3, 5), (6, 3)], [(1, 7), (1, 1)]),
+        build_map("curr_prog_36", "CSP-2box", 10, 11, (8, 9), [(3, 2), (6, 8)], [(1, 1), (1, 9)]),
+        build_map("curr_prog_37", "CSP-2box",  9, 10, (7, 5), [(3, 2), (5, 7)], [(1, 1), (1, 8)]),
+        build_map("curr_prog_38", "CSP-2box", 10, 12, (8, 6), [(3, 3), (6, 9)], [(1, 2), (1, 10)]),
+        build_map("curr_prog_39", "CSP-2box", 11, 12, (9, 4), [(3, 2), (7, 9)], [(1, 1), (1, 10)]),
+        build_map("curr_prog_40", "CSP-2box", 10, 11, (8, 3), [(3, 7), (6, 4)], [(1, 8), (1, 1)]),
+
+        # ================================================================
+        # STAGE 7 — 3-BOX PLANNING (curr_prog_41-45)
+        # ================================================================
+        build_map("curr_prog_41", "Hard-3box",  9, 10, (5, 5), [(2, 2), (4, 5), (6, 7)],   [(2, 8), (2, 5), (6, 5)]),
+        build_map("curr_prog_42", "Hard-3box",  9, 11, (4, 5), [(2, 3), (4, 8), (6, 2)],   [(2, 7), (6, 8), (6, 5)]),
+        build_map("curr_prog_43", "Hard-3box", 10, 12, (5, 6), [(2, 3), (5, 9), (7, 2)],   [(2, 9), (7, 9), (2, 2)]),
+        build_map("curr_prog_44", "Hard-3box", 11, 13, (6, 6), [(2, 3), (6, 10), (9, 4)],  [(2, 10), (9, 10), (9, 8)]),
+        build_map("curr_prog_45", "Hard-3box", 11, 12, (8, 5), [(3, 2), (5, 7), (8, 9)],   [(1, 2), (1, 8), (1, 10)]),
+
+        # ================================================================
+        # STAGE 8 — 3-BOX CSP (curr_prog_46-50)
+        # ================================================================
+        build_map("curr_prog_46", "CSP-3box", 10, 11, (8, 2),  [(3, 2), (5, 5), (7, 8)],  [(1, 2), (1, 6), (1, 9)]),
+        build_map("curr_prog_47", "CSP-3box", 11, 12, (9, 1),  [(3, 3), (5, 7), (8, 9)],  [(1, 2), (1, 8), (1, 10)]),
+        build_map("curr_prog_48", "CSP-3box", 10, 12, (8, 10), [(3, 2), (5, 5), (7, 7)],  [(1, 1), (1, 6), (1, 10)]),
+        build_map("curr_prog_49", "CSP-3box", 11, 13, (9, 6),  [(3, 3), (5, 6), (8, 10)], [(1, 2), (1, 7), (1, 11)]),
+        build_map("curr_prog_50", "CSP-3box", 12, 12, (10, 2), [(3, 2), (6, 5), (8, 8)],  [(1, 2), (1, 6), (1, 9)]),
     ]
 
 
