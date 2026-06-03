@@ -208,3 +208,20 @@ def filter_maps_by_name(maps, selected_names):
         return maps
     wanted = set(selected_names)
     return [m for m in maps if m["map_name"] in wanted]
+
+
+def build_additional_maps():
+    """Return extra custom maps for one-off planner checks."""
+    return [
+        build_map(
+            "tue_map_01",
+            "Hard-4box",
+            7,
+            10,
+            (3, 2),
+            [(2, 2), (3, 4), (3, 7), (4, 6)],
+            [(4, 2), (4, 3), (5, 2), (5, 3)],
+            [(2, 3), (2, 4), (2, 5), (4, 4), (5, 4)],
+            "additional",
+        ),
+    ]
