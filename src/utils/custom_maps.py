@@ -16,7 +16,8 @@ custom_additional — 5 maps (easy_1box, medium_1box, large_1box, medium_2box,
 """
 
 
-def build_map(map_name, difficulty, height, width, player, boxes, goals):
+def build_map(map_name,difficulty,height,width,player,boxes,goals,walls=None,group_name=""):
+    """Return one custom-map config for the benchmark runner."""
     return {
         "map_name": map_name,
         "difficulty": difficulty,
@@ -25,6 +26,8 @@ def build_map(map_name, difficulty, height, width, player, boxes, goals):
         "player": player,
         "boxes": boxes,
         "goals": goals,
+        "walls": walls or [],
+        "group_name": group_name,
         "max_steps": 120,
     }
 
@@ -198,6 +201,8 @@ def select_custom_maps(source_names, selected_names):
         maps.extend(build_core_custom_maps())
     if "curriculum" in source_names:
         maps.extend(build_curriculum_maps())
+    if "additional" in source_names:
+        maps.extend(build_additional_maps())
     if "archived" in source_names:
         maps.extend(build_archived_maps())
     return filter_maps_by_name(maps, selected_names)
@@ -214,14 +219,14 @@ def build_additional_maps():
     """Return extra custom maps for one-off planner checks."""
     return [
         build_map(
-            "tue_map_01",
-            "Hard-4box",
-            7,
-            10,
-            (3, 2),
-            [(2, 2), (3, 4), (3, 7), (4, 6)],
-            [(4, 2), (4, 3), (5, 2), (5, 3)],
-            [(2, 3), (2, 4), (2, 5), (4, 4), (5, 4)],
-            "additional",
+            map_name="tue_map_01",
+            difficulty="Hard-4box",
+            height=7,
+            width=10,
+            player=(3, 2),
+            boxes=[(2, 2), (3, 4), (3, 7), (4, 6)],
+            goals=[(4, 2), (4, 3), (5, 2), (5, 3)],
+            walls=[(1,1), (2,1), (5,1), (2, 3), (2, 4), (2, 5), (4, 4), (5, 4), (1, 7), (1,8), (4,8), (5,8)],
+            group_name="additional",
         ),
     ]

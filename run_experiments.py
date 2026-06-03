@@ -143,7 +143,7 @@ def run_selected_benchmarks(args):
     sources = expand_sources(args.sources)
     algorithms = expand_algorithms(args.algorithms)
 
-    custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "archived"}
+    custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "additional", "archived"}
     if custom_sources.intersection(sources):
         results.extend(run_custom_groups(args, sources, algorithms))
     if "original" in sources:
@@ -158,7 +158,7 @@ def run_custom_groups(args, source_names, algorithm_names):
     maps = select_custom_maps(source_names, args.maps)
 
     for config in maps:
-        group_name = choose_custom_group(config["map_name"])
+        group_name = choose_custom_group(config)
         for algorithm_name in algorithm_names:
             row = run_custom_case(config, group_name, algorithm_name, args)
             save_run_row(row, group_name, config["map_name"], algorithm_name)
@@ -167,8 +167,11 @@ def run_custom_groups(args, source_names, algorithm_names):
     return results
 
 
-def choose_custom_group(map_name):
-    """Return the group label for a map based on its naming prefix."""
+def choose_custom_group(config):
+    """Return the source-group label for one custom map config."""
+    if config["group_name"]:
+        return config["group_name"]
+    map_name = config["map_name"]
     if map_name.startswith("dqn_map_") or map_name.startswith("canvas_"):
         return "canvas"
     if map_name.startswith("map_"):
@@ -197,6 +200,7 @@ def create_custom_env(config):
         box_positions=config["boxes"],
         goal_positions=config["goals"],
         max_steps=config["max_steps"],
+        wall_positions=config["walls"],
     )
 
 
