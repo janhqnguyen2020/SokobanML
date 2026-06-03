@@ -66,6 +66,7 @@ def select_reward(use_shaped_reward, raw_reward, box_progress_delta, distance_pr
 
 
 def action_pool_info(action_profile, prefix=""):
+    """Return small action-pool counts that are useful for logs and debugging."""
     return {
         f"{prefix}physical_macro_actions_count": action_profile["physical_count"],
         f"{prefix}safe_macro_actions_count": action_profile["safe_count"],
@@ -82,6 +83,7 @@ def step_info(action, action_profile, next_action_profile, progress, raw_reward,
     info.update(action_pool_info(next_action_profile, prefix="next_"))
     info.update(action_pool_info(action_profile, prefix="selected_"))
     info["invalid_macro_action"] = False
+    info["executed_push"] = True
     info["selected_macro_action"] = int(action)
     info["valid_macro_actions_count"] = len(next_action_profile["selected"])
     info["boxes_on_target"] = progress["boxes_on_target"]
@@ -108,6 +110,7 @@ def invalid_action_info(action_profile, boxes_on_target, best_boxes_on_target, i
     done = invalid_action_streak >= INVALID_ACTION_STREAK_LIMIT
     info = {
         "invalid_macro_action": True,
+        "executed_push": False,
         "invalid_action_streak": invalid_action_streak,
         "valid_macro_actions_count": len(action_profile["selected"]),
         "boxes_on_target": boxes_on_target,
@@ -124,6 +127,7 @@ def dead_end_info(action_profile, boxes_on_target, best_boxes_on_target):
     """
     info = {
         "invalid_macro_action": False,
+        "executed_push": False,
         "valid_macro_actions_count": len(action_profile["selected"]),
         "boxes_on_target": boxes_on_target,
         "best_boxes_on_target": best_boxes_on_target,

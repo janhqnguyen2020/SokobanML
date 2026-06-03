@@ -98,7 +98,8 @@ def _run_episode_ui(model, env, map_name, episode_num):
     """Run one episode with matplotlib display."""
     obs = env.reset()
     done = False
-    steps = 0
+    num_steps = 0
+    num_pushes = 0
     total_reward = 0.0
     info = {}
     start_time = time.time()
@@ -110,18 +111,21 @@ def _run_episode_ui(model, env, map_name, episode_num):
         action, _ = model.predict(obs, deterministic=True)
         obs, reward, done, info = env.step(int(action))
         total_reward += reward
-        steps += 1
+        num_steps += 1
+        if info.get("executed_push"):
+            num_pushes += 1
         frame = env.render(mode="rgb_array")
         solved = info.get("all_boxes_on_target", False)
         reason = info.get("termination_reason", "")
         status = "SOLVED!" if (done and solved) else (reason if done else "")
-        title = build_title("DQN", "eval", map_name, steps, total_reward, status)
+        title = build_title("DQN", "eval", map_name, num_steps, total_reward, status)
         update_plot(fig, ax, image, frame, title, DELAY)
 
     finish_plot()
     return {
         "solved": bool(info.get("all_boxes_on_target", False)),
-        "steps": steps,
+        "num_steps": num_steps,
+        "num_pushes": num_pushes,
         "runtime_ms": (time.time() - start_time) * 1000.0,
         "total_reward": round(float(total_reward), 3),
         "termination_reason": str(info.get("termination_reason", "unknown")),
@@ -169,20 +173,24 @@ def _run_procedural_episodes(model, n_episodes, show_ui):
 # ---------------------------------------------------------------------------
 
 def _print_table_header():
-    print(f"  {'Map':<22} {'Ep':<4}  {'Solved':<6}  {'Steps':<6}  {'Reward':<8}  Reason")
-    print("  " + "-" * 66)
+    """Print the table header used by the DQN evaluation script."""
+    print(f"  {'Map':<22} {'Ep':<4}  {'Solved':<6}  {'Steps':<6}  {'Pushes':<6}  {'Reward':<8}  Reason")
+    print("  " + "-" * 76)
 
 
 def _print_row(map_name, ep_idx, result):
+    """Print one DQN evaluation result row."""
     solved_str = "YES" if result.get("solved") else "no"
     reason = result.get("termination_reason", result.get("reason", ""))
     print(
         f"  {map_name:<22} {ep_idx + 1:<4}  {solved_str:<6}  "
-        f"{result.get('steps', 0):<6}  {result.get('total_reward', 0.0):<8.2f}  {reason}"
+        f"{result.get('num_steps', 0):<6}  {result.get('num_pushes', 0):<6}  "
+        f"{result.get('total_reward', 0.0):<8.2f}  {reason}"
     )
 
 
 def _print_group_summary(label, results):
+    """Print one compact group summary for DQN evaluation results."""
     if not results:
         return
     s = summarize_results(results)
@@ -190,7 +198,8 @@ def _print_group_summary(label, results):
     bar = f"[{'=' * filled}{' ' * (20 - filled)}] {s['success_rate'] * 100:.0f}%"
     print(
         f"\n  {label}: {s['solved_count']}/{s['total_episodes']} solved  {bar}"
-        f"  avg_steps={s['avg_steps']:.1f}  avg_reward={s['avg_reward']:.2f}"
+        f"  avg_steps={s['avg_num_steps']:.1f}  avg_pushes={s['avg_num_pushes']:.1f}"
+        f"  avg_reward={s['avg_reward']:.2f}"
     )
 
 
@@ -347,7 +356,7 @@ def main():
     print(f"{'=' * 60}")
     summary = summarize_results(all_results) if all_results else {}
     for k in ["success_rate", "solved_count", "total_episodes", "avg_reward",
-              "avg_steps", "avg_boxes_on_target", "termination_counts"]:
+              "avg_num_steps", "avg_num_pushes", "avg_boxes_on_target", "termination_counts"]:
         if k not in summary:
             continue
         v = summary[k]

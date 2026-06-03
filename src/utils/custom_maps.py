@@ -28,7 +28,7 @@ def build_map(map_name,difficulty,height,width,player,boxes,goals,walls=None,gro
         "goals": goals,
         "walls": walls or [],
         "group_name": group_name,
-        "max_steps": 120,
+        "max_steps": 200,
     }
 
 

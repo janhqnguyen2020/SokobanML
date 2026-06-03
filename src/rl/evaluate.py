@@ -16,7 +16,8 @@ RESULT_FIELDS = [
     "level",
     "episode",
     "solved",
-    "steps",
+    "num_steps",
+    "num_pushes",
     "runtime_ms",
     "total_reward",
     "invalid_macro_actions",
@@ -38,10 +39,12 @@ def load_model(model_path, algo):
         return PPO.load(model_path)
     raise ValueError(f"Unsupported algo: {algo}")
 
-def _episode_result(final_info, steps, total_reward, invalid_macro_actions, best_boxes_on_target, runtime_ms):
+def _episode_result(final_info, num_steps, num_pushes, total_reward, invalid_macro_actions, best_boxes_on_target, runtime_ms):
+    """Build one evaluation row using explicit step and push counters."""
     return {
         "solved": bool(final_info.get("all_boxes_on_target", False)),
-        "steps": steps,
+        "num_steps": num_steps,
+        "num_pushes": num_pushes,
         "runtime_ms": runtime_ms,
         "total_reward": total_reward,
         "invalid_macro_actions": invalid_macro_actions,
@@ -52,10 +55,12 @@ def _episode_result(final_info, steps, total_reward, invalid_macro_actions, best
     }
 
 def evaluate_episode(model, env, max_steps=MAX_STEPS, log_progress=True, reset_seed=None):
+    """Run one DQN episode and count both macro steps and executed pushes."""
     observation = env.reset() if reset_seed is None else env.reset(seed=int(reset_seed))
     done = False
     total_reward = 0.0
-    steps = 0
+    num_steps = 0
+    num_pushes = 0
     invalid_macro_actions = 0
     best_boxes_on_target = 0
     final_info = {}
@@ -65,32 +70,37 @@ def evaluate_episode(model, env, max_steps=MAX_STEPS, log_progress=True, reset_s
         observation, reward, done, info = env.step(int(action))
         info = info if isinstance(info, dict) else {}
         total_reward += float(reward)
-        steps += 1
+        num_steps += 1
         final_info = info
         if info.get("invalid_macro_action"):
             invalid_macro_actions += 1
+        if info.get("executed_push"):
+            num_pushes += 1
         best_boxes_on_target = max(best_boxes_on_target, int(info.get("best_boxes_on_target", info.get("boxes_on_target", 0))))
-        if log_progress and (steps == 1 or steps % EPISODE_LOG_INTERVAL == 0):
+        if log_progress and (num_steps == 1 or num_steps % EPISODE_LOG_INTERVAL == 0):
             LOGGER.info(
-                "Episode progress: steps=%s reward=%.2f last_action=%s done=%s invalid_macro_actions=%s",
-                steps,
+                "Episode progress: num_steps=%s num_pushes=%s reward=%.2f last_action=%s done=%s invalid_macro_actions=%s",
+                num_steps,
+                num_pushes,
                 total_reward,
                 int(action),
                 done,
                 invalid_macro_actions,
             )
-        if steps >= max_steps and not done:
+        if num_steps >= max_steps and not done:
             done = True
             final_info["truncated"] = True
     runtime_ms = (time.time() - start_time) * 1000.0
-    return _episode_result(final_info, steps, total_reward, invalid_macro_actions, best_boxes_on_target, runtime_ms)
+    return _episode_result(final_info, num_steps, num_pushes, total_reward, invalid_macro_actions, best_boxes_on_target, runtime_ms)
 
 def _result_row(level_label, episode_idx, result):
+    """Attach level metadata to one DQN evaluation result row."""
     return {
         "level": level_label,
         "episode": episode_idx,
         "solved": result["solved"],
-        "steps": result["steps"],
+        "num_steps": result["num_steps"],
+        "num_pushes": result["num_pushes"],
         "runtime_ms": result["runtime_ms"],
         "total_reward": result["total_reward"],
         "invalid_macro_actions": result["invalid_macro_actions"],
@@ -114,21 +124,23 @@ def _write_json(path, payload):
         json.dump(payload, f, indent=2)
 
 def summarize_results(results):
+    """Compute summary metrics for a list of DQN evaluation episodes."""
     summary = compute_metrics([
-        (result["total_reward"], result["steps"], result["runtime_ms"], result["solved"])
+        (result["total_reward"], result["num_steps"], result["runtime_ms"], result["solved"])
         for result in results
     ])
     total = max(len(results), 1)
     summary["success_rate"] = float(sum(1 for result in results if result["solved"]) / total)
     summary["solved_count"] = int(sum(1 for result in results if result["solved"]))
     summary["total_episodes"] = len(results)
+    summary["avg_num_pushes"] = float(sum(result["num_pushes"] for result in results) / total)
     summary["avg_boxes_on_target"] = float(sum(result["boxes_on_target"] for result in results) / total)
     summary["avg_best_boxes_on_target"] = float(sum(result["best_boxes_on_target"] for result in results) / total)
     summary["one_step_dead_end_count"] = int(
         sum(
             1
             for result in results
-            if result["termination_reason"] == "dead_end" and int(result["steps"]) <= 1
+            if result["termination_reason"] == "dead_end" and int(result["num_steps"]) <= 1
         )
     )
     termination_counts = {}

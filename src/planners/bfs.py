@@ -22,22 +22,26 @@ _DIR = {
 class BFSAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
     def __init__(self, env, reasoning=None):
+        """Set up one BFS planner and the counters used during evaluation."""
         self.env = env
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.num_pushes = 0
         self.failure_reason = ""
         self._failed = False
         self.reasoning = reasoning or ReasoningPlanner(env)
         self.backward_hints = BackwardHintGenerator()
 
     def reset(self):
+        """Clear cached actions and counters before a new episode starts."""
         #clear everything for new episode
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.num_pushes = 0
         self.failure_reason = ""
         self._failed = False
 
@@ -196,6 +200,7 @@ class BFSAgent:
         return None
 
     def _reconstruct(self, came_from, goal_state, walls):
+        """Turn push states into a full action list and count box pushes."""
         sequence = []
         state = goal_state
 
@@ -204,6 +209,7 @@ class BFSAgent:
             sequence.append((parent, state, action))#build sequence
             state = parent
         sequence.reverse()
+        self.num_pushes = len(sequence)
 
         # after reconstructing the path, move the player following the sequence
         all_actions = []

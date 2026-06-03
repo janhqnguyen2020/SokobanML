@@ -24,21 +24,25 @@ _DIR = {
 class GreedyAgent:
     #constructor - initializes agent with environment and sets up variables to track performance
     def __init__(self, env):
+        """Set up one greedy planner and the counters used during evaluation."""
         self.env = env
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.num_pushes = 0
         self.failure_reason = ""
         self._failed = False
         self.reasoning = ReasoningPlanner(env)
 
     def reset(self):
+        """Clear cached actions and counters before a new episode starts."""
         #clear everything for new episode
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
+        self.num_pushes = 0
         self.failure_reason = ""
         self._failed = False
 
@@ -206,6 +210,7 @@ class GreedyAgent:
 
     #backtracks using bfs  and builds full action sequence
     def _reconstruct(self, came_from, goal_state, walls):
+        """Turn push states into a full action list and count box pushes."""
         sequence = []
         state = goal_state
         while came_from[state][0] is not None:
@@ -213,6 +218,7 @@ class GreedyAgent:
             sequence.append((parent, state, action))
             state = parent
         sequence.reverse()
+        self.num_pushes = len(sequence)
 
         all_actions = []
         for from_state, to_state, action in sequence:

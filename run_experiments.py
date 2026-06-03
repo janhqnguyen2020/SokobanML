@@ -49,7 +49,8 @@ RUN_FIELDS = [
     "algorithm",
     "seed",
     "solved",
-    "steps",
+    "num_steps",
+    "num_pushes",
     "runtime_ms",
     "nodes_expanded",
     "failure_reason",
@@ -68,7 +69,8 @@ SUMMARY_FIELDS = [
     "total_runs",
     "solved_runs",
     "success_rate",
-    "avg_steps",
+    "avg_num_steps",
+    "avg_num_pushes",
     "avg_runtime_ms",
     "avg_nodes_expanded",
     "avg_deadlocks_pruned",
@@ -165,7 +167,6 @@ def run_custom_groups(args, source_names, algorithm_names):
             results.append(row)
 
     return results
-
 
 def choose_custom_group(config):
     """Return the source-group label for one custom map config."""
@@ -284,11 +285,11 @@ def run_board(env, planner_class, planner_label, map_type, map_name, show_ui, de
     planner.reset()
     map_code = encode_map(env)
     fig, ax, image = start_ui(observation, show_ui, planner_label, map_type, map_name)
-    reward_sum, steps, solved = play_episode(
+    reward_sum, num_steps, solved = play_episode(
         env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay
     )
     finish_ui(show_ui)
-    return build_run_row(planner, reward_sum, steps, solved, map_code)
+    return build_run_row(planner, reward_sum, num_steps, solved, map_code)
 
 
 def start_ui(observation, show_ui, planner_label, map_type, map_name):
@@ -302,7 +303,7 @@ def start_ui(observation, show_ui, planner_label, map_type, map_name):
 def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay):
     """Step through the environment until the planner finishes."""
     done = False
-    steps = 0
+    num_steps = 0
     reward_sum = 0
     solved = False
     planner.start_time = time.time()
@@ -310,31 +311,31 @@ def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name
     while not done:
         observation, reward, done, info = run_step(env, planner)
         update_ui(
-            fig, ax, image, observation, steps, reward_sum + reward, done, info,
+            fig, ax, image, observation, num_steps, reward_sum + reward, done, info,
             planner_label, map_type, map_name, show_ui, delay
         )
         reward_sum += reward
-        steps += 1
+        num_steps += 1
         solved = info.get("all_boxes_on_target", False)
 
     planner.runtime_ms = (time.time() - planner.start_time) * 1000
-    return reward_sum, steps, solved
+    return reward_sum, num_steps, solved
 
 
 def run_step(env, planner):
-    """Run one planner action and return the new env state."""
+    """Run one planner action and return the new environment state."""
     action = planner(env.render(mode="tiny_rgb_array"))
     return env.step(action)
 
 
-def update_ui(fig, ax, image, observation, steps, reward_sum, done, info, planner_label, map_type, map_name, show_ui, delay):
-    """Refresh the board window after one environment step."""
+def update_ui(fig, ax, image, observation, num_steps, reward_sum, done, info, planner_label, map_type, map_name, show_ui, delay):
+    """Refresh the board window after one primitive planner step."""
     if not show_ui:
         return
     action_name = info.get("action.name", "unknown")
-    print_step(steps, 0, action_name, reward_sum, done)
+    print_step(num_steps, 0, action_name, reward_sum, done)
     status = "SOLVED!" if info.get("all_boxes_on_target") else ("FAILED" if done else "")
-    title = build_title(planner_label, map_type, map_name, steps + 1, reward_sum, status)
+    title = build_title(planner_label, map_type, map_name, num_steps + 1, reward_sum, status)
     update_plot(fig, ax, image, observation, title, delay)
 
 
@@ -344,14 +345,15 @@ def finish_ui(show_ui):
         finish_plot()
 
 
-def build_run_row(planner, reward_sum, steps, solved, map_code):
-    """Store one finished planner run in a plain dictionary."""
+def build_run_row(planner, reward_sum, num_steps, solved, map_code):
+    """Store one finished planner run with explicit step and push counts."""
     return {
         "solved": solved,
         "failure_reason": planner.failure_reason,
         # "map_code": map_code,
         "total_reward": round(reward_sum, 4),
-        "steps": steps,
+        "num_steps": num_steps,
+        "num_pushes": planner.num_pushes,
         "runtime_ms": round(planner.runtime_ms, 4),
         "nodes_expanded": planner.nodes_expanded,
         "deadlocks_pruned": planner.deadlocks_pruned,
@@ -441,7 +443,8 @@ def build_summary_row(algorithm_name, group_name, rows):
     total_runs = len(rows)
     solved_runs = count_solved_runs(rows)
     success_rate = round(solved_runs / total_runs, 4)
-    avg_steps = round(average_value(rows, "steps"), 4)
+    avg_num_steps = round(average_value(rows, "num_steps"), 4)
+    avg_num_pushes = round(average_value(rows, "num_pushes"), 4)
     avg_time = round(average_value(rows, "runtime_ms"), 4)
     avg_nodes = round(average_value(rows, "nodes_expanded"), 4)
     avg_pruned = round(average_value(rows, "deadlocks_pruned"), 4)
@@ -452,7 +455,8 @@ def build_summary_row(algorithm_name, group_name, rows):
         "total_runs": total_runs,
         "solved_runs": solved_runs,
         "success_rate": success_rate,
-        "avg_steps": avg_steps,
+        "avg_num_steps": avg_num_steps,
+        "avg_num_pushes": avg_num_pushes,
         "avg_runtime_ms": avg_time,
         "avg_nodes_expanded": avg_nodes,
         "avg_deadlocks_pruned": avg_pruned,
@@ -471,12 +475,10 @@ def average_value(rows, field_name):
 
 
 def save_algorithm_summaries(summary_rows_by_algorithm):
-    """Append summary rows instead of replacing old ones."""
+    """Rewrite each summary CSV so the header always matches current fields."""
     for algorithm_name, rows in summary_rows_by_algorithm.items():
         file_path = build_algorithm_summary_path(algorithm_name)
-        ensure_csv_header(file_path, SUMMARY_FIELDS)
-        for row in rows:
-            append_csv_row(file_path, SUMMARY_FIELDS, row)
+        rewrite_csv(file_path, SUMMARY_FIELDS, rows)
 
 
 def rewrite_csv(file_path, fieldnames, rows):
@@ -494,7 +496,7 @@ def print_summary(summary_rows_by_algorithm):
         print("\n" + "=" * 72)
         print(f"{algorithm_name.upper()} SUMMARY")
         print("=" * 72)
-        print(f"{'Group':<22} {'Solved':>8} {'Runs':>8} {'Rate':>10} {'Avg ms':>10}")
+        print(f"{'Group':<22} {'Solved':>8} {'Runs':>8} {'Rate':>10} {'Avg steps':>10} {'Avg pushes':>12} {'Avg ms':>10}")
 
         for row in rows:
             print(
@@ -502,6 +504,8 @@ def print_summary(summary_rows_by_algorithm):
                 f"{row['solved_runs']:>8} "
                 f"{row['total_runs']:>8} "
                 f"{row['success_rate']:>10} "
+                f"{row['avg_num_steps']:>10} "
+                f"{row['avg_num_pushes']:>12} "
                 f"{row['avg_runtime_ms']:>10}"
             )
 

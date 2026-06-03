@@ -22,23 +22,25 @@ _DIR = {
 
 class AStarAgent:
     def __init__(self, env, mode="push"):
+        """Set up one A* planner and the counters used during evaluation."""
         self.env = env
         self.mode = mode
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
-        self.pushes = 0
+        self.num_pushes = 0
         self.solution_length = 0
         self.failure_reason = ""
         self._failed = False
 
     def reset(self):
+        """Clear cached actions and counters before a new episode starts."""
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
         self.dead_squares_count = 0
-        self.pushes = 0
+        self.num_pushes = 0
         self.solution_length = 0
         self.failure_reason = ""
         self._failed = False
@@ -189,6 +191,7 @@ class AStarAgent:
         return None
 
     def _reconstruct(self, came_from, goal_state, walls):
+        """Turn push states into a full action list and count box pushes."""
         sequence = []
         state = goal_state
         while came_from[state][0] is not None:
@@ -196,7 +199,7 @@ class AStarAgent:
             sequence.append((parent, state, action))
             state = parent
         sequence.reverse()
-        self.pushes = len(sequence)
+        self.num_pushes = len(sequence)
 
         all_actions = []
         for from_state, to_state, action in sequence:
