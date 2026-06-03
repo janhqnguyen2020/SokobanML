@@ -20,3 +20,6 @@ original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,astar,102,True,,,,,10.1,
 original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,bfs,102,True,,,,,10.2,28,498.0519,3811,4730,9
 original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,greedy,102,True,,,,,8.3,47,253.6571,41,64,14
 original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,astar,102,True,,,,,9.0,40,237.7541,752,975,10
+original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,bfs,102,True,,,,,9.6,34,1784.0984,1217,2392,15
+original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,greedy,102,True,,,,,11.5,15,452.0717,6,6,9
+original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,astar,102,True,,,,,8.1,49,3202.625,3497,4550,11

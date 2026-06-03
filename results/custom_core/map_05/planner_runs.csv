@@ -34,3 +34,6 @@ custom,custom_core,custom_env,map_05,Hard-3box,0,astar,,True,,6,14,3,11.0,20,911
 custom,custom_core,custom_env,map_05,Hard-3box,0,bfs,,True,,6,14,3,11.0,20,1676.1813,10119,3020,8
 custom,custom_core,custom_env,map_05,Hard-3box,0,greedy,,True,,6,14,3,9.3,37,403.0521,10,4,8
 custom,custom_core,custom_env,map_05,Hard-3box,0,astar,,True,,6,14,3,11.0,20,239.5473,174,84,8
+custom,custom_core,custom_env,map_05,Hard-3box,0,bfs,,True,,6,14,3,11.0,20,1756.228,9578,5360,8
+custom,custom_core,custom_env,map_05,Hard-3box,0,greedy,,True,,6,14,3,9.3,37,321.7738,10,4,8
+custom,custom_core,custom_env,map_05,Hard-3box,0,astar,,True,,6,14,3,11.0,20,202.486,174,84,8
