@@ -122,6 +122,7 @@ def _run_episode_ui(model, env, map_name, episode_num):
         update_plot(fig, ax, image, frame, title, DELAY)
 
     finish_plot()
+    boxes_on_target = int(info.get("boxes_on_target", 0))
     return {
         "solved": bool(info.get("all_boxes_on_target", False)),
         "num_steps": num_steps,
@@ -129,7 +130,8 @@ def _run_episode_ui(model, env, map_name, episode_num):
         "runtime_ms": (time.time() - start_time) * 1000.0,
         "total_reward": round(float(total_reward), 3),
         "termination_reason": str(info.get("termination_reason", "unknown")),
-        "boxes_on_target": info.get("boxes_on_target", 0),
+        "boxes_on_target": boxes_on_target,
+        "best_boxes_on_target": int(info.get("best_boxes_on_target", boxes_on_target)),
     }
 
 
