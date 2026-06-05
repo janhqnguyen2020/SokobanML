@@ -21,10 +21,11 @@ _DIR = {
 
 
 class AStarAgent:
-    def __init__(self, env, mode="push"):
+    def __init__(self, env, mode="push", state_callback=None):
         """Set up one A* planner and the counters used during evaluation."""
         self.env = env
         self.mode = mode
+        self.state_callback = state_callback
         self.action_queue = []
         self.nodes_expanded = 0
         self.deadlocks_pruned = 0
@@ -33,6 +34,12 @@ class AStarAgent:
         self.solution_length = 0
         self.failure_reason = ""
         self._failed = False
+
+    def _notify_state(self, player_pos, box_positions, event_name):
+        """Send one search state to an optional audit callback."""
+        if self.state_callback is None:
+            return
+        self.state_callback(player_pos, box_positions, self.nodes_expanded, event_name)
 
     def reset(self):
         """Clear cached actions and counters before a new episode starts."""
@@ -115,6 +122,7 @@ class AStarAgent:
     def _solve(self, max_nodes=200_000):
         player_pos, box_positions, goals, walls, board_shape = self._get_board()
         dead_squares = precompute_dead_squares(walls, goals, board_shape)
+        self._notify_state(player_pos, box_positions, "start")
 
         self.dead_squares_count = len(dead_squares)
         self.nodes_expanded = 0
@@ -148,6 +156,7 @@ class AStarAgent:
 
             self.nodes_expanded += 1
             player, boxes = state
+            self._notify_state(player, boxes, "expand")
 
             for box in boxes:
                 for action, (dirRow, dirCol) in _DIR.items():
@@ -177,6 +186,7 @@ class AStarAgent:
                     came_from[next_state] = (state, action)
 
                     if new_boxes == goals:
+                        self._notify_state(box, new_boxes, "goal")
                         result = self._reconstruct(came_from, next_state, walls)
                         self.solution_length = len(result)
                         return result
