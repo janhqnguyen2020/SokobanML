@@ -12,6 +12,7 @@ from src.rl.high_level_env_parts.movement import (
     push_positions,
     reconstruct_path,
 )
+from src.rl.high_level_env_parts.state import feasible_goals_per_box
 
 def build_macro_action(reachable_parents, selected_box_position, box_index, direction_index, box_positions, wall_positions, direction_deltas):
     """
@@ -25,7 +26,7 @@ def build_macro_action(reachable_parents, selected_box_position, box_index, dire
         "macro_action": box_index * 4 + direction_index,
         # for previous move tracking to avoid RL oscillations
         "box_index": box_index,
-
+        "box_position": selected_box_position,
         "direction": push_direction,
         "walk_actions": reconstruct_path(reachable_parents, player_push_position),
         "new_player_pos": selected_box_position,
@@ -135,8 +136,27 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
         num_boxes,
         direction,
     )
+
     if viable_safe_action_data:
-        return action_profile_summary(viable_safe_action_data, "viable_safe", physical_action_data, safe_action_data, viable_safe_action_data)
+        # 1. Build physical and viable safe actions
+        # 2. Compute domains
+        # 3. Filter out actions that destroy any box domain
+        filtered_actions = {}
+        for action, action_data in viable_safe_action_data.items():
+            if not destroys_box_domain(action_data, goal_positions, wall_positions, direction):
+                filtered_actions[action] = action_data
+
+        # 4. Return filtered actions (all or best-scored)
+        if filtered_actions:
+            # Option A: return all
+            return action_profile_summary(
+                filtered_actions,
+                "viable_safe",
+                physical_action_data,
+                safe_action_data,
+                viable_safe_action_data,
+            )
+            
     if safe_action_data:
         return action_profile_summary(safe_action_data, "safe", physical_action_data, safe_action_data, viable_safe_action_data)
     return action_profile_summary({}, "none", physical_action_data, safe_action_data, viable_safe_action_data)
@@ -150,9 +170,22 @@ def board_profile(env, dead_squares, num_boxes, direction):
     action_profile = build_action_profile(player_pos, box_positions, goal_positions, wall_positions, dead_squares, num_boxes, direction) # valid macro-actions
     return player_pos, box_positions, goal_positions, wall_positions, action_profile
 
+def destroys_box_domain(action_data, goal_positions, wall_positions, direction):
+    after_boxes = action_data["new_boxes"]
 
+    for box in after_boxes:
+        domain = feasible_goals_per_box(
+            box,
+            goal_positions,
+            wall_positions,
+            after_boxes,
+            direction
+        )
 
+        if len(domain) == 0:
+            return True
 
+    return False
 
 
 
