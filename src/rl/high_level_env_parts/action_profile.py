@@ -140,6 +140,60 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
     if viable_safe_action_data:
         # 1. Build physical and viable safe actions
         # 2. Compute domains
+        domains_before = {
+            box: feasible_goals_per_box(
+                box,
+                goal_positions,
+                wall_positions,
+                box_positions,
+                direction
+            )
+            for box in box_positions
+        }
+        #2nd improvement: Define scoring
+        def score_action(action_data):
+            #3rd improvement: Unique-goal priority
+            new_boxes = action_data["new_boxes"]
+
+            domains_after = {
+                box: feasible_goals_per_box(
+                    box,
+                    goal_positions,
+                    wall_positions,
+                    new_boxes,
+                    direction
+                )
+                for box in new_boxes
+            }
+
+            #4th improvement: Flexibility score
+            # 1. total flexibility (main signal)
+            total_before = sum(len(d) for d in domains_before.values())
+            total_after = sum(len(d) for d in domains_after.values())
+
+            flexibility_delta = total_after - total_before
+
+            #5th improvement: Penalize forced boxes
+            # 2. forced-box penalty
+            forced = sum(1 for d in domains_after.values() if len(d) == 1)
+
+            # 3. dead-end risk penalty
+            #empty = sum(1 for d in domains_after.values() if len(d) == 0)
+
+            # 4. reward solved progress
+            solved = count_boxes_on_target(new_boxes, goal_positions)
+
+            # 5. future pushes
+            future_pushes = action_data["future_physical_pushes"]
+
+            return (
+                20.0 * flexibility_delta
+                - 15.0 * forced
+                + 2.0 * future_pushes
+                + 100.0 * solved
+            )
+        
+        #6th improvement: Select best action
         # 3. Filter out actions that destroy any box domain
         filtered_actions = {}
         for action, action_data in viable_safe_action_data.items():
@@ -148,10 +202,19 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
 
         # 4. Return filtered actions (all or best-scored)
         if filtered_actions:
-            # Option A: return all
+            best_actions = sorted(
+                filtered_actions.items(),
+                key=lambda x: score_action(x[1]),
+                reverse=True
+            )
+
+            # Option A: keep only top-K (VERY important for RL stability)
+            top_k = 8
+            best_actions = dict(best_actions[:top_k])
+
             return action_profile_summary(
-                filtered_actions,
-                "viable_safe",
+                best_actions,
+                "viable_safe_scored",
                 physical_action_data,
                 safe_action_data,
                 viable_safe_action_data,
@@ -170,22 +233,57 @@ def board_profile(env, dead_squares, num_boxes, direction):
     action_profile = build_action_profile(player_pos, box_positions, goal_positions, wall_positions, dead_squares, num_boxes, direction) # valid macro-actions
     return player_pos, box_positions, goal_positions, wall_positions, action_profile
 
+#1st improvement: matching validation => avoid the case of moving creating Box1 -> {G1}, Box2 -> {G1}
 def destroys_box_domain(action_data, goal_positions, wall_positions, direction):
     after_boxes = action_data["new_boxes"]
 
-    for box in after_boxes:
-        domain = feasible_goals_per_box(
+    domains = {
+        box: feasible_goals_per_box(
             box,
             goal_positions,
             wall_positions,
             after_boxes,
             direction
         )
+        for box in after_boxes
+    }
 
+    for domain in domains.values():
         if len(domain) == 0:
             return True
 
+    # Count boxes that have at least one feasible goal
+    feasible_boxes = sum(1 for d in domains.values() if len(d) > 0)
+    if feasible_boxes < len(domains):
+        # destroy flag only if multiple boxes are fully blocked
+        return True
+
     return False
+
+def has_complete_matching(domains):
+    boxes = list(domains.keys())
+    used_goals = set()
+
+    def dfs(i):
+        if i == len(boxes):
+            return True
+
+        box = boxes[i]
+
+        for goal in domains[box]:
+            if goal in used_goals:
+                continue
+
+            used_goals.add(goal)
+
+            if dfs(i + 1):
+                return True
+
+            used_goals.remove(goal)
+
+        return False
+
+    return dfs(0)
 
 
 
