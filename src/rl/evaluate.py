@@ -125,6 +125,8 @@ def _write_json(path, payload):
 
 def summarize_results(results):
     """Compute summary metrics for a list of DQN evaluation episodes."""
+    if not results:
+        return empty_result_summary()
     summary = compute_metrics([
         (result["total_reward"], result["num_steps"], result["runtime_ms"], result["solved"])
         for result in results
@@ -149,6 +151,34 @@ def summarize_results(results):
         termination_counts[reason] = termination_counts.get(reason, 0) + 1
     summary["termination_counts"] = termination_counts
     return summary
+
+
+def empty_result_summary():
+    """Return one zero-filled summary when an evaluation group has no episodes."""
+    summary = empty_metric_summary()
+    summary["avg_num_pushes"] = 0.0
+    summary["avg_boxes_on_target"] = 0.0
+    summary["avg_best_boxes_on_target"] = 0.0
+    summary["one_step_dead_end_count"] = 0
+    summary["termination_counts"] = {}
+    return summary
+
+
+def empty_metric_summary():
+    """Return the zero-filled metric fields shared by every evaluation summary."""
+    return {
+        "success_rate": 0.0,
+        "solved_count": 0,
+        "total_episodes": 0,
+        "avg_reward": 0.0,
+        "best_reward": 0.0,
+        "avg_num_steps": 0.0,
+        "min_num_steps": 0,
+        "max_num_steps": 0,
+        "avg_time_ms": 0.0,
+        "min_time_ms": 0.0,
+        "max_time_ms": 0.0,
+    }
 
 def _evaluate_level(model, env_factory, level_id, n_episodes, episode_seeds):
     results = []

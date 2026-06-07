@@ -9,6 +9,10 @@ import os
 # Keep training on the smaller 7x7 3-box distribution first. It remains the
 # cleanest place to build a stronger policy before another transfer attempt.
 ENV_ID = "Sokoban-small-v1"
+CURRICULUM_FIXED_GENERATED_JSON_PATH = os.getenv(
+    "SOKO_CUSTOM_REDO_JSON",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated_maps_custom_redo.json"),
+)
 MAX_STEPS = 200
 NUM_EPISODES = 20
 HIGH_LEVEL_OBS_CANVAS_SHAPE = (15, 15)
@@ -27,7 +31,7 @@ DQN_TOTAL_STEPS = 50_000
 HIGH_LEVEL_DQN_BACKBONE = "cnn"
 HIGH_LEVEL_DQN_CNN_FEATURES_DIM = 256
 HIGH_LEVEL_DQN_BUFFER_SIZE = 50_000
-HIGH_LEVEL_DQN_TOTAL_STEPS = 300_000
+HIGH_LEVEL_DQN_TOTAL_STEPS = 10_000
 HIGH_LEVEL_DQN_LEARNING_RATE = 1e-4
 HIGH_LEVEL_DQN_LEARNING_STARTS = 500
 HIGH_LEVEL_DQN_BATCH_SIZE = 64
@@ -53,21 +57,46 @@ HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
 
 # Curriculum / Generalized DQN  (parallel model — does NOT affect high_level_dqn)
 # Canvas is 15x15 so all 10 curriculum maps fit (largest is 11x13).
-# Action mask always padded to MAX_BOXES*4=12 so 1-box and 2-box episodes are
-# compatible with the same network weights as 3-box episodes.
+# Action mask stays padded to MAX_BOXES*4 so fixed 1/2/3-box maps and the
+# chosen procedural 4/5-box environments can share one network.
 CURRICULUM_DQN_CANVAS_SHAPE = (15, 15)
-CURRICULUM_DQN_MAX_BOXES = 3               # fixed for all phases: 1-box→2-box→5-box
-CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.20  # fraction of episodes from small-v1
-CURRICULUM_DQN_TOTAL_STEPS = 500_000
+CURRICULUM_DQN_MAX_BOXES = 5
+CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.10  # fraction of episodes from small-v1
+CURRICULUM_DQN_TOTAL_STEPS = 70_000
+CURRICULUM_DQN_PHASE_TIMESTEPS = (10_000, 10_000, 10_000, 10_000, 10_000, 10_000, 10_000)
 CURRICULUM_DQN_BUFFER_SIZE = 100_000
 CURRICULUM_DQN_LEARNING_RATE = 1e-4
 CURRICULUM_DQN_LEARNING_STARTS = 1_000
 CURRICULUM_DQN_BATCH_SIZE = 64
-CURRICULUM_DQN_EVAL_FREQ = 20_000
+CURRICULUM_DQN_EVAL_FREQ = 10_000
 CURRICULUM_DQN_EVAL_EPISODES = 40
-CURRICULUM_DQN_EARLY_STOP_PATIENCE_EVALS = 8
-CURRICULUM_DQN_EARLY_STOP_MIN_TIMESTEPS = 80_000
+CURRICULUM_FIXED_VAL_MAPS_PER_GROUP = 5
+CURRICULUM_FIXED_PERIODIC_MAPS_PER_GROUP = 3
+CURRICULUM_DQN_EARLY_STOP_PATIENCE_EVALS = 2
+CURRICULUM_DQN_EARLY_STOP_MIN_TIMESTEPS = 20_000
 CURRICULUM_DQN_SELECTION_EPISODES = 100
+CURRICULUM_PROCEDURAL_DEMO_TARGET_PER_ENV = 50
+CURRICULUM_PROCEDURAL_PERIODIC_EPISODES_PER_ENV = 1
+CURRICULUM_PROCEDURAL_VAL_EPISODES_PER_ENV = 5
+CURRICULUM_PROCEDURAL_TEST_EPISODES_PER_ENV = 50
+CURRICULUM_PROCEDURAL_ENV_IDS = [
+    "Sokoban-small-v0",
+    "Sokoban-small-v1",
+    "Sokoban-v0",
+    "Sokoban-v1",
+    "Sokoban-v2",
+    "Sokoban-large-v0",
+    "Sokoban-large-v1",
+]
+CURRICULUM_VALIDATION_VIDEO_ENV_IDS = [
+    "Sokoban-small-v0",
+    "Sokoban-small-v1",
+    "Sokoban-v0",
+    "Sokoban-v1",
+    "Sokoban-v2",
+    "Sokoban-large-v0",
+    "Sokoban-large-v1",
+]
 
 # Reproducibility
 # Allow fast multi-seed sweeps from PowerShell, e.g.:

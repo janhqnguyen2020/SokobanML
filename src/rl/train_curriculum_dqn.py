@@ -70,42 +70,174 @@ class CurriculumTeacher:
       late  (70-100%)|    40%    |   5%  |  15%  |  40%
     """
 
-    def __init__(self, maps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION):
+    def __init__(self, maps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION, phase_config=None, focusMaps=None, focusMapBoost=1.0):
         self.allMaps = maps
         self.proceduralFraction = proceduralFraction
+        self.phaseConfig = phase_config
+        self.focusMaps = list(focusMaps or [])
+        self.focusMapBoost = float(max(focusMapBoost, 1.0))
         self.currentTrainingStep = 0
         self.totalTrainingSteps = max(CURRICULUM_DQN_TOTAL_STEPS, 1)
-
-        self.oneBoxMaps   = [m for m in maps if len(m["boxes"]) == 1]
-        self.twoBoxMaps   = [m for m in maps if len(m["boxes"]) == 2]
+        self.proceduralEpisodeCount = 0
+        self.oneBoxMaps = [m for m in maps if len(m["boxes"]) == 1]
+        self.twoBoxMaps = [m for m in maps if len(m["boxes"]) == 2]
         self.threeBoxMaps = [m for m in maps if len(m["boxes"]) == 3]
+        self.focusOneBoxMaps = [m for m in self.focusMaps if len(m["boxes"]) == 1]
+        self.focusTwoBoxMaps = [m for m in self.focusMaps if len(m["boxes"]) == 2]
+        self.focusThreeBoxMaps = [m for m in self.focusMaps if len(m["boxes"]) == 3]
+        self.focusMapNames = {map_config["map_name"] for map_config in self.focusMaps}
+        self.totalSampledEpisodes = 0
+        self.phaseSampledEpisodes = 0
+        self.phaseFixedCounts = build_box_count_totals()
+        self.phaseProceduralCounts = {}
+        self.phaseFocusedFixedSamples = 0
 
     def updateTrainingProgress(self, step):
+        """Track training progress for the original percentage-based schedule."""
         self.currentTrainingStep = step
 
-    def sampleNextMap(self):
-        if random.random() < self.proceduralFraction:
-            return None  # fall back to procedural small-v1
+    def setPhaseConfig(self, phase_config):
+        """Switch the teacher to one explicit curriculum phase configuration."""
+        self.phaseConfig = phase_config
+        self._reset_phase_sampling_stats()
 
+    def sampleNextMap(self):
+        """Return either one fixed map or one procedural env spec for this episode."""
+        sampled_item = self._sample_phase_item() if self.phaseConfig is not None else self._sample_progress_item()
+        self._record_sampled_item(sampled_item)
+        return sampled_item
+
+    def _sample_phase_item(self):
+        """Sample from the explicit phase weights and procedural env list."""
+        if random.random() > self.phaseConfig["fixed_fraction"]:
+            return self._sample_procedural_spec(self.phaseConfig["procedural_env_ids"])
+        return self._sample_weighted_fixed_map(self.phaseConfig["box_weights"])
+
+    def _sample_progress_item(self):
+        """Keep the original percentage-based schedule for baseline curriculum runs."""
+        if random.random() < self.proceduralFraction:
+            return None
+        return self._sample_weighted_fixed_map(self._progress_box_weights())
+
+    def _progress_box_weights(self):
+        """Return the original box-count weights based on global training progress."""
         trainingProgressPercent = self.currentTrainingStep / self.totalTrainingSteps
         if trainingProgressPercent < 0.30:
-            difficultyWeights = (0.35, 0.20, 0.05)
-        elif trainingProgressPercent < 0.70:
-            difficultyWeights = (0.15, 0.25, 0.20)
-        else:
-            difficultyWeights = (0.05, 0.15, 0.40)
+            return {1: 0.35, 2: 0.20, 3: 0.05}
+        if trainingProgressPercent < 0.70:
+            return {1: 0.15, 2: 0.25, 3: 0.20}
+        return {1: 0.05, 2: 0.15, 3: 0.40}
 
-        selectedMapPool = random.choices(
-            [self.oneBoxMaps, self.twoBoxMaps, self.threeBoxMaps],
-            weights=difficultyWeights,
+    def _sample_procedural_spec(self, procedural_env_ids):
+        """Build one procedural env request for the current training episode."""
+        if not procedural_env_ids:
+            return None
+        env_id = random.choice(procedural_env_ids)
+        self.proceduralEpisodeCount += 1
+        return {"env_id": env_id, "seed": SEED + 50_000 + self.proceduralEpisodeCount}
+
+    def _sample_weighted_fixed_map(self, box_weights):
+        """Pick one fixed map from the weighted 1-box, 2-box, and 3-box pools."""
+        selected_box_pool, selected_focus_pool = random.choices(
+            [
+                (self.oneBoxMaps, self.focusOneBoxMaps),
+                (self.twoBoxMaps, self.focusTwoBoxMaps),
+                (self.threeBoxMaps, self.focusThreeBoxMaps),
+            ],
+            weights=[box_weights[1], box_weights[2], box_weights[3]],
             k=1,
         )[0]
-        if not selectedMapPool:
-            selectedMapPool = self.allMaps
-        return random.choice(selectedMapPool)
+        return sample_fixed_map(selected_box_pool, selected_focus_pool, self.allMaps, self.focusMapNames, self.focusMapBoost)
+
+    def _reset_phase_sampling_stats(self):
+        """Clear the episode counters used to describe the current phase."""
+        self.phaseSampledEpisodes = 0
+        self.phaseFixedCounts = build_box_count_totals()
+        self.phaseProceduralCounts = {}
+        self.phaseFocusedFixedSamples = 0
+
+    def _record_sampled_item(self, sampled_item):
+        """Track what kind of episode the curriculum just sampled."""
+        self.totalSampledEpisodes += 1
+        self.phaseSampledEpisodes += 1
+        if is_procedural_sample(sampled_item):
+            self._record_procedural_sample(sampled_item)
+            return
+        self._record_fixed_sample(sampled_item)
+
+    def _record_procedural_sample(self, procedural_spec):
+        """Increment the counter for one sampled procedural environment id."""
+        env_id = procedural_spec["env_id"] if procedural_spec is not None else "default_procedural"
+        current_count = self.phaseProceduralCounts.get(env_id, 0)
+        self.phaseProceduralCounts[env_id] = current_count + 1
+
+    def _record_fixed_sample(self, map_config):
+        """Increment the counter for one sampled fixed-map box count."""
+        num_boxes = len(map_config["boxes"])
+        self.phaseFixedCounts[num_boxes] = self.phaseFixedCounts[num_boxes] + 1
+        if map_config["map_name"] in self.focusMapNames:
+            self.phaseFocusedFixedSamples += 1
+
+    def phaseProgressSummary(self):
+        """Return the current phase counts in a simple dictionary."""
+        return {
+            "phase_sampled_episodes": int(self.phaseSampledEpisodes),
+            "total_sampled_episodes": int(self.totalSampledEpisodes),
+            "fixed_counts": fixed_count_summary(self.phaseFixedCounts),
+            "procedural_counts": sorted_procedural_counts(self.phaseProceduralCounts),
+            "focused_fixed_samples": int(self.phaseFocusedFixedSamples),
+        }
 
     def __call__(self):
         return self.sampleNextMap()
+
+
+def build_box_count_totals():
+    """Start one empty fixed-map counter for 1-box, 2-box, and 3-box episodes."""
+    return {1: 0, 2: 0, 3: 0}
+
+
+def is_procedural_sample(sampled_item):
+    """Return True when the sampled curriculum item is one procedural env spec."""
+    return sampled_item is None or "env_id" in sampled_item
+
+
+def fixed_count_summary(box_counts):
+    """Convert internal fixed-map counters into readable 1/2/3-box labels."""
+    return {
+        "1box": int(box_counts[1]),
+        "2box": int(box_counts[2]),
+        "3box": int(box_counts[3]),
+    }
+
+
+def sorted_procedural_counts(procedural_counts):
+    """Return procedural env counters in a stable key order for printing."""
+    return {env_id: int(procedural_counts[env_id]) for env_id in sorted(procedural_counts.keys())}
+
+
+def sample_fixed_map(base_pool, focus_pool, fallback_pool, focus_names, focus_boost):
+    """Sample one fixed map while giving the requested failed maps extra weight."""
+    merged_pool = merged_unique_maps(base_pool, focus_pool)
+    if not merged_pool:
+        merged_pool = list(fallback_pool)
+    sample_weights = [focused_weight(map_config, focus_names, focus_boost) for map_config in merged_pool]
+    return random.choices(merged_pool, weights=sample_weights, k=1)[0]
+
+
+def merged_unique_maps(base_pool, focus_pool):
+    """Keep one copy of each map when a focus map already exists in the base pool."""
+    unique_maps = {}
+    for map_config in list(base_pool) + list(focus_pool):
+        unique_maps[map_config["map_name"]] = map_config
+    return list(unique_maps.values())
+
+
+def focused_weight(map_config, focus_names, focus_boost):
+    """Return the extra sampling weight for one map in the focus set."""
+    if map_config["map_name"] in focus_names:
+        return float(focus_boost)
+    return 1.0
 
 
 # Callback that keeps CurriculumTeacher's step counter in sync with training
@@ -122,8 +254,10 @@ class CurriculumProgressCallback:
 
 # Environment factories
 
-def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=None):
+def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=None, procedural_env_id=None):
+    """Build one high-level Sokoban env around either a default or chosen procedural env."""
     env = HighLevelSokobanEnv(
+        env=create_procedural_env(procedural_env_id, seed) if procedural_env_id is not None else None,
         observation_board_shape=CURRICULUM_DQN_CANVAS_SHAPE,
         use_extra_scalar_features=HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
         use_shaped_reward=use_shaped_reward,
@@ -134,6 +268,13 @@ def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=Non
         env.seed(seed)
         env.action_space.seed(seed)
     return env
+
+
+def create_procedural_env(procedural_env_id, seed):
+    """Create one procedural gym_sokoban env for the requested env id."""
+    from src.env.sokoban_env import initialize_env
+
+    return initialize_env(env_id=procedural_env_id, seed=seed)
 
 
 def createTrainingEnvironment(curriculumTeacher, run_id=None):
@@ -162,9 +303,14 @@ def createTrainingEnvironment(curriculumTeacher, run_id=None):
     return VideoWrapper(env, recorder)
 
 
-def createEvaluationEnvironment():
-    """Procedural small-v1 only — no curriculum, for fair baseline comparison."""
-    return createSokobanEnvironment(use_shaped_reward=False, curriculumTeacher=None, seed=SEED + 1)
+def createEvaluationEnvironment(env_id=None, seed=None):
+    """Build one procedural evaluation env for the requested gym_sokoban id."""
+    return createSokobanEnvironment(
+        use_shaped_reward=False,
+        curriculumTeacher=None,
+        seed=SEED + 1 if seed is None else seed,
+        procedural_env_id=env_id,
+    )
 
 
 def createCurriculumEvalEnvironment(trainingCurriculumMaps):

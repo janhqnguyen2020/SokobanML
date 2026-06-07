@@ -1,0 +1,4012 @@
+{
+  "1box": [
+    {
+      "map_name": "gen1b_001",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [3, 2],
+      "boxes": [[2, 3]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_002",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [1, 3],
+      "boxes": [[2, 3]],
+      "goals": [[2, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_003",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [1, 2],
+      "boxes": [[2, 3]],
+      "goals": [[3, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_004",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [2, 6],
+      "boxes": [[2, 3]],
+      "goals": [[1, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_005",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [2, 1],
+      "boxes": [[1, 3]],
+      "goals": [[1, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_006",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [3, 3],
+      "boxes": [[2, 6]],
+      "goals": [[1, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_007",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 3],
+      "boxes": [[2, 3]],
+      "goals": [[2, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_008",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [3, 6],
+      "boxes": [[2, 2]],
+      "goals": [[2, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_009",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [2, 1],
+      "boxes": [[3, 4]],
+      "goals": [[3, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_010",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [1, 5],
+      "boxes": [[2, 4]],
+      "goals": [[4, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_011",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [3, 2],
+      "boxes": [[2, 4]],
+      "goals": [[3, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_012",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 3],
+      "boxes": [[2, 4]],
+      "goals": [[2, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_013",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [1, 1],
+      "boxes": [[1, 2]],
+      "goals": [[1, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_014",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [4, 2],
+      "boxes": [[2, 4]],
+      "goals": [[4, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_015",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [2, 4],
+      "boxes": [[2, 2]],
+      "goals": [[1, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_016",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 5],
+      "boxes": [[2, 4]],
+      "goals": [[2, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_017",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 2],
+      "boxes": [[4, 3]],
+      "goals": [[4, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_018",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [1, 4],
+      "boxes": [[2, 3]],
+      "goals": [[4, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_019",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [2, 5],
+      "boxes": [[1, 4]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_020",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [3, 2],
+      "boxes": [[3, 4]],
+      "goals": [[4, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_021",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 4],
+      "boxes": [[2, 4]],
+      "goals": [[2, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_022",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [2, 2],
+      "boxes": [[1, 3]],
+      "goals": [[1, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_023",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [1, 1],
+      "boxes": [[3, 3]],
+      "goals": [[3, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_024",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 5],
+      "boxes": [[1, 4]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_025",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [3, 4],
+      "boxes": [[2, 2]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_026",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 1],
+      "boxes": [[2, 4]],
+      "goals": [[1, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_027",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 2],
+      "boxes": [[2, 5]],
+      "goals": [[3, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_028",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [2, 3],
+      "boxes": [[3, 3]],
+      "goals": [[3, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_029",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 7,
+      "player": [1, 5],
+      "boxes": [[2, 2]],
+      "goals": [[1, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_030",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [3, 3],
+      "boxes": [[2, 5]],
+      "goals": [[1, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_031",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 6,
+      "player": [2, 4],
+      "boxes": [[3, 2]],
+      "goals": [[3, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_032",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 4],
+      "boxes": [[1, 2]],
+      "goals": [[1, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_033",
+      "difficulty": "Easy-1box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 4],
+      "boxes": [[1, 2]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_034",
+      "difficulty": "Easy-1box",
+      "height": 5,
+      "width": 8,
+      "player": [1, 5],
+      "boxes": [[2, 3]],
+      "goals": [[1, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_035",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[1, 5]],
+      "goals": [[1, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_036",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 6],
+      "boxes": [[5, 5]],
+      "goals": [[5, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_037",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 3],
+      "boxes": [[3, 2]],
+      "goals": [[2, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_038",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 4],
+      "boxes": [[5, 3]],
+      "goals": [[5, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_039",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [2, 6],
+      "boxes": [[2, 4]],
+      "goals": [[2, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_040",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [4, 2],
+      "boxes": [[3, 7]],
+      "goals": [[4, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_041",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 2],
+      "boxes": [[4, 5]],
+      "goals": [[3, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_042",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 2],
+      "boxes": [[2, 5]],
+      "goals": [[4, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_043",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [4, 6],
+      "boxes": [[2, 4]],
+      "goals": [[3, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_044",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 4],
+      "boxes": [[3, 2]],
+      "goals": [[2, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_045",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 5],
+      "boxes": [[2, 2]],
+      "goals": [[2, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_046",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [4, 4],
+      "boxes": [[2, 5]],
+      "goals": [[3, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_047",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [1, 1],
+      "boxes": [[3, 6]],
+      "goals": [[3, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_048",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [3, 3],
+      "boxes": [[4, 4]],
+      "goals": [[2, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_049",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 3],
+      "boxes": [[5, 3]],
+      "goals": [[5, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_050",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [4, 1],
+      "boxes": [[2, 3]],
+      "goals": [[2, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_051",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [3, 2],
+      "boxes": [[3, 6]],
+      "goals": [[4, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_052",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [3, 3],
+      "boxes": [[3, 2]],
+      "goals": [[4, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_053",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [4, 2],
+      "boxes": [[2, 6]],
+      "goals": [[3, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_054",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 2],
+      "boxes": [[2, 3]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_055",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [3, 2],
+      "boxes": [[2, 2]],
+      "goals": [[1, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_056",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [1, 4],
+      "boxes": [[3, 2]],
+      "goals": [[2, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_057",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 2],
+      "boxes": [[5, 2]],
+      "goals": [[5, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_058",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [5, 1],
+      "boxes": [[2, 4]],
+      "goals": [[5, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_059",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 3],
+      "boxes": [[3, 2]],
+      "goals": [[3, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_060",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 2],
+      "boxes": [[3, 4]],
+      "goals": [[5, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_061",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [4, 5],
+      "boxes": [[2, 4]],
+      "goals": [[2, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_062",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [1, 5],
+      "boxes": [[2, 2]],
+      "goals": [[3, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_063",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 6],
+      "boxes": [[2, 4]],
+      "goals": [[3, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_064",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [3, 1],
+      "boxes": [[2, 5]],
+      "goals": [[4, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_065",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 9,
+      "player": [3, 1],
+      "boxes": [[2, 4]],
+      "goals": [[4, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_066",
+      "difficulty": "Medium-1box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 4],
+      "boxes": [[4, 6]],
+      "goals": [[3, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_067",
+      "difficulty": "Medium-1box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 6],
+      "boxes": [[2, 2]],
+      "goals": [[4, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_068",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [2, 2],
+      "boxes": [[5, 3]],
+      "goals": [[2, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_069",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [2, 6],
+      "boxes": [[4, 6]],
+      "goals": [[6, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_070",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 8],
+      "boxes": [[2, 3]],
+      "goals": [[5, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_071",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 8],
+      "boxes": [[6, 6]],
+      "goals": [[1, 8]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_072",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 5],
+      "boxes": [[6, 3]],
+      "goals": [[6, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_073",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 7],
+      "boxes": [[3, 6]],
+      "goals": [[6, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_074",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 8,
+      "player": [1, 3],
+      "boxes": [[4, 5]],
+      "goals": [[6, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_075",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 9,
+      "player": [7, 1],
+      "boxes": [[4, 3]],
+      "goals": [[1, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_076",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 2],
+      "boxes": [[3, 6]],
+      "goals": [[1, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_077",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 1],
+      "boxes": [[4, 6]],
+      "goals": [[6, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_078",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 7],
+      "boxes": [[2, 5]],
+      "goals": [[5, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_079",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [5, 8],
+      "boxes": [[5, 3]],
+      "goals": [[4, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_080",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 8],
+      "boxes": [[6, 3]],
+      "goals": [[4, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_081",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 6],
+      "boxes": [[3, 2]],
+      "goals": [[5, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_082",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 6],
+      "boxes": [[3, 2]],
+      "goals": [[4, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_083",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 5],
+      "boxes": [[3, 2]],
+      "goals": [[3, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_084",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 8],
+      "boxes": [[4, 7]],
+      "goals": [[5, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_085",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 7],
+      "boxes": [[4, 4]],
+      "goals": [[6, 8]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_086",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 6],
+      "boxes": [[3, 7]],
+      "goals": [[6, 5]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_087",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 9,
+      "player": [3, 4],
+      "boxes": [[3, 6]],
+      "goals": [[3, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_088",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [2, 1],
+      "boxes": [[2, 6]],
+      "goals": [[3, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_089",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [5, 3],
+      "boxes": [[3, 4]],
+      "goals": [[6, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_090",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 7],
+      "boxes": [[3, 3]],
+      "goals": [[1, 7]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_091",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 4],
+      "boxes": [[1, 3]],
+      "goals": [[1, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_092",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 3],
+      "boxes": [[6, 5]],
+      "goals": [[2, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_093",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 10,
+      "player": [4, 7],
+      "boxes": [[4, 5]],
+      "goals": [[3, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_094",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 4],
+      "boxes": [[3, 3]],
+      "goals": [[5, 3]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_095",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 8,
+      "player": [1, 5],
+      "boxes": [[5, 2]],
+      "goals": [[6, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_096",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 8,
+      "player": [1, 4],
+      "boxes": [[2, 4]],
+      "goals": [[4, 2]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_097",
+      "difficulty": "Hard-1box",
+      "height": 8,
+      "width": 8,
+      "player": [3, 4],
+      "boxes": [[2, 2]],
+      "goals": [[6, 6]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_098",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 9,
+      "player": [6, 4],
+      "boxes": [[6, 5]],
+      "goals": [[3, 1]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_099",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 1],
+      "boxes": [[4, 5]],
+      "goals": [[3, 4]],
+      "max_steps": 120
+    },
+    {
+      "map_name": "gen1b_100",
+      "difficulty": "Hard-1box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 4],
+      "boxes": [[3, 4]],
+      "goals": [[5, 5]],
+      "max_steps": 120
+    }
+  ],
+  "2box": [
+    {
+      "map_name": "gen2b_001",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 1],
+      "boxes": [[4, 5], [4, 3]],
+      "goals": [[3, 6], [3, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_002",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [3, 2],
+      "boxes": [[2, 5], [2, 3]],
+      "goals": [[1, 5], [2, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_003",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [1, 4],
+      "boxes": [[3, 3], [2, 4]],
+      "goals": [[3, 5], [3, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_004",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [3, 5],
+      "boxes": [[3, 3], [2, 4]],
+      "goals": [[2, 3], [3, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_005",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 2],
+      "boxes": [[4, 4], [3, 1]],
+      "goals": [[4, 5], [4, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_006",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 4],
+      "boxes": [[4, 4], [5, 5]],
+      "goals": [[3, 6], [5, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_007",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 4],
+      "boxes": [[4, 2], [3, 4]],
+      "goals": [[2, 2], [4, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_008",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [3, 5],
+      "boxes": [[3, 3], [1, 4]],
+      "goals": [[2, 2], [1, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_009",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 3],
+      "boxes": [[1, 2], [2, 2]],
+      "goals": [[1, 3], [5, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_010",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 1],
+      "boxes": [[3, 4], [2, 2]],
+      "goals": [[5, 2], [3, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_011",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [1, 6],
+      "boxes": [[2, 3], [3, 3]],
+      "goals": [[2, 2], [1, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_012",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 3],
+      "boxes": [[2, 1], [3, 4]],
+      "goals": [[4, 1], [4, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_013",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 3],
+      "boxes": [[3, 3], [2, 4]],
+      "goals": [[3, 2], [4, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_014",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 6],
+      "boxes": [[1, 2], [3, 5]],
+      "goals": [[1, 3], [5, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_015",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [3, 1],
+      "boxes": [[2, 3], [2, 4]],
+      "goals": [[3, 3], [1, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_016",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 3],
+      "boxes": [[2, 4], [3, 3]],
+      "goals": [[2, 5], [5, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_017",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 3],
+      "boxes": [[3, 2], [2, 5]],
+      "goals": [[2, 1], [3, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_018",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 5],
+      "boxes": [[2, 4], [4, 2]],
+      "goals": [[5, 2], [4, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_019",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 5],
+      "boxes": [[2, 3], [2, 4]],
+      "goals": [[4, 2], [2, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_020",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [3, 5],
+      "boxes": [[3, 4], [2, 3]],
+      "goals": [[1, 2], [1, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_021",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [1, 5],
+      "boxes": [[4, 3], [2, 3]],
+      "goals": [[1, 6], [4, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_022",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [3, 1],
+      "boxes": [[3, 4], [2, 3]],
+      "goals": [[2, 4], [2, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_023",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 2],
+      "boxes": [[3, 5], [3, 2]],
+      "goals": [[2, 5], [2, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_024",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [1, 1],
+      "boxes": [[2, 2], [3, 3]],
+      "goals": [[3, 1], [2, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_025",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [4, 5],
+      "boxes": [[3, 4], [3, 2]],
+      "goals": [[3, 1], [4, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_026",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 4],
+      "boxes": [[1, 2], [3, 4]],
+      "goals": [[1, 1], [2, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_027",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [4, 4],
+      "boxes": [[3, 2], [2, 5]],
+      "goals": [[3, 1], [4, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_028",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 3],
+      "boxes": [[4, 2], [2, 5]],
+      "goals": [[1, 3], [5, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_029",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [2, 5],
+      "boxes": [[2, 3], [2, 2]],
+      "goals": [[1, 5], [1, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_030",
+      "difficulty": "Easy-2box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 1],
+      "boxes": [[2, 1], [4, 5]],
+      "goals": [[3, 1], [3, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_031",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 2],
+      "boxes": [[1, 5], [4, 3]],
+      "goals": [[4, 5], [1, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_032",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 7,
+      "player": [4, 3],
+      "boxes": [[2, 3], [1, 4]],
+      "goals": [[3, 5], [1, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_033",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 2],
+      "boxes": [[2, 3], [3, 2]],
+      "goals": [[3, 4], [1, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_034",
+      "difficulty": "Easy-2box",
+      "height": 6,
+      "width": 8,
+      "player": [2, 5],
+      "boxes": [[2, 1], [3, 3]],
+      "goals": [[3, 1], [2, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_035",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 3],
+      "boxes": [[1, 6], [5, 3]],
+      "goals": [[1, 2], [5, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_036",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 2],
+      "boxes": [[3, 4], [5, 5]],
+      "goals": [[6, 4], [4, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_037",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 7],
+      "boxes": [[2, 5], [5, 4]],
+      "goals": [[2, 7], [4, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_038",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 1],
+      "boxes": [[3, 4], [6, 4]],
+      "goals": [[6, 1], [1, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_039",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 1],
+      "boxes": [[3, 2], [5, 3]],
+      "goals": [[6, 7], [5, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_040",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 1],
+      "boxes": [[5, 6], [4, 2]],
+      "goals": [[4, 7], [4, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_041",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [5, 2],
+      "boxes": [[3, 4], [3, 6]],
+      "goals": [[3, 3], [3, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_042",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[5, 3], [3, 4]],
+      "goals": [[5, 6], [3, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_043",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 3],
+      "boxes": [[4, 7], [4, 5]],
+      "goals": [[3, 6], [2, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_044",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [5, 1],
+      "boxes": [[3, 6], [6, 3]],
+      "goals": [[4, 7], [6, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_045",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 5],
+      "boxes": [[1, 5], [2, 4]],
+      "goals": [[1, 1], [4, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_046",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 4],
+      "boxes": [[5, 3], [3, 5]],
+      "goals": [[1, 3], [3, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_047",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 4],
+      "boxes": [[3, 6], [3, 5]],
+      "goals": [[5, 1], [2, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_048",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 6],
+      "boxes": [[4, 5], [3, 4]],
+      "goals": [[5, 5], [5, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_049",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 2],
+      "boxes": [[4, 5], [3, 2]],
+      "goals": [[2, 4], [5, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_050",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 6],
+      "boxes": [[5, 6], [4, 3]],
+      "goals": [[5, 4], [5, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_051",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[3, 4], [2, 2]],
+      "goals": [[3, 5], [5, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_052",
+      "difficulty": "Medium-2box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 1],
+      "boxes": [[5, 2], [2, 3]],
+      "goals": [[5, 4], [3, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_053",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 6],
+      "boxes": [[3, 2], [4, 3]],
+      "goals": [[4, 7], [2, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_054",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 1],
+      "boxes": [[2, 3], [4, 4]],
+      "goals": [[2, 6], [6, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_055",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [4, 7],
+      "boxes": [[3, 7], [3, 6]],
+      "goals": [[5, 4], [5, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_056",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [5, 3],
+      "boxes": [[4, 1], [3, 5]],
+      "goals": [[6, 1], [6, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_057",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 4],
+      "boxes": [[3, 3], [2, 7]],
+      "goals": [[6, 8], [1, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_058",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 7],
+      "boxes": [[2, 3], [3, 2]],
+      "goals": [[5, 6], [4, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_059",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 4],
+      "boxes": [[2, 4], [2, 3]],
+      "goals": [[1, 6], [5, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_060",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 5],
+      "boxes": [[3, 2], [5, 4]],
+      "goals": [[6, 3], [2, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_061",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 1],
+      "boxes": [[4, 6], [3, 4]],
+      "goals": [[2, 5], [4, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_062",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 7],
+      "boxes": [[3, 2], [4, 4]],
+      "goals": [[6, 2], [4, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_063",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 1],
+      "boxes": [[6, 4], [4, 2]],
+      "goals": [[6, 6], [2, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_064",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 7],
+      "boxes": [[4, 6], [2, 5]],
+      "goals": [[2, 6], [2, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_065",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [5, 3],
+      "boxes": [[3, 5], [4, 1]],
+      "goals": [[2, 1], [5, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_066",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 3],
+      "boxes": [[6, 3], [4, 4]],
+      "goals": [[6, 6], [4, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_067",
+      "difficulty": "Medium-2box",
+      "height": 8,
+      "width": 10,
+      "player": [4, 6],
+      "boxes": [[6, 5], [3, 4]],
+      "goals": [[6, 2], [4, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_068",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 7],
+      "boxes": [[6, 9], [4, 5]],
+      "goals": [[5, 4], [3, 9]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_069",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 3],
+      "boxes": [[6, 2], [3, 7]],
+      "goals": [[1, 4], [4, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_070",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [3, 1],
+      "boxes": [[4, 1], [2, 3]],
+      "goals": [[6, 4], [1, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_071",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 7],
+      "boxes": [[2, 2], [2, 1]],
+      "goals": [[5, 3], [3, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_072",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 3],
+      "boxes": [[6, 2], [6, 6]],
+      "goals": [[7, 5], [7, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_073",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 7],
+      "boxes": [[3, 2], [4, 3]],
+      "goals": [[5, 6], [7, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_074",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [1, 4],
+      "boxes": [[5, 3], [4, 5]],
+      "goals": [[4, 7], [7, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_075",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 7],
+      "boxes": [[5, 2], [3, 3]],
+      "goals": [[4, 6], [5, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_076",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 1],
+      "boxes": [[1, 7], [6, 6]],
+      "goals": [[5, 9], [1, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_077",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 2],
+      "boxes": [[4, 3], [6, 7]],
+      "goals": [[1, 7], [3, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_078",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [7, 6],
+      "boxes": [[4, 4], [1, 5]],
+      "goals": [[1, 6], [6, 9]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_079",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 1],
+      "boxes": [[4, 5], [5, 3]],
+      "goals": [[4, 2], [3, 9]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_080",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [1, 8],
+      "boxes": [[3, 3], [6, 4]],
+      "goals": [[5, 6], [4, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_081",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 9],
+      "boxes": [[5, 7], [6, 7]],
+      "goals": [[3, 5], [1, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_082",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [3, 8],
+      "boxes": [[6, 1], [5, 5]],
+      "goals": [[3, 9], [3, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_083",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 6],
+      "boxes": [[5, 5], [2, 6]],
+      "goals": [[4, 2], [7, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_084",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [2, 5],
+      "boxes": [[6, 4], [2, 3]],
+      "goals": [[7, 7], [6, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_085",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [2, 5],
+      "boxes": [[6, 6], [5, 4]],
+      "goals": [[5, 2], [7, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_086",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 4],
+      "boxes": [[5, 2], [4, 2]],
+      "goals": [[5, 8], [7, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_087",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [5, 6],
+      "boxes": [[5, 5], [5, 4]],
+      "goals": [[3, 3], [7, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_088",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 6],
+      "boxes": [[5, 6], [5, 4]],
+      "goals": [[7, 3], [6, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_089",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 1],
+      "boxes": [[6, 2], [6, 7]],
+      "goals": [[2, 6], [3, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_090",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 2],
+      "boxes": [[4, 7], [5, 4]],
+      "goals": [[2, 2], [3, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_091",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [2, 1],
+      "boxes": [[7, 5], [3, 5]],
+      "goals": [[3, 2], [7, 8]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_092",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [5, 9],
+      "boxes": [[5, 7], [3, 8]],
+      "goals": [[1, 9], [5, 3]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_093",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 6],
+      "boxes": [[3, 4], [6, 8]],
+      "goals": [[1, 9], [5, 7]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_094",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 9],
+      "boxes": [[7, 7], [6, 3]],
+      "goals": [[5, 8], [7, 5]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_095",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 6],
+      "boxes": [[5, 6], [5, 7]],
+      "goals": [[4, 1], [4, 6]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_096",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 9],
+      "boxes": [[5, 3], [3, 7]],
+      "goals": [[2, 1], [2, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_097",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [7, 3],
+      "boxes": [[6, 5], [2, 4]],
+      "goals": [[7, 5], [5, 1]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_098",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [4, 6],
+      "boxes": [[4, 3], [7, 2]],
+      "goals": [[7, 5], [3, 2]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_099",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 9,
+      "player": [4, 5],
+      "boxes": [[5, 5], [4, 3]],
+      "goals": [[3, 2], [4, 4]],
+      "max_steps": 150
+    },
+    {
+      "map_name": "gen2b_100",
+      "difficulty": "Hard-2box",
+      "height": 9,
+      "width": 11,
+      "player": [5, 6],
+      "boxes": [[3, 4], [6, 6]],
+      "goals": [[2, 1], [1, 9]],
+      "max_steps": 150
+    }
+  ],
+  "3box": [
+    {
+      "map_name": "gen3b_001",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [2, 2],
+      "boxes": [[1, 2], [3, 6], [3, 4]],
+      "goals": [[3, 3], [1, 5], [4, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_002",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 3],
+      "boxes": [[2, 1], [2, 2], [3, 5]],
+      "goals": [[4, 2], [1, 1], [3, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_003",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [6, 6],
+      "boxes": [[3, 3], [4, 3], [1, 4]],
+      "goals": [[6, 5], [5, 3], [1, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_004",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [4, 4],
+      "boxes": [[2, 2], [4, 1], [5, 4]],
+      "goals": [[2, 5], [3, 3], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_005",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [5, 5],
+      "boxes": [[2, 6], [2, 3], [4, 3]],
+      "goals": [[4, 4], [1, 6], [3, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_006",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[2, 2], [5, 3], [3, 2]],
+      "goals": [[4, 5], [5, 4], [5, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_007",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 3],
+      "boxes": [[3, 3], [2, 2], [1, 3]],
+      "goals": [[5, 5], [3, 6], [1, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_008",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [6, 4],
+      "boxes": [[2, 5], [1, 4], [6, 3]],
+      "goals": [[1, 6], [5, 4], [6, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_009",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [4, 2],
+      "boxes": [[1, 3], [4, 4], [2, 2]],
+      "goals": [[3, 1], [1, 4], [4, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_010",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [6, 4],
+      "boxes": [[4, 3], [3, 5], [3, 2]],
+      "goals": [[6, 5], [2, 2], [2, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_011",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [3, 3],
+      "boxes": [[4, 2], [4, 1], [1, 4]],
+      "goals": [[1, 3], [3, 6], [2, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_012",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [4, 4],
+      "boxes": [[3, 2], [3, 5], [6, 3]],
+      "goals": [[6, 2], [2, 3], [5, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_013",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [1, 1],
+      "boxes": [[2, 2], [1, 5], [2, 4]],
+      "goals": [[1, 3], [5, 3], [2, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_014",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [6, 6],
+      "boxes": [[2, 4], [5, 4], [2, 3]],
+      "goals": [[1, 3], [6, 5], [2, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_015",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [4, 6],
+      "boxes": [[2, 3], [3, 2], [2, 4]],
+      "goals": [[4, 5], [5, 3], [1, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_016",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 4],
+      "boxes": [[4, 2], [3, 2], [2, 6]],
+      "goals": [[4, 6], [2, 5], [5, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_017",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 5],
+      "boxes": [[2, 2], [2, 6], [4, 6]],
+      "goals": [[4, 1], [5, 5], [5, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_018",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [5, 6],
+      "boxes": [[1, 4], [3, 4], [2, 2]],
+      "goals": [[6, 6], [1, 5], [5, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_019",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [1, 3],
+      "boxes": [[3, 2], [5, 5], [2, 5]],
+      "goals": [[3, 6], [3, 3], [5, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_020",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 1],
+      "boxes": [[5, 3], [3, 2], [3, 1]],
+      "goals": [[5, 1], [4, 1], [4, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_021",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 6],
+      "boxes": [[4, 4], [4, 6], [3, 1]],
+      "goals": [[3, 2], [2, 1], [2, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_022",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 4],
+      "boxes": [[4, 6], [3, 3], [1, 6]],
+      "goals": [[3, 2], [1, 1], [4, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_023",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [1, 4],
+      "boxes": [[4, 5], [3, 3], [1, 5]],
+      "goals": [[1, 3], [5, 1], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_024",
+      "difficulty": "Easy-3box",
+      "height": 8,
+      "width": 8,
+      "player": [5, 6],
+      "boxes": [[2, 4], [5, 4], [2, 6]],
+      "goals": [[3, 6], [4, 2], [5, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_025",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 3],
+      "boxes": [[5, 5], [3, 3], [2, 2]],
+      "goals": [[5, 1], [5, 4], [4, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_026",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [2, 6],
+      "boxes": [[5, 2], [2, 3], [2, 5]],
+      "goals": [[5, 4], [4, 2], [4, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_027",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 1],
+      "boxes": [[4, 5], [3, 2], [3, 6]],
+      "goals": [[4, 1], [3, 5], [2, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_028",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [5, 6],
+      "boxes": [[4, 2], [4, 7], [4, 1]],
+      "goals": [[2, 5], [5, 7], [3, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_029",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [3, 1],
+      "boxes": [[4, 3], [2, 5], [3, 6]],
+      "goals": [[1, 1], [4, 2], [3, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_030",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [2, 5],
+      "boxes": [[1, 4], [3, 3], [5, 3]],
+      "goals": [[5, 6], [4, 6], [1, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_031",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [1, 6],
+      "boxes": [[2, 4], [3, 2], [2, 5]],
+      "goals": [[3, 4], [1, 3], [5, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_032",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [3, 2],
+      "boxes": [[3, 3], [4, 5], [4, 2]],
+      "goals": [[3, 4], [2, 4], [1, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_033",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 9,
+      "player": [5, 2],
+      "boxes": [[3, 6], [2, 6], [4, 4]],
+      "goals": [[4, 7], [3, 2], [1, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_034",
+      "difficulty": "Easy-3box",
+      "height": 7,
+      "width": 8,
+      "player": [5, 3],
+      "boxes": [[4, 4], [3, 1], [2, 3]],
+      "goals": [[1, 1], [4, 1], [5, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_035",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 8],
+      "boxes": [[4, 3], [2, 4], [2, 5]],
+      "goals": [[2, 1], [5, 3], [3, 8]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_036",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 5],
+      "boxes": [[3, 4], [2, 4], [3, 3]],
+      "goals": [[5, 3], [3, 5], [4, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_037",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [3, 7],
+      "boxes": [[4, 4], [6, 4], [5, 6]],
+      "goals": [[3, 5], [5, 2], [5, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_038",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [2, 2],
+      "boxes": [[6, 4], [4, 7], [1, 5]],
+      "goals": [[1, 6], [6, 7], [6, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_039",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [4, 3],
+      "boxes": [[2, 1], [3, 4], [6, 2]],
+      "goals": [[3, 1], [4, 7], [6, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_040",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 1],
+      "boxes": [[2, 4], [2, 2], [5, 5]],
+      "goals": [[6, 3], [4, 2], [1, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_041",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [6, 4],
+      "boxes": [[6, 7], [2, 8], [4, 5]],
+      "goals": [[5, 8], [3, 3], [6, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_042",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [5, 7],
+      "boxes": [[3, 2], [3, 6], [5, 3]],
+      "goals": [[2, 6], [4, 3], [5, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_043",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 4],
+      "boxes": [[4, 2], [5, 1], [3, 8]],
+      "goals": [[2, 8], [4, 1], [1, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_044",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 3],
+      "boxes": [[3, 5], [5, 3], [2, 2]],
+      "goals": [[6, 5], [5, 1], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_045",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 2],
+      "boxes": [[3, 3], [2, 7], [2, 3]],
+      "goals": [[6, 1], [5, 6], [4, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_046",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 7],
+      "boxes": [[3, 6], [5, 5], [4, 5]],
+      "goals": [[5, 7], [5, 3], [3, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_047",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 7],
+      "boxes": [[2, 6], [3, 5], [4, 2]],
+      "goals": [[1, 4], [4, 1], [3, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_048",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [4, 6],
+      "boxes": [[6, 4], [5, 2], [3, 7]],
+      "goals": [[2, 1], [5, 4], [6, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_049",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 4],
+      "boxes": [[3, 5], [4, 4], [4, 6]],
+      "goals": [[3, 2], [2, 4], [3, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_050",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 7],
+      "boxes": [[4, 5], [4, 3], [4, 1]],
+      "goals": [[6, 1], [6, 5], [2, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_051",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [6, 4],
+      "boxes": [[5, 5], [4, 5], [6, 6]],
+      "goals": [[1, 3], [6, 3], [6, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_052",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 1],
+      "boxes": [[5, 3], [5, 6], [5, 2]],
+      "goals": [[2, 3], [5, 5], [2, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_053",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 3],
+      "boxes": [[2, 4], [5, 6], [6, 6]],
+      "goals": [[6, 5], [4, 4], [2, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_054",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 5],
+      "boxes": [[4, 3], [2, 2], [6, 7]],
+      "goals": [[2, 6], [6, 5], [5, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_055",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 3],
+      "boxes": [[2, 6], [3, 2], [3, 4]],
+      "goals": [[6, 1], [3, 6], [3, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_056",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 6],
+      "boxes": [[6, 6], [4, 7], [1, 7]],
+      "goals": [[6, 4], [2, 1], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_057",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [3, 5],
+      "boxes": [[3, 3], [6, 2], [1, 4]],
+      "goals": [[1, 6], [6, 6], [5, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_058",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 2],
+      "boxes": [[3, 4], [2, 6], [2, 1]],
+      "goals": [[4, 1], [2, 4], [7, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_059",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [7, 7],
+      "boxes": [[2, 6], [2, 5], [6, 5]],
+      "goals": [[6, 6], [4, 5], [4, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_060",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 5],
+      "boxes": [[5, 5], [3, 6], [2, 1]],
+      "goals": [[3, 5], [4, 3], [3, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_061",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [2, 2],
+      "boxes": [[5, 3], [2, 3], [5, 2]],
+      "goals": [[4, 3], [4, 6], [6, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_062",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [5, 5],
+      "boxes": [[1, 4], [5, 4], [4, 6]],
+      "goals": [[6, 4], [3, 4], [1, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_063",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [2, 7],
+      "boxes": [[6, 7], [5, 5], [3, 5]],
+      "goals": [[6, 6], [5, 7], [6, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_064",
+      "difficulty": "Medium-3box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 6],
+      "boxes": [[2, 2], [4, 4], [3, 2]],
+      "goals": [[3, 3], [2, 7], [4, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_065",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 3],
+      "boxes": [[5, 5], [2, 7], [2, 2]],
+      "goals": [[1, 2], [3, 1], [5, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_066",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 4],
+      "boxes": [[6, 2], [3, 2], [5, 4]],
+      "goals": [[6, 1], [4, 1], [3, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_067",
+      "difficulty": "Medium-3box",
+      "height": 8,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[5, 5], [5, 2], [4, 3]],
+      "goals": [[1, 4], [5, 3], [5, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_068",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 6],
+      "boxes": [[6, 5], [5, 4], [3, 1]],
+      "goals": [[6, 7], [2, 7], [6, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_069",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 2],
+      "boxes": [[3, 6], [6, 4], [2, 9]],
+      "goals": [[1, 7], [1, 9], [1, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_070",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 4],
+      "boxes": [[3, 5], [5, 7], [6, 5]],
+      "goals": [[2, 5], [4, 7], [7, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_071",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 7],
+      "boxes": [[4, 6], [6, 6], [2, 6]],
+      "goals": [[4, 5], [3, 3], [6, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_072",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 5],
+      "boxes": [[6, 2], [6, 4], [7, 7]],
+      "goals": [[4, 2], [7, 1], [3, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_073",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 6],
+      "boxes": [[6, 7], [2, 2], [3, 7]],
+      "goals": [[3, 4], [3, 6], [4, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_074",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [5, 3],
+      "boxes": [[3, 7], [5, 4], [3, 8]],
+      "goals": [[5, 2], [1, 8], [3, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_075",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 2],
+      "boxes": [[7, 4], [2, 8], [2, 6]],
+      "goals": [[7, 7], [6, 8], [5, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_076",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 2],
+      "boxes": [[1, 5], [5, 5], [6, 6]],
+      "goals": [[7, 3], [6, 5], [1, 6]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_077",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 9],
+      "boxes": [[3, 1], [3, 4], [4, 9]],
+      "goals": [[5, 1], [1, 9], [7, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_078",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 2],
+      "boxes": [[6, 1], [3, 4], [6, 7]],
+      "goals": [[6, 5], [7, 1], [2, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_079",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 5],
+      "boxes": [[2, 6], [3, 7], [1, 6]],
+      "goals": [[6, 2], [6, 7], [1, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_080",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 2],
+      "boxes": [[6, 4], [2, 2], [1, 5]],
+      "goals": [[5, 2], [5, 5], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_081",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [2, 5],
+      "boxes": [[4, 7], [5, 3], [4, 6]],
+      "goals": [[2, 4], [6, 3], [3, 8]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_082",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 8],
+      "boxes": [[2, 7], [4, 5], [5, 5]],
+      "goals": [[5, 3], [1, 5], [4, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_083",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 1],
+      "boxes": [[4, 7], [7, 2], [1, 5]],
+      "goals": [[1, 2], [5, 6], [7, 5]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_084",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 1],
+      "boxes": [[3, 6], [2, 4], [3, 1]],
+      "goals": [[5, 1], [6, 6], [3, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_085",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 7],
+      "boxes": [[2, 5], [4, 7], [2, 7]],
+      "goals": [[3, 9], [4, 5], [1, 4]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_086",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 5],
+      "boxes": [[5, 2], [5, 1], [1, 4]],
+      "goals": [[4, 1], [5, 7], [1, 9]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_087",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [3, 3],
+      "boxes": [[4, 2], [2, 9], [2, 6]],
+      "goals": [[1, 5], [2, 4], [1, 9]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_088",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [1, 2],
+      "boxes": [[2, 2], [5, 6], [6, 6]],
+      "goals": [[7, 7], [7, 2], [1, 8]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_089",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 8],
+      "boxes": [[2, 2], [3, 6], [6, 8]],
+      "goals": [[1, 5], [2, 8], [3, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_090",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 1],
+      "boxes": [[6, 5], [6, 3], [1, 7]],
+      "goals": [[1, 6], [7, 6], [3, 7]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_091",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 7],
+      "boxes": [[3, 4], [1, 6], [4, 2]],
+      "goals": [[6, 6], [1, 3], [5, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_092",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 6],
+      "boxes": [[1, 2], [7, 2], [6, 5]],
+      "goals": [[7, 6], [5, 8], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_093",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 1],
+      "boxes": [[5, 7], [7, 4], [3, 4]],
+      "goals": [[6, 6], [7, 6], [6, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_094",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [3, 2],
+      "boxes": [[5, 8], [1, 7], [4, 4]],
+      "goals": [[1, 5], [3, 4], [2, 9]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_095",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [7, 1],
+      "boxes": [[2, 2], [6, 9], [5, 7]],
+      "goals": [[7, 3], [4, 9], [2, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_096",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [7, 5],
+      "boxes": [[5, 2], [4, 4], [6, 7]],
+      "goals": [[5, 1], [5, 8], [4, 2]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_097",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 3],
+      "boxes": [[3, 6], [5, 2], [7, 6]],
+      "goals": [[6, 5], [7, 4], [5, 8]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_098",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [1, 7],
+      "boxes": [[4, 2], [4, 3], [1, 3]],
+      "goals": [[5, 4], [7, 4], [1, 1]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_099",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 10,
+      "player": [3, 3],
+      "boxes": [[4, 5], [2, 4], [6, 4]],
+      "goals": [[1, 5], [7, 6], [7, 3]],
+      "max_steps": 180
+    },
+    {
+      "map_name": "gen3b_100",
+      "difficulty": "Hard-3box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 2],
+      "boxes": [[2, 7], [7, 4], [5, 6]],
+      "goals": [[5, 4], [7, 5], [7, 8]],
+      "max_steps": 180
+    }
+  ],
+  "4box": [
+    {
+      "map_name": "gen4b_001",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [1, 3],
+      "boxes": [[2, 1], [1, 2], [7, 6], [2, 6]],
+      "goals": [[2, 1], [1, 2], [7, 6], [3, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_002",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [1, 4],
+      "boxes": [[5, 2], [5, 7], [2, 1], [2, 3]],
+      "goals": [[5, 2], [5, 7], [2, 1], [4, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_003",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 9,
+      "player": [1, 1],
+      "boxes": [[2, 1], [1, 2], [3, 3], [4, 5]],
+      "goals": [[3, 1], [1, 3], [3, 7], [4, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_004",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 4],
+      "boxes": [[3, 4], [2, 6], [7, 7], [1, 4]],
+      "goals": [[5, 4], [1, 6], [7, 7], [1, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_005",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [2, 8],
+      "boxes": [[3, 5], [2, 7], [1, 5], [5, 5]],
+      "goals": [[3, 4], [2, 8], [1, 4], [5, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_006",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [5, 7],
+      "boxes": [[2, 2], [7, 5], [6, 2], [5, 3]],
+      "goals": [[2, 2], [7, 5], [6, 2], [5, 3]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_007",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [3, 3],
+      "boxes": [[1, 7], [1, 4], [6, 6], [5, 7]],
+      "goals": [[1, 7], [1, 4], [6, 7], [5, 7]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_008",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [2, 7],
+      "boxes": [[5, 3], [5, 5], [5, 6], [2, 6]],
+      "goals": [[5, 3], [5, 5], [5, 6], [2, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_009",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 4],
+      "boxes": [[5, 3], [6, 2], [5, 4], [5, 8]],
+      "goals": [[5, 3], [6, 6], [3, 4], [5, 8]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_010",
+      "difficulty": "Easy-4box",
+      "height": 9,
+      "width": 9,
+      "player": [6, 6],
+      "boxes": [[6, 5], [2, 3], [4, 7], [3, 2]],
+      "goals": [[6, 1], [2, 3], [4, 7], [2, 2]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_011",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 9,
+      "player": [2, 1],
+      "boxes": [[2, 2], [4, 2], [3, 7], [4, 5]],
+      "goals": [[3, 4], [4, 2], [6, 7], [5, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_012",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 4],
+      "boxes": [[2, 4], [2, 6], [4, 4], [5, 2]],
+      "goals": [[3, 3], [2, 6], [4, 4], [5, 6]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_013",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 9,
+      "player": [3, 6],
+      "boxes": [[2, 5], [4, 6], [5, 2], [1, 4]],
+      "goals": [[2, 5], [5, 6], [5, 2], [1, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_014",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [5, 6],
+      "boxes": [[4, 3], [3, 6], [5, 3], [4, 5]],
+      "goals": [[4, 3], [3, 6], [5, 3], [4, 6]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_015",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 9,
+      "player": [4, 2],
+      "boxes": [[6, 7], [4, 7], [3, 2], [5, 2]],
+      "goals": [[6, 7], [4, 7], [2, 2], [5, 2]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_016",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [1, 4],
+      "boxes": [[2, 3], [5, 7], [6, 8], [6, 6]],
+      "goals": [[2, 3], [5, 7], [6, 8], [6, 6]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_017",
+      "difficulty": "Easy-4box",
+      "height": 8,
+      "width": 10,
+      "player": [2, 4],
+      "boxes": [[1, 7], [3, 4], [3, 8], [2, 1]],
+      "goals": [[1, 7], [4, 4], [3, 8], [6, 1]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_018",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [6, 5],
+      "boxes": [[2, 9], [4, 6], [6, 3], [5, 9]],
+      "goals": [[4, 9], [6, 4], [2, 7], [5, 9]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_019",
+      "difficulty": "Medium-4box",
+      "height": 10,
+      "width": 10,
+      "player": [8, 1],
+      "boxes": [[4, 2], [7, 7], [2, 7], [7, 2]],
+      "goals": [[4, 2], [7, 7], [2, 7], [4, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_020",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 5],
+      "boxes": [[6, 7], [5, 6], [4, 2], [6, 8]],
+      "goals": [[6, 1], [5, 7], [7, 4], [2, 8]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_021",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 1],
+      "boxes": [[1, 3], [3, 7], [7, 3], [2, 5]],
+      "goals": [[1, 3], [3, 5], [7, 3], [1, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_022",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [2, 8],
+      "boxes": [[4, 7], [2, 7], [6, 2], [7, 7]],
+      "goals": [[4, 6], [1, 5], [2, 2], [7, 1]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_023",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [7, 1],
+      "boxes": [[6, 8], [6, 7], [7, 3], [6, 4]],
+      "goals": [[4, 6], [2, 6], [7, 7], [5, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_024",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 1],
+      "boxes": [[2, 6], [6, 3], [2, 2], [5, 7]],
+      "goals": [[2, 4], [7, 8], [2, 2], [5, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_025",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [6, 8],
+      "boxes": [[6, 7], [5, 1], [6, 2], [1, 8]],
+      "goals": [[1, 5], [5, 1], [6, 1], [1, 8]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_026",
+      "difficulty": "Medium-4box",
+      "height": 10,
+      "width": 10,
+      "player": [3, 6],
+      "boxes": [[2, 3], [5, 8], [7, 1], [7, 7]],
+      "goals": [[2, 3], [5, 8], [7, 1], [6, 3]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_027",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [1, 3],
+      "boxes": [[2, 6], [2, 2], [6, 9], [6, 1]],
+      "goals": [[7, 6], [1, 7], [6, 9], [6, 1]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_028",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 9],
+      "boxes": [[6, 4], [7, 9], [2, 3], [3, 8]],
+      "goals": [[3, 4], [7, 9], [2, 3], [4, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_029",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [7, 6],
+      "boxes": [[6, 3], [3, 5], [6, 1], [3, 4]],
+      "goals": [[5, 7], [3, 5], [6, 1], [1, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_030",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 2],
+      "boxes": [[6, 4], [1, 5], [5, 9], [3, 4]],
+      "goals": [[4, 3], [1, 5], [5, 9], [1, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_031",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 11,
+      "player": [4, 9],
+      "boxes": [[2, 9], [7, 7], [4, 8], [2, 5]],
+      "goals": [[4, 9], [7, 7], [3, 6], [6, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_032",
+      "difficulty": "Medium-4box",
+      "height": 10,
+      "width": 10,
+      "player": [3, 4],
+      "boxes": [[8, 7], [6, 3], [8, 6], [6, 5]],
+      "goals": [[8, 7], [6, 1], [8, 6], [6, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_033",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [7, 6],
+      "boxes": [[3, 6], [2, 3], [6, 7], [4, 6]],
+      "goals": [[3, 6], [2, 3], [6, 7], [4, 6]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_034",
+      "difficulty": "Medium-4box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 8],
+      "boxes": [[2, 6], [6, 7], [6, 1], [4, 3]],
+      "goals": [[7, 6], [5, 4], [5, 1], [2, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_035",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [7, 9],
+      "boxes": [[4, 9], [4, 7], [1, 9], [2, 9]],
+      "goals": [[4, 9], [4, 6], [1, 8], [8, 2]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_036",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 11,
+      "player": [8, 1],
+      "boxes": [[7, 8], [2, 2], [4, 5], [2, 8]],
+      "goals": [[5, 3], [2, 2], [1, 5], [2, 3]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_037",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [4, 8],
+      "boxes": [[2, 5], [5, 9], [3, 9], [7, 9]],
+      "goals": [[2, 5], [8, 3], [3, 6], [8, 6]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_038",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [2, 1],
+      "boxes": [[2, 2], [5, 2], [7, 9], [2, 3]],
+      "goals": [[1, 2], [7, 3], [2, 8], [3, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_039",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [3, 10],
+      "boxes": [[4, 9], [2, 9], [6, 7], [3, 4]],
+      "goals": [[2, 2], [2, 4], [5, 1], [5, 8]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_040",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 11,
+      "player": [7, 4],
+      "boxes": [[7, 5], [7, 2], [4, 5], [7, 9]],
+      "goals": [[6, 4], [5, 4], [2, 5], [3, 9]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_041",
+      "difficulty": "Hard-4box",
+      "height": 11,
+      "width": 11,
+      "player": [2, 5],
+      "boxes": [[1, 8], [2, 2], [8, 4], [8, 3]],
+      "goals": [[1, 8], [4, 2], [9, 2], [6, 5]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_042",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 11,
+      "player": [7, 2],
+      "boxes": [[3, 8], [5, 2], [2, 2], [7, 4]],
+      "goals": [[3, 4], [5, 2], [2, 2], [7, 7]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_043",
+      "difficulty": "Hard-4box",
+      "height": 11,
+      "width": 11,
+      "player": [8, 3],
+      "boxes": [[6, 7], [2, 9], [8, 5], [2, 1]],
+      "goals": [[6, 7], [2, 9], [8, 5], [9, 1]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_044",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [2, 10],
+      "boxes": [[6, 9], [7, 1], [7, 3], [3, 2]],
+      "goals": [[3, 4], [2, 1], [7, 3], [5, 3]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_045",
+      "difficulty": "Hard-4box",
+      "height": 11,
+      "width": 11,
+      "player": [7, 4],
+      "boxes": [[7, 3], [6, 3], [8, 3], [1, 3]],
+      "goals": [[6, 4], [6, 1], [9, 7], [1, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_046",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 11,
+      "player": [1, 1],
+      "boxes": [[2, 5], [4, 3], [2, 2], [7, 4]],
+      "goals": [[8, 7], [1, 5], [6, 1], [7, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_047",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [3, 9],
+      "boxes": [[7, 4], [7, 9], [5, 9], [3, 4]],
+      "goals": [[7, 6], [2, 9], [3, 1], [3, 4]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_048",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 11,
+      "player": [1, 3],
+      "boxes": [[8, 3], [2, 7], [3, 1], [2, 8]],
+      "goals": [[8, 3], [1, 6], [3, 1], [1, 8]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_049",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [1, 8],
+      "boxes": [[2, 9], [8, 9], [5, 6], [6, 9]],
+      "goals": [[6, 2], [8, 6], [3, 6], [7, 7]],
+      "max_steps": 240
+    },
+    {
+      "map_name": "gen4b_050",
+      "difficulty": "Hard-4box",
+      "height": 10,
+      "width": 12,
+      "player": [8, 1],
+      "boxes": [[2, 7], [7, 1], [1, 8], [7, 5]],
+      "goals": [[2, 3], [3, 1], [1, 8], [3, 8]],
+      "max_steps": 240
+    }
+  ],
+  "5box": [
+    {
+      "map_name": "gen5b_001",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [6, 1],
+      "boxes": [[2, 6], [1, 4], [4, 9], [4, 5], [7, 2]],
+      "goals": [[2, 6], [1, 4], [4, 9], [4, 5], [4, 2]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_002",
+      "difficulty": "Easy-5box",
+      "height": 9,
+      "width": 10,
+      "player": [5, 5],
+      "boxes": [[2, 4], [3, 2], [5, 6], [6, 1], [7, 7]],
+      "goals": [[4, 1], [3, 2], [4, 6], [6, 1], [7, 6]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_003",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [8, 1],
+      "boxes": [[5, 8], [2, 6], [7, 2], [7, 6], [3, 3]],
+      "goals": [[5, 8], [2, 6], [5, 2], [7, 2], [3, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_004",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [6, 4],
+      "boxes": [[1, 8], [3, 2], [1, 9], [1, 5], [5, 7]],
+      "goals": [[1, 8], [4, 3], [1, 9], [1, 5], [5, 7]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_005",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 10,
+      "player": [5, 5],
+      "boxes": [[4, 4], [6, 4], [6, 3], [3, 6], [7, 2]],
+      "goals": [[4, 4], [7, 4], [1, 8], [3, 6], [7, 1]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_006",
+      "difficulty": "Easy-5box",
+      "height": 9,
+      "width": 10,
+      "player": [4, 2],
+      "boxes": [[3, 7], [3, 3], [2, 8], [3, 8], [3, 2]],
+      "goals": [[3, 7], [1, 5], [2, 8], [3, 8], [3, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_007",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 10,
+      "player": [6, 4],
+      "boxes": [[7, 7], [1, 6], [6, 6], [4, 3], [7, 8]],
+      "goals": [[6, 7], [1, 6], [6, 6], [4, 3], [4, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_008",
+      "difficulty": "Easy-5box",
+      "height": 9,
+      "width": 10,
+      "player": [2, 2],
+      "boxes": [[5, 7], [4, 4], [3, 2], [6, 7], [7, 2]],
+      "goals": [[5, 7], [4, 4], [3, 7], [6, 7], [7, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_009",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [8, 8],
+      "boxes": [[2, 1], [7, 4], [7, 9], [7, 7], [4, 3]],
+      "goals": [[2, 1], [7, 5], [6, 9], [3, 7], [6, 5]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_010",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 10,
+      "player": [5, 7],
+      "boxes": [[7, 8], [4, 3], [7, 6], [7, 4], [1, 3]],
+      "goals": [[1, 8], [4, 3], [7, 6], [7, 2], [1, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_011",
+      "difficulty": "Easy-5box",
+      "height": 9,
+      "width": 10,
+      "player": [1, 8],
+      "boxes": [[7, 6], [1, 2], [2, 8], [2, 5], [2, 7]],
+      "goals": [[7, 6], [1, 2], [5, 8], [2, 2], [2, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_012",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 10,
+      "player": [8, 6],
+      "boxes": [[5, 3], [6, 2], [7, 8], [2, 4], [5, 4]],
+      "goals": [[5, 3], [6, 2], [4, 8], [2, 4], [5, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_013",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [3, 3],
+      "boxes": [[6, 8], [5, 8], [6, 1], [7, 7], [2, 8]],
+      "goals": [[8, 8], [5, 7], [6, 1], [7, 5], [4, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_014",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [4, 1],
+      "boxes": [[5, 3], [6, 2], [4, 5], [2, 7], [8, 9]],
+      "goals": [[5, 3], [2, 2], [4, 5], [2, 7], [8, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_015",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 10,
+      "player": [7, 2],
+      "boxes": [[2, 8], [8, 2], [5, 7], [7, 4], [6, 2]],
+      "goals": [[2, 8], [8, 4], [5, 7], [7, 4], [5, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_016",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [1, 9],
+      "boxes": [[7, 3], [1, 8], [2, 9], [4, 8], [8, 8]],
+      "goals": [[7, 3], [1, 7], [3, 9], [4, 8], [8, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_017",
+      "difficulty": "Easy-5box",
+      "height": 10,
+      "width": 11,
+      "player": [6, 9],
+      "boxes": [[6, 8], [2, 3], [4, 2], [3, 6], [7, 5]],
+      "goals": [[6, 8], [2, 3], [4, 2], [2, 6], [7, 6]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_018",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 11,
+      "player": [4, 7],
+      "boxes": [[6, 8], [3, 8], [8, 2], [9, 2], [5, 8]],
+      "goals": [[1, 5], [2, 8], [8, 2], [9, 4], [5, 7]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_019",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 11,
+      "player": [8, 3],
+      "boxes": [[5, 8], [5, 6], [2, 5], [2, 3], [8, 1]],
+      "goals": [[5, 8], [2, 6], [7, 6], [2, 1], [3, 1]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_020",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [2, 1],
+      "boxes": [[1, 7], [9, 5], [7, 7], [2, 2], [4, 9]],
+      "goals": [[1, 6], [9, 5], [7, 7], [4, 9], [6, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_021",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [3, 8],
+      "boxes": [[6, 6], [1, 4], [2, 2], [7, 7], [2, 5]],
+      "goals": [[3, 3], [1, 7], [2, 2], [4, 8], [7, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_022",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [8, 4],
+      "boxes": [[8, 9], [6, 2], [1, 6], [5, 2], [6, 6]],
+      "goals": [[9, 3], [3, 3], [1, 6], [4, 2], [6, 7]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_023",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 11,
+      "player": [1, 9],
+      "boxes": [[7, 7], [2, 9], [7, 4], [9, 7], [1, 8]],
+      "goals": [[7, 7], [2, 9], [7, 4], [9, 7], [1, 1]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_024",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [2, 10],
+      "boxes": [[7, 9], [1, 2], [9, 1], [2, 9], [7, 4]],
+      "goals": [[7, 9], [1, 3], [9, 1], [7, 6], [8, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_025",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [3, 5],
+      "boxes": [[3, 4], [6, 3], [1, 5], [2, 8], [7, 9]],
+      "goals": [[3, 1], [7, 3], [1, 5], [2, 8], [1, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_026",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [6, 10],
+      "boxes": [[8, 8], [2, 9], [4, 9], [7, 7], [6, 4]],
+      "goals": [[8, 4], [4, 4], [9, 4], [3, 7], [6, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_027",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [4, 8],
+      "boxes": [[8, 6], [8, 2], [3, 9], [2, 7], [2, 6]],
+      "goals": [[8, 5], [8, 4], [3, 10], [1, 7], [7, 2]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_028",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [5, 5],
+      "boxes": [[7, 10], [7, 8], [7, 3], [5, 6], [8, 2]],
+      "goals": [[7, 10], [7, 8], [7, 4], [2, 8], [7, 5]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_029",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [4, 4],
+      "boxes": [[7, 7], [1, 5], [5, 1], [4, 5], [7, 5]],
+      "goals": [[7, 7], [1, 5], [5, 1], [6, 8], [3, 6]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_030",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 12,
+      "player": [1, 4],
+      "boxes": [[8, 6], [7, 2], [4, 2], [9, 9], [6, 8]],
+      "goals": [[2, 6], [7, 2], [4, 2], [9, 10], [8, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_031",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [8, 9],
+      "boxes": [[3, 8], [6, 5], [8, 8], [4, 8], [2, 8]],
+      "goals": [[6, 7], [6, 4], [8, 8], [7, 7], [1, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_032",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [8, 7],
+      "boxes": [[8, 4], [3, 6], [7, 4], [7, 5], [2, 9]],
+      "goals": [[8, 1], [3, 8], [7, 5], [2, 5], [2, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_033",
+      "difficulty": "Medium-5box",
+      "height": 10,
+      "width": 11,
+      "player": [2, 8],
+      "boxes": [[6, 8], [6, 2], [4, 8], [2, 2], [7, 6]],
+      "goals": [[8, 8], [3, 3], [5, 7], [8, 9], [7, 1]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_034",
+      "difficulty": "Medium-5box",
+      "height": 11,
+      "width": 11,
+      "player": [4, 1],
+      "boxes": [[8, 6], [4, 9], [6, 5], [2, 2], [4, 2]],
+      "goals": [[8, 6], [4, 9], [9, 5], [3, 4], [5, 6]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_035",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [1, 2],
+      "boxes": [[8, 10], [2, 8], [1, 9], [7, 2], [7, 7]],
+      "goals": [[8, 10], [2, 8], [1, 9], [7, 2], [7, 7]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_036",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [10, 5],
+      "boxes": [[2, 2], [8, 1], [9, 9], [2, 9], [2, 4]],
+      "goals": [[2, 2], [8, 1], [6, 9], [1, 2], [5, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_037",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [3, 3],
+      "boxes": [[9, 2], [7, 10], [7, 2], [1, 4], [9, 4]],
+      "goals": [[9, 2], [5, 2], [7, 10], [1, 4], [9, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_038",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [7, 10],
+      "boxes": [[2, 8], [6, 10], [8, 10], [4, 1], [4, 10]],
+      "goals": [[2, 8], [10, 8], [7, 11], [4, 1], [4, 8]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_039",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [7, 2],
+      "boxes": [[9, 4], [1, 7], [2, 10], [2, 8], [3, 6]],
+      "goals": [[6, 3], [1, 7], [2, 10], [2, 8], [3, 6]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_040",
+      "difficulty": "Hard-5box",
+      "height": 11,
+      "width": 12,
+      "player": [4, 6],
+      "boxes": [[6, 4], [5, 8], [7, 2], [8, 3], [9, 7]],
+      "goals": [[6, 4], [8, 6], [7, 2], [8, 3], [9, 7]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_041",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [10, 6],
+      "boxes": [[6, 9], [6, 5], [7, 5], [1, 9], [3, 9]],
+      "goals": [[9, 8], [4, 3], [2, 9], [1, 8], [9, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_042",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [4, 8],
+      "boxes": [[7, 9], [2, 6], [2, 9], [2, 7], [10, 4]],
+      "goals": [[4, 6], [5, 7], [2, 8], [9, 7], [10, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_043",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [2, 8],
+      "boxes": [[9, 2], [7, 2], [4, 6], [5, 4], [9, 6]],
+      "goals": [[8, 2], [7, 2], [4, 3], [4, 10], [8, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_044",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [3, 8],
+      "boxes": [[7, 1], [4, 10], [6, 10], [2, 8], [10, 2]],
+      "goals": [[7, 1], [7, 3], [9, 5], [4, 8], [10, 2]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_045",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [10, 6],
+      "boxes": [[9, 7], [9, 3], [6, 5], [4, 10], [8, 11]],
+      "goals": [[8, 9], [3, 5], [6, 6], [5, 6], [8, 11]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_046",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [10, 3],
+      "boxes": [[9, 5], [4, 2], [2, 2], [1, 2], [9, 2]],
+      "goals": [[1, 5], [4, 4], [7, 11], [1, 3], [7, 1]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_047",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [7, 10],
+      "boxes": [[5, 9], [5, 2], [9, 6], [9, 2], [3, 2]],
+      "goals": [[10, 7], [8, 5], [9, 7], [4, 3], [2, 9]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_048",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 13,
+      "player": [4, 10],
+      "boxes": [[2, 5], [9, 1], [2, 3], [3, 11], [10, 3]],
+      "goals": [[3, 4], [9, 1], [4, 4], [3, 11], [10, 3]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_049",
+      "difficulty": "Hard-5box",
+      "height": 12,
+      "width": 12,
+      "player": [4, 2],
+      "boxes": [[5, 2], [8, 6], [5, 9], [7, 7], [2, 5]],
+      "goals": [[8, 8], [8, 4], [2, 7], [7, 6], [2, 4]],
+      "max_steps": 300
+    },
+    {
+      "map_name": "gen5b_050",
+      "difficulty": "Hard-5box",
+      "height": 11,
+      "width": 12,
+      "player": [4, 10],
+      "boxes": [[8, 7], [3, 10], [6, 4], [4, 9], [5, 10]],
+      "goals": [[8, 7], [2, 10], [7, 4], [6, 3], [5, 10]],
+      "max_steps": 300
+    }
+  ]
+}

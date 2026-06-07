@@ -71,6 +71,7 @@ class HighLevelSokobanEnv(gym.Env):
         super().__init__()
         self._map_sampler = map_sampler
         self._procedural_env = env if env is not None else initialize_env()
+        self._owns_active_env = False
         self.env = self._procedural_env
 
         self.num_boxes = self.env.unwrapped.num_boxes
@@ -94,6 +95,8 @@ class HighLevelSokobanEnv(gym.Env):
         self.no_progress_steps = 0
         self.best_boxes_on_target = 0
         self.state_visit_counts = {}
+        self.capturePrimitiveVideoFrames = False
+        self.lastMacroStepFrames = []
 
 
     def seed(self, seed=None):
@@ -119,22 +122,7 @@ class HighLevelSokobanEnv(gym.Env):
 
         # swap underlying env when a map_sampler is configured
         if self._map_sampler is not None:
-            map_config = self._map_sampler()
-            if map_config is not None:
-                self.env = SimpleCustomSokobanEnv(
-                    height=map_config["height"],
-                    width=map_config["width"],
-                    player_position=map_config["player"],
-                    box_positions=map_config["boxes"],
-                    goal_positions=map_config["goals"],
-                    wall_positions=map_config.get("walls", []),
-                    max_steps=map_config.get("max_steps", 200),
-                )
-            else:
-                self.env = self._procedural_env
-            # update num_boxes for the new map (action_space.n stays fixed)
-            self.num_boxes = self.env.unwrapped.num_boxes
-            self.board_shape = tuple(self.env.unwrapped.room_state.shape)
+            self._swap_sampled_env(self._map_sampler())
 
         # reset all counters used for reward/penalty
         self.invalid_action_streak = 0
@@ -142,6 +130,7 @@ class HighLevelSokobanEnv(gym.Env):
         self.best_boxes_on_target = 0
         self.state_visit_counts = {}
         self.last_macro_action = None # for adding previous move tracking to avoid RL oscillations 
+        self.lastMacroStepFrames = []
 
         # reset the board until there is at least one valid macro-move
         player_pos, box_positions, goals, _, action_profile = self._reset_to_valid_state()
@@ -150,12 +139,84 @@ class HighLevelSokobanEnv(gym.Env):
         return self._observation(action_profile)
 
 
+    def _swap_sampled_env(self, sampled_config):
+        """Switch to the sampled fixed map or procedural env for the next episode."""
+        self._close_active_env()
+        if sampled_config is None:
+            self._use_default_procedural_env()
+        elif "env_id" in sampled_config:
+            self._use_sampled_procedural_env(sampled_config)
+        else:
+            self._use_sampled_fixed_env(sampled_config)
+        self._refresh_env_shape()
+
+
+    def _close_active_env(self):
+        """Close a temporary env created for the previous sampled episode."""
+        if self._owns_active_env and self.env is not None:
+            self.env.close()
+        self._owns_active_env = False
+
+
+    def _use_default_procedural_env(self):
+        """Reuse the default procedural env when no special sample was requested."""
+        self.env = self._procedural_env
+
+
+    def _use_sampled_procedural_env(self, procedural_spec):
+        """Create one procedural env for the sampled env id and seed."""
+        self.env = initialize_env(
+            env_id=procedural_spec["env_id"],
+            seed=procedural_spec.get("seed"),
+        )
+        self._owns_active_env = True
+
+
+    def _use_sampled_fixed_env(self, map_config):
+        """Create one fixed custom env from a sampled map dictionary."""
+        self.env = SimpleCustomSokobanEnv(
+            height=map_config["height"],
+            width=map_config["width"],
+            player_position=map_config["player"],
+            box_positions=map_config["boxes"],
+            goal_positions=map_config["goals"],
+            wall_positions=map_config.get("walls", []),
+            max_steps=map_config.get("max_steps", 200),
+        )
+        self._owns_active_env = True
+
+
+    def _refresh_env_shape(self):
+        """Refresh cached box counts and board size after the active env changes."""
+        self.num_boxes = self.env.unwrapped.num_boxes
+        self.board_shape = tuple(self.env.unwrapped.room_state.shape)
+
+
     def render(self, *args, **kwargs):
         return self.env.render(*args, **kwargs)
 
 
+    def enable_primitive_video_frames(self):
+        """Capture one render after each primitive walk or push during macro replay."""
+        self.capturePrimitiveVideoFrames = True
+
+
+    def disable_primitive_video_frames(self):
+        """Turn off primitive-step video capture when only fast stepping is needed."""
+        self.capturePrimitiveVideoFrames = False
+        self.lastMacroStepFrames = []
+
+
+    def consume_primitive_video_frames(self):
+        """Return and clear the primitive-step frames from the last macro action."""
+        frames = list(self.lastMacroStepFrames)
+        self.lastMacroStepFrames = []
+        return frames
+
+
     def close(self):
-        self.env.close()
+        self._close_active_env()
+        self._procedural_env.close()
 
 
     def step(self, action):
@@ -169,6 +230,7 @@ class HighLevelSokobanEnv(gym.Env):
         if action not in action_profile["selected"]:
             return self._invalid_action_result(action_profile) # if agent chose an action that is not valid (eg. lead to dead-square)
         self.invalid_action_streak = 0
+        self.lastMacroStepFrames = []
 
         # log current board, execute next move, and log new board
         before_progress = progress_snapshot(box_positions, goals) 
@@ -272,11 +334,20 @@ class HighLevelSokobanEnv(gym.Env):
         for primitive_action in action_data["walk_actions"]:
             _, reward, done, info = self.env.step(primitive_action)
             total_reward += float(reward)
+            self._capture_primitive_video_frame()
             if done:
                 return total_reward, done, info
         _, reward, done, info = self.env.step(action_data["direction"])
         total_reward += float(reward)
+        self._capture_primitive_video_frame()
         return total_reward, done, info
+
+
+    def _capture_primitive_video_frame(self):
+        """Save one rgb frame when primitive-step video capture is active."""
+        if not self.capturePrimitiveVideoFrames:
+            return
+        self.lastMacroStepFrames.append(self.render(mode="rgb_array"))
 
 
     def _invalid_action_result(self, action_profile):

@@ -7,12 +7,14 @@ import time
 import numpy as np
 
 from src.env.custom_env import SimpleCustomSokobanEnv
+from src.env.sokoban_env import initialize_env
 from src.planners.astar import AStarAgent
 from src.rl.high_level_env import HighLevelSokobanEnv
 from src.rl.high_level_env_parts.state import read_board
 from src.utils.config import (
     CURRICULUM_DQN_CANVAS_SHAPE,
     CURRICULUM_DQN_MAX_BOXES,
+    CURRICULUM_PROCEDURAL_DEMO_TARGET_PER_ENV,
     HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
     SEED,
 )
@@ -28,6 +30,7 @@ from src.utils.generated_maps import (
 
 DEFAULT_DEMO_CACHE_PATH = os.path.join("data", "demos", "astar_curriculum_demos.pkl")
 DEFAULT_HARD_CASE_CACHE_PATH = os.path.join("data", "demos", "astar_failed_curriculum_demos.pkl")
+DEFAULT_PROCEDURAL_DEMO_CACHE_PATH = os.path.join("data", "demos", "astar_procedural_demos.pkl")
 
 
 def build_imitation_curriculum_maps(include_handmade_curriculum=False):
@@ -74,6 +77,37 @@ def create_fixed_high_level_env(map_config, max_boxes, observation_board_shape, 
     )
 
 
+def create_procedural_map_config(env_id, reset_seed, sample_index):
+    """Build one fixed map dictionary from a procedurally generated Sokoban room."""
+    env = initialize_env(env_id=env_id, seed=reset_seed)
+    try:
+        return procedural_env_to_map_config(env, env_id, sample_index)
+    finally:
+        env.close()
+
+
+def procedural_env_to_map_config(env, env_id, sample_index):
+    """Convert the current procedural room into the fixed-map format used by A*."""
+    player_pos, box_positions, goal_positions, wall_positions = read_board(env)
+    room_state = env.unwrapped.room_state
+    return {
+        "map_name": procedural_map_name(env_id, sample_index),
+        "difficulty": str(env_id),
+        "height": int(room_state.shape[0]),
+        "width": int(room_state.shape[1]),
+        "player": player_pos,
+        "boxes": sorted(list(box_positions)),
+        "goals": sorted(list(goal_positions)),
+        "walls": sorted(list(wall_positions)),
+        "max_steps": int(env.unwrapped.max_steps),
+    }
+
+
+def procedural_map_name(env_id, sample_index):
+    """Return one stable map name for a procedural A* demo sample."""
+    return f"{env_id}_procedural_{int(sample_index):03d}"
+
+
 def solve_map_with_astar(map_config, state_callback=None):
     """Solve one fixed map with A* and return both actions and search stats."""
     env = create_custom_sokoban_env(map_config)
@@ -90,8 +124,17 @@ def solve_map_with_astar(map_config, state_callback=None):
         "dead_squares_count": planner.dead_squares_count,
         "num_pushes": planner.num_pushes,
         "solution_length": planner.solution_length,
-        "failure_reason": planner.failure_reason or "no_solution_found",
+        "failure_reason": solve_failure_reason(primitive_actions, planner.failure_reason),
     }
+
+
+def solve_failure_reason(primitive_actions, planner_failure_reason):
+    """Return a clear planner status string for solved and unsolved A* runs."""
+    if primitive_actions is not None:
+        return "solved"
+    if planner_failure_reason is not None:
+        return str(planner_failure_reason)
+    return "no_solution_found"
 
 
 def extract_push_events(map_config, primitive_actions):
@@ -298,6 +341,61 @@ def generate_demonstration_payload(map_configs, max_boxes=CURRICULUM_DQN_MAX_BOX
         "map_results": map_results,
         "summary": summarize_demo_generation(map_results),
     }
+
+
+def load_or_generate_procedural_demonstrations(
+    env_ids,
+    cache_path=DEFAULT_PROCEDURAL_DEMO_CACHE_PATH,
+    regenerate=False,
+    target_per_env=CURRICULUM_PROCEDURAL_DEMO_TARGET_PER_ENV,
+):
+    """Reuse cached procedural A* demos unless the caller requests regeneration."""
+    if os.path.exists(cache_path) and not regenerate:
+        return load_demonstration_payload(cache_path)
+    payload = generate_procedural_demo_payload(env_ids, target_per_env)
+    save_demonstration_payload(cache_path, payload)
+    return payload
+
+
+def generate_procedural_demo_payload(env_ids, target_per_env):
+    """Collect solved procedural A* demos until each requested env reaches its target."""
+    all_results = []
+    all_samples = []
+    for env_index, env_id in enumerate(env_ids):
+        env_results, env_samples = collect_env_demo_results(env_id, env_index, target_per_env)
+        all_results.extend(env_results)
+        all_samples.extend(env_samples)
+    return {"samples": all_samples, "map_results": all_results, "summary": summarize_demo_generation(all_results)}
+
+
+def collect_env_demo_results(env_id, env_index, target_per_env):
+    """Collect solved demos for one procedural env id using deterministic seeds."""
+    accepted_count = 0
+    attempt_index = 0
+    max_attempts = int(target_per_env) * 20
+    env_results = []
+    env_samples = []
+    while accepted_count < int(target_per_env) and attempt_index < max_attempts:
+        map_config = create_procedural_map_config(env_id, procedural_demo_seed(env_index, attempt_index), attempt_index)
+        map_result = build_demo_samples_for_map(
+            map_config,
+            CURRICULUM_DQN_MAX_BOXES,
+            CURRICULUM_DQN_CANVAS_SHAPE,
+            HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
+        )
+        env_results.append(map_result)
+        if map_result["demo_ready"]:
+            env_samples.extend(map_result["samples"])
+            accepted_count += 1
+        attempt_index += 1
+    if accepted_count < int(target_per_env):
+        raise ValueError(f"Only collected {accepted_count} solved procedural demos for {env_id}.")
+    return env_results, env_samples
+
+
+def procedural_demo_seed(env_index, attempt_index):
+    """Return one stable seed used when sampling procedural A* demo rooms."""
+    return int(SEED + 100_000 + env_index * 1_000 + attempt_index)
 
 
 def summarize_demo_generation(map_results):
