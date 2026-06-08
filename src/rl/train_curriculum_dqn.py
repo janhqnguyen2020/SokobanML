@@ -56,6 +56,13 @@ from src.rl.video_recorder import EpisodeVideoRecorder
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 LOGGER = logging.getLogger(__name__)
+FIXED_FAMILY_NAMES = [
+    "generated_1box",
+    "generated_2box",
+    "generated_3box",
+    "walled",
+    "csp",
+]
 
 
 # Curriculum teacher — decides which map difficulty to show each episode
@@ -91,6 +98,10 @@ class CurriculumTeacher:
         self.phaseFixedCounts = build_box_count_totals()
         self.phaseProceduralCounts = {}
         self.phaseFocusedFixedSamples = 0
+        self.phaseAdaptiveBoxWeights = build_box_weight_totals()
+        self.phaseAdaptiveFamilyWeights = build_family_weight_totals()
+        self.phaseAdaptiveFailedMapNames = set()
+        self.phaseAdaptiveFailedMapBoost = 1.0
 
     def updateTrainingProgress(self, step):
         """Track training progress for the original percentage-based schedule."""
@@ -106,6 +117,16 @@ class CurriculumTeacher:
         sampled_item = self._sample_phase_item() if self.phaseConfig is not None else self._sample_progress_item()
         self._record_sampled_item(sampled_item)
         return sampled_item
+
+
+    def applyPeriodicValidationSummary(self, summary):
+        """Use periodic validation to boost weak fixed families and failed maps."""
+        if "type_summary" not in summary:
+            return
+        fixed_summary = summary["type_summary"].get("fixed", {})
+        self._set_adaptive_box_weights(fixed_summary)
+        self._set_adaptive_family_weights(fixed_summary)
+        self._set_adaptive_failed_map_names(fixed_summary)
 
     def _sample_phase_item(self):
         """Sample from the explicit phase weights and procedural env list."""
@@ -137,17 +158,41 @@ class CurriculumTeacher:
         return {"env_id": env_id, "seed": SEED + 50_000 + self.proceduralEpisodeCount}
 
     def _sample_weighted_fixed_map(self, box_weights):
-        """Pick one fixed map from the weighted 1-box, 2-box, and 3-box pools."""
-        selected_box_pool, selected_focus_pool = random.choices(
-            [
-                (self.oneBoxMaps, self.focusOneBoxMaps),
-                (self.twoBoxMaps, self.focusTwoBoxMaps),
-                (self.threeBoxMaps, self.focusThreeBoxMaps),
-            ],
-            weights=[box_weights[1], box_weights[2], box_weights[3]],
-            k=1,
-        )[0]
-        return sample_fixed_map(selected_box_pool, selected_focus_pool, self.allMaps, self.focusMapNames, self.focusMapBoost)
+        """Pick one fixed map using box weights plus adaptive family and failure boosts."""
+        weighted_maps = fixed_map_sampling_weights(
+            self.allMaps,
+            box_weights,
+            self.phaseAdaptiveBoxWeights,
+            self.phaseAdaptiveFamilyWeights,
+            self.focusMapNames,
+            self.focusMapBoost,
+            self.phaseAdaptiveFailedMapNames,
+            self.phaseAdaptiveFailedMapBoost,
+        )
+        return random.choices(self.allMaps, weights=weighted_maps, k=1)[0]
+
+
+    def _set_adaptive_box_weights(self, fixed_summary):
+        """Boost weaker 1-box, 2-box, or 3-box groups across all fixed families."""
+        self.phaseAdaptiveBoxWeights = {
+            1: adaptive_success_weight(fixed_family_success(fixed_summary, "generated_1box")),
+            2: adaptive_success_weight(fixed_family_success(fixed_summary, "generated_2box")),
+            3: adaptive_success_weight(fixed_family_success(fixed_summary, "generated_3box")),
+        }
+
+
+    def _set_adaptive_family_weights(self, fixed_summary):
+        """Boost fixed families whose recent periodic validation is currently weak."""
+        self.phaseAdaptiveFamilyWeights = {
+            family_name: adaptive_success_weight(fixed_family_success(fixed_summary, family_name))
+            for family_name in FIXED_FAMILY_NAMES
+        }
+
+
+    def _set_adaptive_failed_map_names(self, fixed_summary):
+        """Focus on currently failing fixed maps so the boost disappears after recovery."""
+        self.phaseAdaptiveFailedMapNames = failed_fixed_case_names(fixed_summary)
+        self.phaseAdaptiveFailedMapBoost = 3.0 if self.phaseAdaptiveFailedMapNames else 1.0
 
     def _reset_phase_sampling_stats(self):
         """Clear the episode counters used to describe the current phase."""
@@ -155,6 +200,10 @@ class CurriculumTeacher:
         self.phaseFixedCounts = build_box_count_totals()
         self.phaseProceduralCounts = {}
         self.phaseFocusedFixedSamples = 0
+        self.phaseAdaptiveBoxWeights = build_box_weight_totals()
+        self.phaseAdaptiveFamilyWeights = build_family_weight_totals()
+        self.phaseAdaptiveFailedMapNames = set()
+        self.phaseAdaptiveFailedMapBoost = 1.0
 
     def _record_sampled_item(self, sampled_item):
         """Track what kind of episode the curriculum just sampled."""
@@ -186,6 +235,9 @@ class CurriculumTeacher:
             "fixed_counts": fixed_count_summary(self.phaseFixedCounts),
             "procedural_counts": sorted_procedural_counts(self.phaseProceduralCounts),
             "focused_fixed_samples": int(self.phaseFocusedFixedSamples),
+            "adaptive_box_weights": box_weight_summary(self.phaseAdaptiveBoxWeights),
+            "adaptive_family_weights": family_weight_summary(self.phaseAdaptiveFamilyWeights),
+            "adaptive_failed_maps": sorted(self.phaseAdaptiveFailedMapNames),
         }
 
     def __call__(self):
@@ -195,6 +247,16 @@ class CurriculumTeacher:
 def build_box_count_totals():
     """Start one empty fixed-map counter for 1-box, 2-box, and 3-box episodes."""
     return {1: 0, 2: 0, 3: 0}
+
+
+def build_box_weight_totals():
+    """Start one neutral adaptive weight for each fixed-map box-count family."""
+    return {1: 1.0, 2: 1.0, 3: 1.0}
+
+
+def build_family_weight_totals():
+    """Start one neutral adaptive weight for each tracked fixed-map family."""
+    return {family_name: 1.0 for family_name in FIXED_FAMILY_NAMES}
 
 
 def is_procedural_sample(sampled_item):
@@ -216,21 +278,51 @@ def sorted_procedural_counts(procedural_counts):
     return {env_id: int(procedural_counts[env_id]) for env_id in sorted(procedural_counts.keys())}
 
 
-def sample_fixed_map(base_pool, focus_pool, fallback_pool, focus_names, focus_boost):
-    """Sample one fixed map while giving the requested failed maps extra weight."""
-    merged_pool = merged_unique_maps(base_pool, focus_pool)
-    if not merged_pool:
-        merged_pool = list(fallback_pool)
-    sample_weights = [focused_weight(map_config, focus_names, focus_boost) for map_config in merged_pool]
-    return random.choices(merged_pool, weights=sample_weights, k=1)[0]
+def box_weight_summary(box_weights):
+    """Round adaptive box weights so progress logs stay compact and readable."""
+    return {f"{box_count}box": round(float(box_weights[box_count]), 3) for box_count in sorted(box_weights.keys())}
 
 
-def merged_unique_maps(base_pool, focus_pool):
-    """Keep one copy of each map when a focus map already exists in the base pool."""
-    unique_maps = {}
-    for map_config in list(base_pool) + list(focus_pool):
-        unique_maps[map_config["map_name"]] = map_config
-    return list(unique_maps.values())
+def family_weight_summary(family_weights):
+    """Round adaptive family weights so progress logs stay compact and readable."""
+    return {family_name: round(float(family_weights[family_name]), 3) for family_name in sorted(family_weights.keys())}
+
+
+def fixed_map_sampling_weights(all_maps, box_weights, adaptive_box_weights, adaptive_family_weights, focus_names, focus_boost, failed_map_names, failed_map_boost):
+    """Build one sampling weight per fixed map from box, family, and failure signals."""
+    return [
+        fixed_map_sampling_weight(
+            map_config,
+            box_weights,
+            adaptive_box_weights,
+            adaptive_family_weights,
+            focus_names,
+            focus_boost,
+            failed_map_names,
+            failed_map_boost,
+        )
+        for map_config in all_maps
+    ]
+
+
+def fixed_map_sampling_weight(map_config, box_weights, adaptive_box_weights, adaptive_family_weights, focus_names, focus_boost, failed_map_names, failed_map_boost):
+    """Combine the base box weight with family and failing-map boosts for one map."""
+    num_boxes = len(map_config["boxes"])
+    family_name = fixed_family_name(map_config)
+    weight = float(box_weights[num_boxes]) * float(adaptive_box_weights[num_boxes])
+    weight *= float(adaptive_family_weights[family_name])
+    weight *= focused_weight(map_config, focus_names, focus_boost)
+    weight *= failed_map_weight(map_config, failed_map_names, failed_map_boost)
+    return weight
+
+
+def fixed_family_name(map_config):
+    """Map one fixed training map to the family names used in validation summaries."""
+    if map_config.get("map_source") == "generated":
+        return f"generated_{len(map_config['boxes'])}box"
+    if prefix_match(map_config["map_name"], ["csp"]):
+        return "csp"
+    return "walled"
 
 
 def focused_weight(map_config, focus_names, focus_boost):
@@ -238,6 +330,37 @@ def focused_weight(map_config, focus_names, focus_boost):
     if map_config["map_name"] in focus_names:
         return float(focus_boost)
     return 1.0
+
+
+def failed_map_weight(map_config, failed_map_names, failed_map_boost):
+    """Return the temporary boost for one currently failing fixed map."""
+    if map_config["map_name"] in failed_map_names:
+        return float(failed_map_boost)
+    return 1.0
+
+
+def adaptive_success_weight(success_rate):
+    """Convert one recent success rate into a replay boost for weaker map groups."""
+    return 1.0 + max(0.0, 1.0 - float(success_rate)) * 2.0
+
+
+def fixed_family_success(fixed_summary, family_name):
+    """Read one fixed-family success rate from the periodic type summary."""
+    family_summary = fixed_summary.get(str(family_name), {})
+    return float(family_summary.get("success_rate", 1.0))
+
+
+def failed_fixed_case_names(fixed_summary):
+    """Collect the currently failing fixed maps from all tracked fixed families."""
+    failed_names = set()
+    for family_name in FIXED_FAMILY_NAMES:
+        failed_names.update(fixed_summary.get(family_name, {}).get("failed_case_names", []))
+    return failed_names
+
+
+def prefix_match(map_name, prefixes):
+    """Return True when one fixed-map name starts with any requested prefix."""
+    return any(str(map_name).startswith(str(prefix)) for prefix in prefixes)
 
 
 # Callback that keeps CurriculumTeacher's step counter in sync with training

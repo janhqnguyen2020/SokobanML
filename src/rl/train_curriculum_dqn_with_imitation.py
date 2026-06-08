@@ -584,7 +584,7 @@ def build_phase_paths(run_paths, phase_config):
     }
 
 
-def build_phase_eval_callback(phase_paths, periodic_fixed_maps, periodic_procedural_specs, phase_config, phase_elapsed_timesteps):
+def build_phase_eval_callback(phase_paths, periodic_fixed_maps, periodic_procedural_specs, phase_config, phase_elapsed_timesteps, teacher):
     """Create the deterministic periodic checkpoint check used during one RL phase."""
     return PeriodicEvalCallback(
         best_model_path=phase_paths["best_model_path"],
@@ -600,6 +600,7 @@ def build_phase_eval_callback(phase_paths, periodic_fixed_maps, periodic_procedu
         snapshot_base_path=phase_paths["snapshot_base_path"],
         phase_elapsed_timesteps=phase_elapsed_timesteps,
         summary_factory=lambda model: run_periodic_eval(model, periodic_fixed_maps, periodic_procedural_specs),
+        summary_consumer=teacher.applyPeriodicValidationSummary,
     )
 
 
@@ -637,6 +638,7 @@ def run_training_phases(args, run_paths, teacher, model, val_maps, demo_payload)
             phase_procedural_specs,
             phase_config,
             phase_elapsed_timesteps,
+            teacher,
         )
         progress_callback = build_phase_progress_callback(
             teacher,

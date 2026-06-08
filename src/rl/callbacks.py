@@ -102,6 +102,7 @@ class PeriodicEvalCallback(BaseCallback):
         periodic_type_summary_dir=None,
         phase_elapsed_timesteps=0,
         summary_factory=None,
+        summary_consumer=None,
     ):
         super().__init__()
         self.best_model_path = best_model_path
@@ -122,6 +123,7 @@ class PeriodicEvalCallback(BaseCallback):
         self.phaseElapsedTimesteps = int(phase_elapsed_timesteps)
         self.periodicHistory = []
         self.phaseStartTimesteps = 0
+        self.summaryConsumer = summary_consumer
 
     def _init_callback(self):
         """Reset the in-memory periodic history before training starts."""
@@ -177,6 +179,14 @@ class PeriodicEvalCallback(BaseCallback):
         self.periodicHistory.append(history_row)
         maybe_write_json(self.periodicHistoryPath, self.periodicHistory)
         self._save_periodic_type_summary(summary)
+        self._share_periodic_summary(summary)
+
+
+    def _share_periodic_summary(self, summary):
+        """Send one periodic summary to any live training component that wants it."""
+        if self.summaryConsumer is None:
+            return
+        self.summaryConsumer(summary)
 
     def _save_periodic_type_summary(self, summary):
         """Save one per-checkpoint type summary so each 10k eval is easy to inspect."""
