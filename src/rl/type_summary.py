@@ -46,6 +46,7 @@ def build_type_summary(fixed_rows, procedural_rows, fixed_maps):
     """Combine the fixed-map and procedural summaries for one stage."""
     return {
         "fixed": build_fixed_type_summary(fixed_rows, fixed_maps),
+        "fixed_structure": build_fixed_structure_summary(fixed_rows, fixed_maps),
         "procedural": build_procedural_type_summary(procedural_rows),
     }
 
@@ -114,6 +115,17 @@ def build_fixed_type_summary(fixed_rows, fixed_maps):
     }
 
 
+def build_fixed_structure_summary(fixed_rows, fixed_maps):
+    """Summarize fixed validation by box count and inner-wall presence."""
+    summaries = {}
+    for box_count in (1, 2, 3):
+        for has_inner_walls in (False, True):
+            group_name = fixed_structure_group_name(box_count, has_inner_walls)
+            map_names = structure_group_map_names(fixed_maps, box_count, has_inner_walls)
+            summaries[group_name] = summarize_rows(select_rows_by_names(fixed_rows, map_names))
+    return summaries
+
+
 def build_procedural_type_summary(procedural_rows):
     """Summarize the procedural validation episodes for each env family."""
     summaries = {}
@@ -128,6 +140,32 @@ def generated_box_map_names(fixed_maps, num_boxes):
         fixed_maps,
         lambda map_config: map_config.get("map_source") == "generated" and len(map_config["boxes"]) == int(num_boxes),
     )
+
+
+def structure_group_map_names(fixed_maps, box_count, has_inner_walls):
+    """Return fixed-map names that match one box-count and wall-structure bucket."""
+    return matching_map_names(
+        fixed_maps,
+        lambda map_config: map_matches_structure_group(map_config, box_count, has_inner_walls),
+    )
+
+
+def map_matches_structure_group(map_config, box_count, has_inner_walls):
+    """Return True when one fixed map belongs in the requested structure bucket."""
+    if len(map_config["boxes"]) != int(box_count):
+        return False
+    return map_has_inner_walls(map_config) is bool(has_inner_walls)
+
+
+def map_has_inner_walls(map_config):
+    """Return True when one fixed map includes at least one interior wall tile."""
+    return bool(map_config.get("walls", []))
+
+
+def fixed_structure_group_name(box_count, has_inner_walls):
+    """Build a readable key for one fixed box-count and wall-structure bucket."""
+    wall_label = "inner_wall" if has_inner_walls else "no_inner_wall"
+    return f"{int(box_count)}box_{wall_label}"
 
 
 def prefixed_map_names(fixed_maps, prefixes):

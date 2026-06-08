@@ -9,7 +9,7 @@ from src.rl.imitation import (
     solve_map_with_astar,
 )
 from src.rl.validation_videos import (
-    build_validation_video_specs,
+    build_fixed_video_specs,
     build_video_path,
     normalize_frame,
     write_video_file,
@@ -22,10 +22,15 @@ def save_astar_reference_videos(map_configs, output_dir, split_label):
     """Save one expert A* replay video for every deterministic validation case."""
     os.makedirs(output_dir, exist_ok=True)
     saved_rows = []
-    for video_spec in build_validation_video_specs(map_configs):
+    for video_spec in build_reference_video_specs(map_configs):
         saved_rows.append(save_one_astar_reference_video(video_spec, output_dir, split_label))
     write_astar_reference_summary(output_dir, saved_rows)
     return saved_rows
+
+
+def build_reference_video_specs(map_configs):
+    """Build fixed-only video specs for the deterministic A* reference showcase."""
+    return build_fixed_video_specs(map_configs)
 
 
 def save_one_astar_reference_video(video_spec, output_dir, split_label):

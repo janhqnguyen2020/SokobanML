@@ -11,6 +11,11 @@ def build_quick_fixed_eval_maps(map_configs):
     return build_balanced_fixed_eval_maps(map_configs, CURRICULUM_FIXED_VAL_MAPS_PER_GROUP)
 
 
+def build_full_fixed_eval_maps(map_configs):
+    """Return the full held-out fixed split in a deterministic order."""
+    return sorted_fixed_maps(map_configs)
+
+
 def build_periodic_fixed_eval_maps(map_configs):
     """Pick the smaller fixed subset used by periodic checkpoint selection."""
     return build_balanced_fixed_eval_maps(map_configs, CURRICULUM_FIXED_PERIODIC_MAPS_PER_GROUP)
@@ -48,12 +53,17 @@ def select_prefix_maps(map_configs, prefixes, limit):
 def select_matching_maps(map_configs, predicate, limit):
     """Return the first sorted maps that match one family rule."""
     selected_maps = []
-    for map_config in sorted(map_configs, key=lambda item: item["map_name"]):
+    for map_config in sorted_fixed_maps(map_configs):
         if predicate(map_config):
             selected_maps.append(map_config)
         if len(selected_maps) == int(limit):
             return selected_maps
     return selected_maps
+
+
+def sorted_fixed_maps(map_configs):
+    """Sort map dictionaries by name so saved evals are easy to compare across runs."""
+    return sorted(map_configs, key=lambda item: item["map_name"])
 
 
 def prefix_match(map_name, prefixes):

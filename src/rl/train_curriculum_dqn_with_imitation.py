@@ -15,7 +15,7 @@ from src.rl.curriculum_schedule import build_curriculum_phase_configs, find_phas
 from src.rl.evaluate import evaluate_episode, load_model, summarize_results
 from src.rl.astar_reference_videos import save_astar_reference_videos
 from src.rl.failed_map_focus import resolve_failed_map_focus
-from src.rl.fixed_eval_subset import build_quick_fixed_eval_maps
+from src.rl.fixed_eval_subset import build_full_fixed_eval_maps, build_quick_fixed_eval_maps
 from src.rl.imitation import (
     DEFAULT_DEMO_CACHE_PATH,
     DEFAULT_PROCEDURAL_DEMO_CACHE_PATH,
@@ -84,6 +84,7 @@ def parse_args():
     parser.add_argument("--skip-imitation", action="store_true")
     parser.add_argument("--resume-model", default=None)
     parser.add_argument("--resume-replay-buffer", default=None)
+    parser.add_argument("--fresh-run-id-on-resume", action="store_true")
     parser.add_argument("--focus-failed-maps", action="store_true")
     parser.add_argument("--failed-map-csv", default=None)
     parser.add_argument("--failed-map-boost", type=float, default=3.0)
@@ -91,6 +92,8 @@ def parse_args():
     parser.add_argument("--validation-only", action="store_true")
     parser.add_argument("--final-test-only", action="store_true")
     parser.add_argument("--eval-model", default=None)
+    parser.add_argument("--full-validation-fixed", action="store_true")
+    parser.add_argument("--validation-procedural-env-ids", nargs="*", default=None)
     parser.add_argument("--additional-timesteps", type=int, default=None)
     parser.add_argument("--start-phase", type=int, default=1)
     parser.add_argument("--stop-after-phase", type=int, default=len(CURRICULUM_DQN_PHASE_TIMESTEPS))
@@ -199,10 +202,19 @@ def phase_exploration_timesteps(phase_config, phase_timesteps, phase_elapsed_tim
 
 def resolve_training_run_id(args):
     """Reuse the original run folder for resumed training or create a fresh one."""
+    if should_use_fresh_run_id_on_resume(args):
+        return timestamp_run_id()
     existing_run_id = resumed_run_id_to_reuse(args)
     if existing_run_id is not None:
         return existing_run_id
     return timestamp_run_id()
+
+
+def should_use_fresh_run_id_on_resume(args):
+    """Return True when resumed training should avoid overwriting older outputs."""
+    if args.resume_model is None:
+        return False
+    return bool(args.fresh_run_id_on_resume)
 
 
 def resumed_run_id_to_reuse(args):
@@ -260,6 +272,13 @@ def procedural_eval_env_ids_for_model(model_path):
     return list(phase_config["procedural_env_ids"])
 
 
+def validation_procedural_env_ids(args, model_path):
+    """Use the caller's validation env override when provided, else follow the checkpoint phase."""
+    if args.validation_procedural_env_ids is not None:
+        return list(args.validation_procedural_env_ids)
+    return procedural_eval_env_ids_for_model(model_path)
+
+
 def phase_config_for_model_path(model_path):
     """Return the matching phase config when one checkpoint belongs to one curriculum phase."""
     stage_name = checkpoint_stage_name(model_path)
@@ -289,6 +308,13 @@ def resolve_eval_output_dir(model_path, split_name, eval_name):
     run_paths = build_run_paths(run_id)
     ensure_run_directories(run_paths)
     return stage_output_dir(eval_root_dir(run_paths, split_name), checkpoint_stage_name(model_path), eval_name)
+
+
+def validation_fixed_maps(args, split_maps):
+    """Choose either the quick validation subset or the full held-out validation split."""
+    if args.full_validation_fixed:
+        return build_full_fixed_eval_maps(split_maps["val_maps"])
+    return build_quick_fixed_eval_maps(split_maps["val_maps"])
 
 
 def create_training_environment(curriculum_teacher, video_dir):
@@ -543,13 +569,16 @@ def load_phase_training_demo_payload(args, train_maps, pretrain_payload):
 
 
 def phase_demo_guidance_weight(phase_config):
-    """Keep strong expert regularization early, then taper it without dropping to zero."""
+    """Keep the imitation anchor fully on so later phases do not forget earlier skill."""
+    return 1.0
+
+
+def phase_exploration_start_eps(phase_config):
+    """Use a gentler exploration bump once the curriculum starts stressing retention."""
     phase_id = int(phase_config["phase_id"])
-    if phase_id <= 3:
-        return 1.0
-    if phase_id <= 5:
-        return 0.75
-    return 0.50
+    if phase_id <= 2:
+        return 0.20
+    return 0.15
 
 
 def configure_phase_demo_guidance(model, demo_payload, args, phase_config):
@@ -629,7 +658,12 @@ def run_training_phases(args, run_paths, teacher, model, val_maps, demo_payload)
         phase_schedule_timesteps = phase_exploration_timesteps(phase_config, phase_timesteps, phase_elapsed_timesteps)
         teacher.setPhaseConfig(phase_config)
         demo_guidance_weight = configure_phase_demo_guidance(model, demo_payload, args, phase_config)
-        model.start_phase_exploration(0.20, phase_schedule_timesteps, elapsed_phase_timesteps=phase_elapsed_timesteps)
+        start_eps = phase_exploration_start_eps(phase_config)
+        model.start_phase_exploration(
+            start_eps,
+            phase_schedule_timesteps,
+            elapsed_phase_timesteps=phase_elapsed_timesteps,
+        )
         phase_paths = build_phase_paths(run_paths, phase_config)
         phase_procedural_specs = build_phase_procedural_eval_specs(phase_config, args)
         phase_callback = build_phase_eval_callback(
@@ -957,10 +991,10 @@ def resolve_eval_model_path(explicit_model_path):
 def run_validation_only(args, split_maps):
     """Evaluate one checkpoint on the held-out validation splits and save the results."""
     model_path = resolve_eval_model_path(args.eval_model)
-    procedural_env_ids = procedural_eval_env_ids_for_model(model_path)
+    procedural_env_ids = validation_procedural_env_ids(args, model_path)
     eval_dir = resolve_eval_output_dir(model_path, "validation", "validation_only")
     ensure_directory(eval_dir)
-    quick_val_maps = build_quick_fixed_eval_maps(split_maps["val_maps"])
+    quick_val_maps = validation_fixed_maps(args, split_maps)
     save_eval_astar_reference_videos(model_path, split_maps["val_maps"], "validation", "validation", eval_dir)
     result = run_validation_suite(
         model_path,
@@ -997,13 +1031,127 @@ def build_eval_output_dir(eval_name):
 
 
 def print_split_summary(label, model_path, result, output_dir):
-    """Print the key success rates from one validation-only or final-test-only run."""
+    """Print the main saved paths plus a small by-type success table for the user."""
     print(f"{label} complete")
     print(f"  model: {model_path}")
     print(f"  fixed success: {result['fixed']['success_rate']:.3f}")
     print(f"  procedural success: {result['procedural']['success_rate']:.3f}")
     print(f"  output dir: {output_dir}")
     print(f"  A* reference dir: {eval_astar_reference_dir(model_path, label.lower().replace(' ', '_'), output_dir)}")
+    print_type_success_rows(result["type_summary"])
+
+
+def print_type_success_rows(type_summary):
+    """Print the fixed and procedural success rows in a beginner-friendly format."""
+    print("  type summary:")
+    for label_name, success_rate in type_success_rows(type_summary):
+        print(f"    {label_name}: {success_rate:.3f}")
+
+
+def type_success_rows(type_summary):
+    """Return the fixed and procedural success rows shown in the console summary."""
+    return total_fixed_box_rows(type_summary) + fixed_structure_rows(type_summary) + procedural_family_rows(type_summary)
+
+
+def type_success_row(label_name, success_rate):
+    """Bundle one printed type label with its success rate."""
+    return str(label_name), float(success_rate)
+
+
+def total_fixed_box_rows(type_summary):
+    """Show total fixed success for 1-box, 2-box, and 3-box maps across all fixed families."""
+    return [
+        type_success_row("1 box total", total_fixed_box_success(type_summary, 1)),
+        type_success_row("2 box total", total_fixed_box_success(type_summary, 2)),
+        type_success_row("3 box total", total_fixed_box_success(type_summary, 3)),
+    ]
+
+
+def fixed_structure_rows(type_summary):
+    """Show fixed-map success grouped by box count and inner-wall presence."""
+    return [
+        type_success_row("1 box no inner wall", fixed_structure_success(type_summary, "1box_no_inner_wall")),
+        type_success_row("1 box inner wall", fixed_structure_success(type_summary, "1box_inner_wall")),
+        type_success_row("2 box no inner wall", fixed_structure_success(type_summary, "2box_no_inner_wall")),
+        type_success_row("2 box inner wall", fixed_structure_success(type_summary, "2box_inner_wall")),
+        type_success_row("3 box no inner wall", fixed_structure_success(type_summary, "3box_no_inner_wall")),
+        type_success_row("3 box inner wall", fixed_structure_success(type_summary, "3box_inner_wall")),
+    ]
+
+
+def procedural_family_rows(type_summary):
+    """Show the key procedural validation env success rates in a stable console order."""
+    return [
+        type_success_row("small-v0", procedural_type_success(type_summary, "Sokoban-small-v0")),
+        type_success_row("small-v1", procedural_type_success(type_summary, "Sokoban-small-v1")),
+        type_success_row("v0", procedural_type_success(type_summary, "Sokoban-v0")),
+    ]
+
+
+def fixed_type_success(type_summary, family_name):
+    """Read one fixed-family success rate and use zero when that family is absent."""
+    fixed_summary = type_summary["fixed"]
+    family_summary = fixed_summary.get(str(family_name), {})
+    return float(family_summary.get("success_rate", 0.0))
+
+
+def fixed_structure_success(type_summary, group_name):
+    """Read one structure-group success rate and use zero when it is absent."""
+    structure_summary = type_summary.get("fixed_structure", {})
+    group_summary = structure_summary.get(str(group_name), {})
+    return float(group_summary.get("success_rate", 0.0))
+
+
+def procedural_type_success(type_summary, env_id):
+    """Read one procedural-env success rate and use zero when that env is absent."""
+    procedural_summary = type_summary["procedural"]
+    env_summary = procedural_summary.get(str(env_id), {})
+    return float(env_summary.get("success_rate", 0.0))
+
+
+def total_fixed_box_success(type_summary, box_count):
+    """Compute full fixed success for one box count using all fixed families in the summary."""
+    case_names = fixed_case_names(type_summary, box_count, "case_names")
+    failed_case_names = fixed_case_names(type_summary, box_count, "failed_case_names")
+    return success_rate_from_case_names(case_names, failed_case_names)
+
+
+def fixed_case_names(type_summary, box_count, field_name):
+    """Collect the fixed case names whose map names match the requested box count."""
+    selected_names = []
+    for family_summary in type_summary["fixed"].values():
+        selected_names.extend(case_names_with_box_count(family_summary, box_count, field_name))
+    return selected_names
+
+
+def case_names_with_box_count(family_summary, box_count, field_name):
+    """Keep only the case names whose labels show the requested 1b, 2b, or 3b pattern."""
+    selected_names = []
+    for case_name in family_summary.get(str(field_name), []):
+        if box_count_from_case_name(case_name) == int(box_count):
+            selected_names.append(str(case_name))
+    return selected_names
+
+
+def box_count_from_case_name(case_name):
+    """Read the box count from the saved case name label and return zero when it is unknown."""
+    case_name = str(case_name)
+    if "1b_" in case_name:
+        return 1
+    if "2b_" in case_name:
+        return 2
+    if "3b_" in case_name:
+        return 3
+    return 0
+
+
+def success_rate_from_case_names(case_names, failed_case_names):
+    """Convert saved attempted and failed case-name lists into one simple success rate."""
+    attempted_cases = len(case_names)
+    if attempted_cases == 0:
+        return 0.0
+    solved_cases = attempted_cases - len(failed_case_names)
+    return float(solved_cases) / float(attempted_cases)
 
 
 def run_training(args, split_maps):
