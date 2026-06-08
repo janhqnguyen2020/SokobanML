@@ -33,6 +33,8 @@ from src.utils.config import (
     CURRICULUM_DQN_MAX_BOXES,
     CURRICULUM_DQN_PROCEDURAL_FRACTION,
     CURRICULUM_DQN_TOTAL_STEPS,
+    CURRICULUM_EPS_STAGE_SCHEDULE,
+    CURRICULUM_EPS_USE_STAGE_RESET,
     HIGH_LEVEL_DQN_BACKBONE,
     HIGH_LEVEL_DQN_CNN_FEATURES_DIM,
     HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS,
@@ -204,11 +206,28 @@ def buildPolicyConfig(env):
     return policyConfig
 
 
-def createMaskedDQNModel(env, trainingOutputPaths):
+def createMaskedDQNModel(env, trainingOutputPaths, init_model_path=None):
+    curriculum_eps = CURRICULUM_EPS_STAGE_SCHEDULE if CURRICULUM_EPS_USE_STAGE_RESET else None
+
+    if init_model_path:
+        LOGGER.info("Warm-starting weights from %s", init_model_path)
+        model = MaskedDQN.load(
+            init_model_path,
+            env=env,
+            tensorboard_log=trainingOutputPaths["tensorboard_dir"],
+            device="auto",
+        )
+        model._curriculum_eps_schedule = None
+        model.exploration_initial_eps = HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS
+        model.exploration_rate = HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS
+        model.exploration_final_eps = HIGH_LEVEL_DQN_EXPLORATION_FINAL_EPS
+        return model
+
     return MaskedDQN(
         "MlpPolicy",
         env,
         action_mask_size=env.action_space.n,
+        curriculum_eps_schedule=curriculum_eps,
         tensorboard_log=trainingOutputPaths["tensorboard_dir"],
         buffer_size=CURRICULUM_DQN_BUFFER_SIZE,
         learning_rate=CURRICULUM_DQN_LEARNING_RATE,
@@ -230,7 +249,7 @@ def createMaskedDQNModel(env, trainingOutputPaths):
 
 # Main training entry point
 
-def train():
+def train(init_model_path=None):
     set_random_seed(SEED)
 
     run_id = f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S_%f')}_seed{SEED}"
@@ -246,7 +265,7 @@ def train():
     curriculumTeacher = CurriculumTeacher(trainingCurriculumMaps, proceduralFraction=CURRICULUM_DQN_PROCEDURAL_FRACTION)
 
     env = createTrainingEnvironment(curriculumTeacher, run_id=run_id)
-    model = createMaskedDQNModel(env, trainingOutputPaths)
+    model = createMaskedDQNModel(env, trainingOutputPaths, init_model_path=init_model_path)
 
     # Eval on the same pool used for training so success_rate is meaningful
     evalCallback = PeriodicEvalCallback(

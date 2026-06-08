@@ -1,3 +1,2 @@
-algorithm,group,total_runs,solved_runs,success_rate,avg_steps,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
-bfs,curriculum,10,10,1.0,22.7,40366.673,20892.0,28777.0
-bfs,all,10,10,1.0,22.7,40366.673,20892.0,28777.0
+algorithm,group,total_runs,solved_runs,success_rate,avg_num_steps,avg_num_pushes,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
+bfs,curriculum,60,55,0.9167,37.0333,7.2,6362.108,27886.3,24433.0667

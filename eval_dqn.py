@@ -6,7 +6,8 @@ Modes
 procedural  -- Sokoban-small-v1 procedural maps (generalization test)
 currTrain   -- All curriculum training maps: generated 1/2/3-box + walled 1/2/3-box
                + hand-crafted curr_01-10. NOT a held-out test set.
-finalEval   -- Held-out evaluation maps (not yet defined — placeholder)
+finalEval   -- Held-out benchmark: 150 maps (50 one-box + 50 two-box + 50 three-box),
+               seed=999, never seen during training.
 
 Examples
 --------
@@ -15,6 +16,8 @@ python eval_dqn.py --mode procedural --episodes 50
 python eval_dqn.py --mode currTrain
 python eval_dqn.py --mode currTrain --boxes 3
 python eval_dqn.py --mode currTrain --save --note "500k_seed42"
+python eval_dqn.py --mode finalEval
+python eval_dqn.py --mode finalEval --boxes 3 --episodes 5 --save --note "v2_final"
 python eval_dqn.py --model results/rl_tests/curriculum_dqn/<run>/curriculum_dqn_best.zip
 python eval_dqn.py --show-ui --episodes 1
 """
@@ -32,8 +35,11 @@ from src.rl.train_curriculum_dqn import (
     createCurriculumEvalEnvironment,
     createEvaluationEnvironment,
 )
-from src.utils.config import CURRICULUM_DQN_CANVAS_SHAPE, CURRICULUM_DQN_MAX_BOXES
+from src.utils.config import CURRICULUM_DQN_CANVAS_SHAPE, CURRICULUM_DQN_MAX_BOXES, MAX_STEPS
 from src.utils.custom_maps import build_curriculum_maps
+from src.utils.final_eval_maps import (
+    build_final_eval_1box_maps, build_final_eval_2box_maps, build_final_eval_3box_maps,
+)
 from src.utils.generated_maps import (
     build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps,
     build_walled_1box_maps, build_walled_2box_maps, build_walled_3box_maps,
@@ -64,6 +70,19 @@ def _find_latest_model():
 # ---------------------------------------------------------------------------
 # Map group builders
 # ---------------------------------------------------------------------------
+
+def _build_final_eval_groups(boxes_filter):
+    """Return [(label, [maps])] for the held-out FinalEval set (seed=999)."""
+    groups_all = {
+        "1-box": build_final_eval_1box_maps(),
+        "2-box": build_final_eval_2box_maps(),
+        "3-box": build_final_eval_3box_maps(),
+    }
+    if boxes_filter == "all":
+        return list(groups_all.items())
+    key = f"{boxes_filter}-box"
+    return [(key, groups_all.get(key, []))]
+
 
 def _build_curr_train_groups(boxes_filter):
     """Return [(label, [maps])] for the full currTrain pool, optionally filtered by box count."""
@@ -100,6 +119,8 @@ def _run_episode_ui(model, env, map_name, episode_num):
     done = False
     num_steps = 0
     num_pushes = 0
+    invalid_macro_actions = 0
+    best_boxes_on_target = 0
     total_reward = 0.0
     info = {}
     start_time = time.time()
@@ -114,6 +135,16 @@ def _run_episode_ui(model, env, map_name, episode_num):
         num_steps += 1
         if info.get("executed_push"):
             num_pushes += 1
+        if info.get("invalid_macro_action"):
+            invalid_macro_actions += 1
+        best_boxes_on_target = max(
+            best_boxes_on_target,
+            int(info.get("best_boxes_on_target", info.get("boxes_on_target", 0))),
+        )
+        if num_steps >= MAX_STEPS and not done:
+            done = True
+            info["truncated"] = True
+            info.setdefault("termination_reason", "max_steps")
         frame = env.render(mode="rgb_array")
         solved = info.get("all_boxes_on_target", False)
         reason = info.get("termination_reason", "")
@@ -129,9 +160,11 @@ def _run_episode_ui(model, env, map_name, episode_num):
         "num_pushes": num_pushes,
         "runtime_ms": (time.time() - start_time) * 1000.0,
         "total_reward": round(float(total_reward), 3),
+        "invalid_macro_actions": invalid_macro_actions,
+        "truncated": bool(info.get("truncated", False)),
         "termination_reason": str(info.get("termination_reason", "unknown")),
         "boxes_on_target": boxes_on_target,
-        "best_boxes_on_target": int(info.get("best_boxes_on_target", boxes_on_target)),
+        "best_boxes_on_target": best_boxes_on_target,
     }
 
 
@@ -147,7 +180,6 @@ def _run_map_episodes(model, map_config, n_episodes, show_ui):
         for ep in range(n_episodes):
             if show_ui:
                 results.append(_run_episode_ui(model, env, map_config["map_name"], ep + 1))
-                env.reset()
             else:
                 results.append(_run_episode_silent(model, env))
     finally:
@@ -269,7 +301,7 @@ def main():
         "--boxes",
         choices=["1", "2", "3", "all"],
         default="all",
-        help="Box count filter for currTrain (default: all)",
+        help="Box count filter for currTrain / finalEval (default: all)",
     )
     parser.add_argument(
         "--episodes",
@@ -299,11 +331,6 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.mode == "finalEval":
-        print("finalEval mode is not yet defined — no held-out maps exist yet.")
-        print("Add maps to eval_dqn.py under _build_final_eval_groups() when ready.")
-        return
-
     model_path = args.model or _find_latest_model()
     model = MaskedDQN.load(model_path)
 
@@ -331,8 +358,12 @@ def main():
         _print_group_summary("Sokoban-small-v1", results)
         group_summaries["procedural"] = summarize_results(results)
 
-    else:  # currTrain
-        groups = _build_curr_train_groups(args.boxes)
+    else:  # currTrain or finalEval — same loop, different map source
+        if args.mode == "finalEval":
+            groups = _build_final_eval_groups(args.boxes)
+            print("  Source: held-out FinalEval benchmark (seed=999, never seen during training)")
+        else:
+            groups = _build_curr_train_groups(args.boxes)
         total_maps = sum(len(maps) for _, maps in groups)
         print(f"  {total_maps} maps  x  {args.episodes} episodes each\n")
         _print_table_header()

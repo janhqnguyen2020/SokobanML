@@ -10,8 +10,12 @@ class MaskedDQN(DQN):
     Filter invalid macro-actions based on the action masks produced by high_level_env
     """
 
-    def __init__(self, *args, action_mask_size=None, **kwargs):
+    def __init__(self, *args, action_mask_size=None, curriculum_eps_schedule=None, **kwargs):
         self.action_mask_size = action_mask_size
+        # Optional per-stage epsilon schedule for curriculum training.
+        # List of (stage_start_fraction, stage_end_fraction, eps_start, eps_end).
+        # When set, overrides SB3's global linear decay after each _on_step call.
+        self._curriculum_eps_schedule = curriculum_eps_schedule
         super().__init__(*args, **kwargs)
 
 
@@ -103,6 +107,25 @@ class MaskedDQN(DQN):
         action = action.reshape(1) if action.ndim == 0 else action
         return action, action.copy()
 
+
+    def _on_step(self) -> None:
+        # Let SB3 handle the target network polyak update and its own epsilon calc.
+        super()._on_step()
+        # Then overwrite exploration_rate with our stage-aware value so that
+        # predict() and _sample_action() see the curriculum epsilon, not SB3's.
+        if self._curriculum_eps_schedule:
+            progress = self.num_timesteps / max(self._total_timesteps, 1)
+            self.exploration_rate = self._compute_stage_epsilon(progress)
+            self.logger.record("rollout/exploration_rate", self.exploration_rate)
+
+    def _compute_stage_epsilon(self, progress: float) -> float:
+        # Walk through stages in order; return linearly interpolated epsilon for
+        # whichever stage we are currently in.
+        for start, end, eps_start, eps_end in self._curriculum_eps_schedule:
+            if progress <= end:
+                t = max(0.0, min(1.0, (progress - start) / max(end - start, 1e-8)))
+                return eps_start + t * (eps_end - eps_start)
+        return self.exploration_final_eps
 
     def train(self, gradient_steps: int, batch_size: int = 100) -> None:
         self.policy.set_training_mode(True)

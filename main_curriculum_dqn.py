@@ -14,6 +14,7 @@ Usage:
     python main_curriculum_dqn.py
 """
 
+import argparse
 import json
 import logging
 import os
@@ -91,10 +92,21 @@ def _select_checkpoint(run_dir, final_path, best_path, seeds, env_factory):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--init-model",
+        default=None,
+        metavar="PATH",
+        help="Warm-start from an existing .zip checkpoint (weights only, replay buffer resets).",
+    )
+    args = parser.parse_args()
+
     _configure_logging()
     print("=== CURRICULUM DQN ===")
+    if args.init_model:
+        print(f"Warm-starting from: {args.init_model}")
 
-    _, run_dir = train()
+    _, run_dir = train(init_model_path=args.init_model)
 
     final_path = os.path.join(run_dir, "curriculum_dqn_final.zip")
     best_path  = os.path.join(run_dir, "curriculum_dqn_best.zip")
