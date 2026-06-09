@@ -377,20 +377,27 @@ class CurriculumProgressCallback:
 
 # Environment factories
 
-def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=None, procedural_env_id=None):
+def createSokobanEnvironment(use_shaped_reward, curriculumTeacher=None, seed=None, procedural_env_id=None, max_boxes=None):
     """Build one high-level Sokoban env around either a default or chosen procedural env."""
     env = HighLevelSokobanEnv(
         env=create_procedural_env(procedural_env_id, seed) if procedural_env_id is not None else None,
         observation_board_shape=CURRICULUM_DQN_CANVAS_SHAPE,
         use_extra_scalar_features=HIGH_LEVEL_USE_EXTRA_SCALAR_FEATURES,
         use_shaped_reward=use_shaped_reward,
-        max_boxes=CURRICULUM_DQN_MAX_BOXES,
+        max_boxes=resolved_curriculum_max_boxes(max_boxes),
         map_sampler=curriculumTeacher,
     )
     if seed is not None:
         env.seed(seed)
         env.action_space.seed(seed)
     return env
+
+
+def resolved_curriculum_max_boxes(max_boxes):
+    """Use the requested max-box count or fall back to the current curriculum default."""
+    if max_boxes is None:
+        return int(CURRICULUM_DQN_MAX_BOXES)
+    return int(max_boxes)
 
 
 def create_procedural_env(procedural_env_id, seed):
@@ -426,17 +433,18 @@ def createTrainingEnvironment(curriculumTeacher, run_id=None):
     return VideoWrapper(env, recorder)
 
 
-def createEvaluationEnvironment(env_id=None, seed=None):
+def createEvaluationEnvironment(env_id=None, seed=None, max_boxes=None):
     """Build one procedural evaluation env for the requested gym_sokoban id."""
     return createSokobanEnvironment(
         use_shaped_reward=False,
         curriculumTeacher=None,
         seed=SEED + 1 if seed is None else seed,
         procedural_env_id=env_id,
+        max_boxes=max_boxes,
     )
 
 
-def createCurriculumEvalEnvironment(trainingCurriculumMaps):
+def createCurriculumEvalEnvironment(trainingCurriculumMaps, max_boxes=None):
     """Cycles through all curriculum maps deterministically for consistent eval."""
     idx = {"i": 0}
 
@@ -445,7 +453,12 @@ def createCurriculumEvalEnvironment(trainingCurriculumMaps):
         idx["i"] += 1
         return config
 
-    return createSokobanEnvironment(use_shaped_reward=False, curriculumTeacher=cycleThroughMaps, seed=SEED + 2)
+    return createSokobanEnvironment(
+        use_shaped_reward=False,
+        curriculumTeacher=cycleThroughMaps,
+        seed=SEED + 2,
+        max_boxes=max_boxes,
+    )
 
 
 # Model and path builders

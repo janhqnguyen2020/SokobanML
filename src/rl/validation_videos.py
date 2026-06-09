@@ -10,13 +10,13 @@ from src.rl.evaluate import load_model
 from src.rl.train_curriculum_dqn import createCurriculumEvalEnvironment, createEvaluationEnvironment
 
 
-def save_validation_videos(model_path, fixed_maps, procedural_specs, output_dir, split_label):
+def save_validation_videos(model_path, fixed_maps, procedural_specs, output_dir, split_label, eval_max_boxes=None):
     """Save videos for the same fixed maps and procedural episodes used in validation."""
     model = load_model(model_path, "dqn")
     os.makedirs(output_dir, exist_ok=True)
     saved_rows = []
     for video_spec in build_validation_video_specs(fixed_maps, procedural_specs):
-        saved_rows.append(save_one_validation_video(model, output_dir, split_label, video_spec))
+        saved_rows.append(save_one_validation_video(model, output_dir, split_label, video_spec, eval_max_boxes))
     write_video_summary(output_dir, saved_rows)
     return saved_rows
 
@@ -64,9 +64,9 @@ def procedural_video_tag(procedural_spec):
     return f"{env_tag}_{episode_index:03d}"
 
 
-def save_one_validation_video(model, output_dir, split_label, video_spec):
+def save_one_validation_video(model, output_dir, split_label, video_spec, eval_max_boxes):
     """Run one deterministic validation case and save its replay as a video."""
-    env = build_video_env(video_spec)
+    env = build_video_env(video_spec, eval_max_boxes)
     prepare_video_env(env)
     try:
         frames, result = collect_video_frames(model, env, video_seed(video_spec))
@@ -77,11 +77,11 @@ def save_one_validation_video(model, output_dir, split_label, video_spec):
     return build_video_row(video_spec, split_label, video_path, result)
 
 
-def build_video_env(video_spec):
+def build_video_env(video_spec, eval_max_boxes):
     """Create the fixed or procedural env used for one saved validation video."""
     if video_spec["kind"] == "fixed":
-        return createCurriculumEvalEnvironment([video_spec["map_config"]])
-    return createEvaluationEnvironment(env_id=video_spec["env_id"], seed=video_spec["seed"])
+        return createCurriculumEvalEnvironment([video_spec["map_config"]], max_boxes=eval_max_boxes)
+    return createEvaluationEnvironment(env_id=video_spec["env_id"], seed=video_spec["seed"], max_boxes=eval_max_boxes)
 
 
 def prepare_video_env(env):

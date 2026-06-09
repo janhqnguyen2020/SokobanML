@@ -12,7 +12,7 @@ from stable_baselines3.common.utils import set_random_seed
 
 from src.rl.callbacks import PeriodicEvalCallback, PhaseProgressCallback
 from src.rl.curriculum_schedule import build_curriculum_phase_configs, find_phase_config
-from src.rl.evaluate import evaluate_episode, load_model, summarize_results
+from src.rl.evaluate import evaluate_episode, load_model, saved_model_max_boxes, summarize_results
 from src.rl.astar_reference_videos import save_astar_reference_videos
 from src.rl.failed_map_focus import resolve_failed_map_focus
 from src.rl.fixed_eval_subset import build_full_fixed_eval_maps, build_quick_fixed_eval_maps
@@ -30,7 +30,7 @@ from src.rl.imitation import (
 )
 from src.rl.imitation_audit import save_astar_audit_videos
 from src.rl.masked_dqn import MaskedDQN
-from src.rl.type_summary import build_phase_history_row, build_type_summary, phase_history_columns, write_type_summary
+from src.rl.type_summary import build_phase_history_row, build_type_summary, fixed_structure_group_name, phase_history_columns, write_type_summary
 from src.rl.train_curriculum_dqn import (
     CurriculumTeacher,
     createCurriculumEvalEnvironment,
@@ -92,6 +92,7 @@ def parse_args():
     parser.add_argument("--validation-only", action="store_true")
     parser.add_argument("--final-test-only", action="store_true")
     parser.add_argument("--eval-model", default=None)
+    parser.add_argument("--eval-max-boxes", type=int, default=None)
     parser.add_argument("--full-validation-fixed", action="store_true")
     parser.add_argument("--validation-procedural-env-ids", nargs="*", default=None)
     parser.add_argument("--additional-timesteps", type=int, default=None)
@@ -293,6 +294,16 @@ def phase_config_for_model_path(model_path):
 def phase_stage_name(phase_config):
     """Build the folder and checkpoint label used by one curriculum phase."""
     return f"phase{phase_config['phase_id']}_{phase_config['phase_name']}"
+
+
+def validation_max_boxes(args, model_path):
+    """Choose the requested eval max-box count or infer it from the checkpoint."""
+    if args.eval_max_boxes is not None:
+        return int(args.eval_max_boxes)
+    inferred_max_boxes = saved_model_max_boxes(model_path)
+    if inferred_max_boxes is None:
+        return CURRICULUM_DQN_MAX_BOXES
+    return int(inferred_max_boxes)
 
 
 def ensure_directory(path):
@@ -799,7 +810,7 @@ def evaluate_fixed_results_with_model(model, map_configs):
 
 def evaluate_fixed_map_with_model(model, map_config):
     """Evaluate one model on one fixed map and return the raw episode result."""
-    env = createCurriculumEvalEnvironment([map_config])
+    env = createCurriculumEvalEnvironment([map_config], max_boxes=model_max_boxes(model))
     try:
         return evaluate_episode(model, env, log_progress=False)
     finally:
@@ -819,7 +830,11 @@ def evaluate_procedural_results_with_model(model, procedural_specs):
 
 def evaluate_procedural_spec_with_model(model, procedural_spec):
     """Evaluate one model on one deterministic procedural environment case."""
-    env = createEvaluationEnvironment(env_id=procedural_spec["env_id"], seed=procedural_spec["seed"])
+    env = createEvaluationEnvironment(
+        env_id=procedural_spec["env_id"],
+        seed=procedural_spec["seed"],
+        max_boxes=model_max_boxes(model),
+    )
     try:
         return evaluate_episode(model, env, log_progress=False, reset_seed=procedural_spec["seed"])
     finally:
@@ -829,6 +844,18 @@ def evaluate_procedural_spec_with_model(model, procedural_spec):
 def evaluation_group(rows, results):
     """Bundle rows, raw episode results, and one aggregate summary together."""
     return {"rows": rows, "results": results, "summary": summarize_results(results)}
+
+
+def model_max_boxes(model):
+    """Read the model action-space width and convert it into one box-count limit."""
+    return int(model.action_space.n) // 4
+
+
+def resolved_eval_max_boxes(eval_max_boxes, model):
+    """Use the explicit eval max-box count or fall back to the loaded model width."""
+    if eval_max_boxes is not None:
+        return int(eval_max_boxes)
+    return model_max_boxes(model)
 
 
 def periodic_eval_summary(fixed_result, procedural_result, fixed_maps):
@@ -841,14 +868,14 @@ def periodic_eval_summary(fixed_result, procedural_result, fixed_maps):
     return summary
 
 
-def run_validation_suite(model_path, fixed_maps, env_ids, episodes_per_env, split_label, output_dir):
+def run_validation_suite(model_path, fixed_maps, env_ids, episodes_per_env, split_label, output_dir, eval_max_boxes=None):
     """Evaluate one checkpoint on fixed maps and procedural envs, then save both."""
-    fixed_result = evaluate_fixed_maps(model_path, fixed_maps, split_label)
+    fixed_result = evaluate_fixed_maps(model_path, fixed_maps, split_label, eval_max_boxes)
     procedural_specs = build_procedural_eval_specs(env_ids, episodes_per_env, procedural_seed_base(split_label))
-    procedural_result = evaluate_procedural_specs(model_path, procedural_specs, split_label)
+    procedural_result = evaluate_procedural_specs(model_path, procedural_specs, split_label, eval_max_boxes)
     save_split_evaluation(output_dir, split_label, fixed_result, procedural_result)
     type_summary = write_type_summary(output_dir, fixed_result["rows"], procedural_result["rows"], fixed_maps)
-    save_validation_videos(model_path, fixed_maps, procedural_specs, os.path.join(output_dir, "videos"), split_label)
+    save_validation_videos(model_path, fixed_maps, procedural_specs, os.path.join(output_dir, "videos"), split_label, eval_max_boxes)
     return {
         "fixed": fixed_result["summary"],
         "procedural": procedural_result["summary"],
@@ -881,13 +908,13 @@ def procedural_seed_base(split_label):
     return SEED + 30_000
 
 
-def evaluate_fixed_maps(model_path, map_configs, split_label):
+def evaluate_fixed_maps(model_path, map_configs, split_label, eval_max_boxes=None):
     """Evaluate one checkpoint on a fixed list of held-out custom map dictionaries."""
     model = load_model(model_path, "dqn")
     rows = []
     results = []
     for map_config in map_configs:
-        env = createCurriculumEvalEnvironment([map_config])
+        env = createCurriculumEvalEnvironment([map_config], max_boxes=resolved_eval_max_boxes(eval_max_boxes, model))
         try:
             result = evaluate_episode(model, env, log_progress=False)
         finally:
@@ -908,13 +935,17 @@ def fixed_result_row(map_config, split_label, result):
     return row
 
 
-def evaluate_procedural_specs(model_path, procedural_specs, split_label):
+def evaluate_procedural_specs(model_path, procedural_specs, split_label, eval_max_boxes=None):
     """Evaluate one checkpoint on a deterministic list of procedural env episodes."""
     model = load_model(model_path, "dqn")
     rows = []
     results = []
     for procedural_spec in procedural_specs:
-        env = createEvaluationEnvironment(env_id=procedural_spec["env_id"], seed=procedural_spec["seed"])
+        env = createEvaluationEnvironment(
+            env_id=procedural_spec["env_id"],
+            seed=procedural_spec["seed"],
+            max_boxes=resolved_eval_max_boxes(eval_max_boxes, model),
+        )
         try:
             result = evaluate_episode(model, env, log_progress=False, reset_seed=procedural_spec["seed"])
         finally:
@@ -992,6 +1023,7 @@ def run_validation_only(args, split_maps):
     """Evaluate one checkpoint on the held-out validation splits and save the results."""
     model_path = resolve_eval_model_path(args.eval_model)
     procedural_env_ids = validation_procedural_env_ids(args, model_path)
+    eval_max_boxes = validation_max_boxes(args, model_path)
     eval_dir = resolve_eval_output_dir(model_path, "validation", "validation_only")
     ensure_directory(eval_dir)
     quick_val_maps = validation_fixed_maps(args, split_maps)
@@ -1003,6 +1035,7 @@ def run_validation_only(args, split_maps):
         args.procedural_val_episodes_per_env,
         "validation",
         eval_dir,
+        eval_max_boxes,
     )
     print_split_summary("Validation", model_path, result, eval_dir)
 
@@ -1011,6 +1044,7 @@ def run_final_test_only(args, split_maps):
     """Evaluate one checkpoint on the held-out final-test splits and save the results."""
     model_path = resolve_eval_model_path(args.eval_model)
     procedural_env_ids = procedural_eval_env_ids_for_model(model_path)
+    eval_max_boxes = validation_max_boxes(args, model_path)
     eval_dir = resolve_eval_output_dir(model_path, "final_test", "final_test_only")
     ensure_directory(eval_dir)
     save_eval_astar_reference_videos(model_path, split_maps["test_maps"], "final_test", "final_test", eval_dir)
@@ -1021,6 +1055,7 @@ def run_final_test_only(args, split_maps):
         args.procedural_test_episodes_per_env,
         "final_test",
         eval_dir,
+        eval_max_boxes,
     )
     print_split_summary("Final test", model_path, result, eval_dir)
 
@@ -1042,49 +1077,97 @@ def print_split_summary(label, model_path, result, output_dir):
 
 
 def print_type_success_rows(type_summary):
-    """Print the fixed and procedural success rows in a beginner-friendly format."""
+    """Print both source-based and structure-based validation summaries."""
     print("  type summary:")
-    for label_name, success_rate in type_success_rows(type_summary):
-        print(f"    {label_name}: {success_rate:.3f}")
+    for label_name, solved_count, attempted_count, success_rate in source_type_success_rows(type_summary):
+        print(f"    {label_name}: {solved_count}/{attempted_count} = {success_rate:.3f}")
+    print("  structure summary:")
+    print("    fixed only:")
+    for label_name, solved_count, attempted_count, success_rate in fixed_structure_rows(type_summary):
+        print(f"      {label_name}: {solved_count}/{attempted_count} = {success_rate:.3f}")
+    print("    procedural only:")
+    for label_name, solved_count, attempted_count, success_rate in procedural_structure_rows(type_summary):
+        print(f"      {label_name}: {solved_count}/{attempted_count} = {success_rate:.3f}")
+    print("    combined fixed + procedural:")
+    for label_name, solved_count, attempted_count, success_rate in combined_structure_rows(type_summary):
+        print(f"      {label_name}: {solved_count}/{attempted_count} = {success_rate:.3f}")
 
 
-def type_success_rows(type_summary):
-    """Return the fixed and procedural success rows shown in the console summary."""
-    return total_fixed_box_rows(type_summary) + fixed_structure_rows(type_summary) + procedural_family_rows(type_summary)
+def source_type_success_rows(type_summary):
+    """Return the source-based rows shown in the top summary block."""
+    return total_fixed_box_rows(type_summary) + fixed_family_rows(type_summary) + procedural_family_rows(type_summary)
 
 
 def type_success_row(label_name, success_rate):
     """Bundle one printed type label with its success rate."""
-    return str(label_name), float(success_rate)
+    return type_success_count_row(label_name, 0, 0, success_rate)
+
+
+def type_success_count_row(label_name, solved_count, attempted_count, success_rate):
+    """Bundle one printed type label with solved, attempted, and success-rate values."""
+    return str(label_name), int(solved_count), int(attempted_count), float(success_rate)
 
 
 def total_fixed_box_rows(type_summary):
     """Show total fixed success for 1-box, 2-box, and 3-box maps across all fixed families."""
     return [
-        type_success_row("1 box total", total_fixed_box_success(type_summary, 1)),
-        type_success_row("2 box total", total_fixed_box_success(type_summary, 2)),
-        type_success_row("3 box total", total_fixed_box_success(type_summary, 3)),
+        box_total_row(type_summary, 1),
+        box_total_row(type_summary, 2),
+        box_total_row(type_summary, 3),
+    ]
+
+
+def fixed_family_rows(type_summary):
+    """Show the original fixed source families for easier run-to-run comparison."""
+    return [
+        summary_group_row(type_summary["fixed"], "generated 1 box", "generated_1box"),
+        summary_group_row(type_summary["fixed"], "generated 2 box", "generated_2box"),
+        summary_group_row(type_summary["fixed"], "generated 3 box", "generated_3box"),
+        summary_group_row(type_summary["fixed"], "walled", "walled"),
+        summary_group_row(type_summary["fixed"], "csp", "csp"),
     ]
 
 
 def fixed_structure_rows(type_summary):
     """Show fixed-map success grouped by box count and inner-wall presence."""
+    structure_summary = type_summary.get("fixed_structure", {})
     return [
-        type_success_row("1 box no inner wall", fixed_structure_success(type_summary, "1box_no_inner_wall")),
-        type_success_row("1 box inner wall", fixed_structure_success(type_summary, "1box_inner_wall")),
-        type_success_row("2 box no inner wall", fixed_structure_success(type_summary, "2box_no_inner_wall")),
-        type_success_row("2 box inner wall", fixed_structure_success(type_summary, "2box_inner_wall")),
-        type_success_row("3 box no inner wall", fixed_structure_success(type_summary, "3box_no_inner_wall")),
-        type_success_row("3 box inner wall", fixed_structure_success(type_summary, "3box_inner_wall")),
+        summary_group_row(structure_summary, "1 box no inner wall", "1box_no_inner_wall"),
+        summary_group_row(structure_summary, "1 box inner wall", "1box_inner_wall"),
+        summary_group_row(structure_summary, "2 box no inner wall", "2box_no_inner_wall"),
+        summary_group_row(structure_summary, "2 box inner wall", "2box_inner_wall"),
+        summary_group_row(structure_summary, "3 box no inner wall", "3box_no_inner_wall"),
+        summary_group_row(structure_summary, "3 box inner wall", "3box_inner_wall"),
     ]
 
 
 def procedural_family_rows(type_summary):
     """Show the key procedural validation env success rates in a stable console order."""
+    procedural_summary = type_summary["procedural"]
     return [
-        type_success_row("small-v0", procedural_type_success(type_summary, "Sokoban-small-v0")),
-        type_success_row("small-v1", procedural_type_success(type_summary, "Sokoban-small-v1")),
-        type_success_row("v0", procedural_type_success(type_summary, "Sokoban-v0")),
+        summary_group_row(procedural_summary, "small-v0", "Sokoban-small-v0"),
+        summary_group_row(procedural_summary, "small-v1", "Sokoban-small-v1"),
+        summary_group_row(procedural_summary, "v0", "Sokoban-v0"),
+    ]
+
+
+def procedural_structure_rows(type_summary):
+    """Show procedural validation grouped into the structure buckets it always uses."""
+    return [
+        procedural_structure_row(type_summary, 2),
+        procedural_structure_row(type_summary, 3),
+    ]
+
+
+def combined_structure_rows(type_summary):
+    """Show fixed and procedural results merged into one structure-based view."""
+    return [
+        combined_structure_row(type_summary, 1, False),
+        combined_structure_row(type_summary, 1, True),
+        combined_structure_row(type_summary, 2, False),
+        combined_structure_row(type_summary, 2, True),
+        combined_structure_row(type_summary, 3, False),
+        combined_structure_row(type_summary, 3, True),
     ]
 
 
@@ -1107,6 +1190,115 @@ def procedural_type_success(type_summary, env_id):
     procedural_summary = type_summary["procedural"]
     env_summary = procedural_summary.get(str(env_id), {})
     return float(env_summary.get("success_rate", 0.0))
+
+
+def procedural_two_box_inner_wall_success(type_summary):
+    """Return the procedural success for the always-2-box small-v0 environment."""
+    return procedural_type_success(type_summary, "Sokoban-small-v0")
+
+
+def procedural_three_box_inner_wall_success(type_summary):
+    """Combine the always-3-box procedural environments into one success rate."""
+    case_names = procedural_case_names(
+        type_summary,
+        ["Sokoban-small-v1", "Sokoban-v0"],
+        "case_names",
+    )
+    failed_case_names = procedural_case_names(
+        type_summary,
+        ["Sokoban-small-v1", "Sokoban-v0"],
+        "failed_case_names",
+    )
+    return success_rate_from_case_names(case_names, failed_case_names)
+
+
+def box_total_row(type_summary, box_count):
+    """Return one fixed box-total row with solved and attempted counts."""
+    case_names = fixed_case_names(type_summary, box_count, "case_names")
+    failed_case_names = fixed_case_names(type_summary, box_count, "failed_case_names")
+    solved_count = solved_count_from_case_names(case_names, failed_case_names)
+    return type_success_count_row(
+        f"fixed {int(box_count)} box total",
+        solved_count,
+        len(case_names),
+        success_rate_from_case_names(case_names, failed_case_names),
+    )
+
+
+def summary_group_row(summary_group, label_name, key_name):
+    """Return one row from a saved summary group using its own solved and attempted counts."""
+    group_summary = summary_group.get(str(key_name), {})
+    return type_success_count_row(
+        label_name,
+        group_solved_count(group_summary),
+        group_attempted_count(group_summary),
+        group_success_rate(group_summary),
+    )
+
+
+def procedural_structure_row(type_summary, box_count):
+    """Return one procedural structure row for the current 2-box or 3-box procedural cases."""
+    label_name = f"{int(box_count)} box inner wall"
+    env_ids = ["Sokoban-small-v0"] if int(box_count) == 2 else ["Sokoban-small-v1", "Sokoban-v0"]
+    case_names = procedural_case_names(type_summary, env_ids, "case_names")
+    failed_case_names = procedural_case_names(type_summary, env_ids, "failed_case_names")
+    solved_count = solved_count_from_case_names(case_names, failed_case_names)
+    return type_success_count_row(
+        label_name,
+        solved_count,
+        len(case_names),
+        success_rate_from_case_names(case_names, failed_case_names),
+    )
+
+
+def combined_structure_row(type_summary, box_count, has_inner_walls):
+    """Return one combined fixed and procedural structure row with solved and attempted counts."""
+    case_names, failed_case_names = combined_structure_case_names(type_summary, box_count, has_inner_walls)
+    solved_count = solved_count_from_case_names(case_names, failed_case_names)
+    label_name = f"{int(box_count)} box {'inner wall' if has_inner_walls else 'no inner wall'}"
+    return type_success_count_row(
+        label_name,
+        solved_count,
+        len(case_names),
+        success_rate_from_case_names(case_names, failed_case_names),
+    )
+
+
+def procedural_case_names(type_summary, env_ids, field_name):
+    """Collect procedural case names from one or more environment ids."""
+    selected_names = []
+    for env_id in env_ids:
+        env_summary = type_summary["procedural"].get(str(env_id), {})
+        selected_names.extend([str(case_name) for case_name in env_summary.get(str(field_name), [])])
+    return selected_names
+
+
+def combined_structure_success(type_summary, box_count, has_inner_walls):
+    """Combine fixed and procedural rows that share one box count and wall pattern."""
+    case_names, failed_case_names = combined_structure_case_names(type_summary, box_count, has_inner_walls)
+    return success_rate_from_case_names(case_names, failed_case_names)
+
+
+def combined_structure_case_names(type_summary, box_count, has_inner_walls):
+    """Return the merged fixed and procedural case-name lists for one structure bucket."""
+    fixed_group_name = fixed_structure_group_name(box_count, has_inner_walls)
+    fixed_summary = type_summary.get("fixed_structure", {}).get(fixed_group_name, {})
+    fixed_case_names_list = [str(case_name) for case_name in fixed_summary.get("case_names", [])]
+    fixed_failed_names = [str(case_name) for case_name in fixed_summary.get("failed_case_names", [])]
+    procedural_case_names_list = combined_procedural_structure_case_names(type_summary, box_count, has_inner_walls, "case_names")
+    procedural_failed_names = combined_procedural_structure_case_names(type_summary, box_count, has_inner_walls, "failed_case_names")
+    return fixed_case_names_list + procedural_case_names_list, fixed_failed_names + procedural_failed_names
+
+
+def combined_procedural_structure_case_names(type_summary, box_count, has_inner_walls, field_name):
+    """Return procedural case names that belong in one combined structure bucket."""
+    if not has_inner_walls:
+        return []
+    if int(box_count) == 2:
+        return procedural_case_names(type_summary, ["Sokoban-small-v0"], field_name)
+    if int(box_count) == 3:
+        return procedural_case_names(type_summary, ["Sokoban-small-v1", "Sokoban-v0"], field_name)
+    return []
 
 
 def total_fixed_box_success(type_summary, box_count):
@@ -1152,6 +1344,37 @@ def success_rate_from_case_names(case_names, failed_case_names):
         return 0.0
     solved_cases = attempted_cases - len(failed_case_names)
     return float(solved_cases) / float(attempted_cases)
+
+
+def solved_count_from_case_names(case_names, failed_case_names):
+    """Return the number of solved cases implied by attempted and failed case-name lists."""
+    return max(len(case_names) - len(failed_case_names), 0)
+
+
+def group_attempted_count(group_summary):
+    """Read the attempted count from one saved summary group, or infer it from case names."""
+    if "attempted" in group_summary:
+        return int(group_summary["attempted"])
+    return len(group_summary.get("case_names", []))
+
+
+def group_solved_count(group_summary):
+    """Read the solved count from one saved summary group, or infer it from failed case names."""
+    if "solved" in group_summary:
+        return int(group_summary["solved"])
+    case_names = group_summary.get("case_names", [])
+    failed_case_names = group_summary.get("failed_case_names", [])
+    return solved_count_from_case_names(case_names, failed_case_names)
+
+
+def group_success_rate(group_summary):
+    """Read one saved success rate, or compute it from solved and attempted counts."""
+    if "success_rate" in group_summary:
+        return float(group_summary["success_rate"])
+    attempted_count = group_attempted_count(group_summary)
+    if attempted_count == 0:
+        return 0.0
+    return float(group_solved_count(group_summary)) / float(attempted_count)
 
 
 def run_training(args, split_maps):

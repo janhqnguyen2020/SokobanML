@@ -57,14 +57,14 @@ HIGH_LEVEL_DQN_INIT_MODEL_PATH = None
 
 # Curriculum / Generalized DQN  (parallel model — does NOT affect high_level_dqn)
 # Canvas is 15x15 so all 10 curriculum maps fit (largest is 11x13).
-# Action mask stays padded to MAX_BOXES*4 so fixed 1/2/3-box maps and the
-# chosen procedural 4/5-box environments can share one network.
+# Action mask stays padded to MAX_BOXES*4 so all 1/2/3-box maps share one
+# stable network shape in the current main pipeline.
 CURRICULUM_DQN_CANVAS_SHAPE = (15, 15)
-CURRICULUM_DQN_MAX_BOXES = 5
+CURRICULUM_DQN_MAX_BOXES = 3
 CURRICULUM_DQN_PROCEDURAL_FRACTION = 0.10  # fraction of episodes from small-v1
 CURRICULUM_DQN_TOTAL_STEPS = 70_000
-CURRICULUM_DQN_PHASE_TIMESTEPS = (30_000, 30_000, 30_000, 30_000, 30_000, 30_000, 50_000)
-CURRICULUM_DQN_BUFFER_SIZE = 100_000
+CURRICULUM_DQN_PHASE_TIMESTEPS = (30_000, 50_000, 50_000, 50_000, 10_000, 10_000, 10_000)
+CURRICULUM_DQN_BUFFER_SIZE = 300_000
 CURRICULUM_DQN_LEARNING_RATE = 1e-4
 CURRICULUM_DQN_LEARNING_STARTS = 1_000
 CURRICULUM_DQN_BATCH_SIZE = 64
@@ -83,19 +83,11 @@ CURRICULUM_PROCEDURAL_ENV_IDS = [
     "Sokoban-small-v0",
     "Sokoban-small-v1",
     "Sokoban-v0",
-    "Sokoban-v1",
-    "Sokoban-v2",
-    "Sokoban-large-v0",
-    "Sokoban-large-v1",
 ]
 CURRICULUM_VALIDATION_VIDEO_ENV_IDS = [
     "Sokoban-small-v0",
     "Sokoban-small-v1",
     "Sokoban-v0",
-    "Sokoban-v1",
-    "Sokoban-v2",
-    "Sokoban-large-v0",
-    "Sokoban-large-v1",
 ]
 
 # Reproducibility

@@ -5,6 +5,8 @@ import logging
 import os
 import time
 from stable_baselines3 import DQN, PPO
+from stable_baselines3.common.base_class import _convert_space
+from stable_baselines3.common.save_util import load_from_zip_file
 from src.env.sokoban_env import initialize_env
 from src.rl.masked_dqn import MaskedDQN
 from src.utils.config import MAX_STEPS
@@ -28,16 +30,90 @@ RESULT_FIELDS = [
 ]
 
 def load_model(model_path, algo):
+    """Load one saved model and fall back to weight-only restore for old DQN checkpoints."""
     algo = algo.lower()
     if algo == "dqn":
         try:
             return MaskedDQN.load(model_path)
         except Exception as exc:
-            LOGGER.warning("Falling back to plain DQN loader for %s: %s", model_path, exc)
-            return DQN.load(model_path)
+            LOGGER.warning("Falling back to compatibility DQN loader for %s: %s", model_path, exc)
+            return load_dqn_without_optimizer(model_path)
     if algo == "ppo":
         return PPO.load(model_path)
     raise ValueError(f"Unsupported algo: {algo}")
+
+
+def saved_model_max_boxes(model_path):
+    """Read the saved action-space size and convert it into one max-box count."""
+    action_size = saved_action_space_size(model_path)
+    if action_size is None:
+        return None
+    return int(action_size) // 4
+
+
+def saved_action_space_size(model_path):
+    """Return the saved discrete action-space size for one checkpoint when available."""
+    data, _, _ = load_from_zip_file(model_path, device="cpu")
+    if data is None or "action_space" not in data:
+        return None
+    action_space = _convert_space(data["action_space"])
+    return int(action_space.n)
+
+
+def load_dqn_without_optimizer(model_path):
+    """Load one DQN checkpoint for evaluation while skipping mismatched optimizer state."""
+    data, params, _ = load_from_zip_file(model_path, device="auto")
+    normalized_data = normalized_dqn_data(data)
+    model = build_dqn_from_saved_data(normalized_data)
+    model.set_parameters(params_without_optimizer(params), exact_match=False, device="auto")
+    return model
+
+
+def normalized_dqn_data(data):
+    """Clean saved DQN metadata so older checkpoints rebuild cleanly on this codebase."""
+    normalized = dict(data)
+    normalized["observation_space"] = _convert_space(normalized["observation_space"])
+    normalized["action_space"] = _convert_space(normalized["action_space"])
+    normalized["policy_kwargs"] = normalized_policy_kwargs(normalized.get("policy_kwargs", {}))
+    return normalized
+
+
+def normalized_policy_kwargs(policy_kwargs):
+    """Remove stale device fields and unwrap older net-arch save formats."""
+    normalized = dict(policy_kwargs)
+    normalized.pop("device", None)
+    if policy_uses_legacy_net_arch(normalized):
+        normalized["net_arch"] = normalized["net_arch"][0]
+    return normalized
+
+
+def policy_uses_legacy_net_arch(policy_kwargs):
+    """Return True when one saved policy uses the older wrapped net-arch format."""
+    net_arch = policy_kwargs.get("net_arch", [])
+    return bool(net_arch) and isinstance(net_arch[0], dict)
+
+
+def build_dqn_from_saved_data(data):
+    """Rebuild one DQN model shell from saved metadata before loading weights."""
+    model = MaskedDQN(
+        policy=data["policy_class"],
+        env=data.get("env"),
+        device="auto",
+        _init_setup_model=False,
+    )
+    model.__dict__.update(data)
+    model._setup_model()
+    return model
+
+
+def params_without_optimizer(params):
+    """Drop optimizer state so older checkpoints can still be used for prediction."""
+    filtered = {}
+    for name, state_dict in params.items():
+        if str(name).endswith("optimizer"):
+            continue
+        filtered[name] = state_dict
+    return filtered
 
 def _episode_result(final_info, num_steps, num_pushes, total_reward, invalid_macro_actions, best_boxes_on_target, runtime_ms):
     """Build one evaluation row using explicit step and push counters."""
