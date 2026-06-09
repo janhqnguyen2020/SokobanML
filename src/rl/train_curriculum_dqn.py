@@ -100,6 +100,7 @@ class CurriculumTeacher:
         self.phaseFocusedFixedSamples = 0
         self.phaseAdaptiveBoxWeights = build_box_weight_totals()
         self.phaseAdaptiveFamilyWeights = build_family_weight_totals()
+        self.phaseAdaptiveProceduralWeights = build_procedural_weight_totals(self.phaseConfig)
         self.phaseAdaptiveFailedMapNames = set()
         self.phaseAdaptiveFailedMapBoost = 1.0
 
@@ -120,12 +121,14 @@ class CurriculumTeacher:
 
 
     def applyPeriodicValidationSummary(self, summary):
-        """Use periodic validation to boost weak fixed families and failed maps."""
+        """Use periodic validation to boost weak fixed maps and weak procedural envs."""
         if "type_summary" not in summary:
             return
         fixed_summary = summary["type_summary"].get("fixed", {})
+        procedural_summary = summary["type_summary"].get("procedural", {})
         self._set_adaptive_box_weights(fixed_summary)
         self._set_adaptive_family_weights(fixed_summary)
+        self._set_adaptive_procedural_weights(procedural_summary)
         self._set_adaptive_failed_map_names(fixed_summary)
 
     def _sample_phase_item(self):
@@ -153,9 +156,14 @@ class CurriculumTeacher:
         """Build one procedural env request for the current training episode."""
         if not procedural_env_ids:
             return None
-        env_id = random.choice(procedural_env_ids)
+        env_id = self._sample_weighted_procedural_env_id(procedural_env_ids)
         self.proceduralEpisodeCount += 1
         return {"env_id": env_id, "seed": SEED + 50_000 + self.proceduralEpisodeCount}
+
+    def _sample_weighted_procedural_env_id(self, procedural_env_ids):
+        """Pick one enabled procedural env using recent procedural validation weights."""
+        weights = procedural_sampling_weights(procedural_env_ids, self.phaseAdaptiveProceduralWeights)
+        return random.choices(procedural_env_ids, weights=weights, k=1)[0]
 
     def _sample_weighted_fixed_map(self, box_weights):
         """Pick one fixed map using box weights plus adaptive family and failure boosts."""
@@ -188,6 +196,12 @@ class CurriculumTeacher:
             for family_name in FIXED_FAMILY_NAMES
         }
 
+    def _set_adaptive_procedural_weights(self, procedural_summary):
+        """Boost weaker enabled procedural envs until they catch back up."""
+        env_ids = phase_procedural_env_ids(self.phaseConfig)
+        boost_scale = procedural_boost_scale(self.phaseConfig)
+        self.phaseAdaptiveProceduralWeights = adaptive_procedural_weights(procedural_summary, env_ids, boost_scale)
+
 
     def _set_adaptive_failed_map_names(self, fixed_summary):
         """Focus on currently failing fixed maps so the boost disappears after recovery."""
@@ -202,6 +216,7 @@ class CurriculumTeacher:
         self.phaseFocusedFixedSamples = 0
         self.phaseAdaptiveBoxWeights = build_box_weight_totals()
         self.phaseAdaptiveFamilyWeights = build_family_weight_totals()
+        self.phaseAdaptiveProceduralWeights = build_procedural_weight_totals(self.phaseConfig)
         self.phaseAdaptiveFailedMapNames = set()
         self.phaseAdaptiveFailedMapBoost = 1.0
 
@@ -237,6 +252,7 @@ class CurriculumTeacher:
             "focused_fixed_samples": int(self.phaseFocusedFixedSamples),
             "adaptive_box_weights": box_weight_summary(self.phaseAdaptiveBoxWeights),
             "adaptive_family_weights": family_weight_summary(self.phaseAdaptiveFamilyWeights),
+            "adaptive_procedural_weights": procedural_weight_summary(self.phaseAdaptiveProceduralWeights),
             "adaptive_failed_maps": sorted(self.phaseAdaptiveFailedMapNames),
         }
 
@@ -259,6 +275,18 @@ def build_family_weight_totals():
     return {family_name: 1.0 for family_name in FIXED_FAMILY_NAMES}
 
 
+def build_procedural_weight_totals(phase_config):
+    """Start one neutral adaptive weight for each enabled procedural env."""
+    return {env_id: 1.0 for env_id in phase_procedural_env_ids(phase_config)}
+
+
+def phase_procedural_env_ids(phase_config):
+    """Return the procedural env ids enabled for the current curriculum phase."""
+    if phase_config is None:
+        return []
+    return list(phase_config["procedural_env_ids"])
+
+
 def is_procedural_sample(sampled_item):
     """Return True when the sampled curriculum item is one procedural env spec."""
     return sampled_item is None or "env_id" in sampled_item
@@ -276,6 +304,21 @@ def fixed_count_summary(box_counts):
 def sorted_procedural_counts(procedural_counts):
     """Return procedural env counters in a stable key order for printing."""
     return {env_id: int(procedural_counts[env_id]) for env_id in sorted(procedural_counts.keys())}
+
+
+def procedural_weight_summary(procedural_weights):
+    """Round procedural weights so phase logs stay compact and easy to read."""
+    return {env_id: round(float(procedural_weights[env_id]), 3) for env_id in sorted(procedural_weights.keys())}
+
+
+def procedural_sampling_weights(procedural_env_ids, adaptive_procedural_weights):
+    """Return the sampling weight for each enabled procedural env id."""
+    return [procedural_sampling_weight(env_id, adaptive_procedural_weights) for env_id in procedural_env_ids]
+
+
+def procedural_sampling_weight(env_id, adaptive_procedural_weights):
+    """Read one procedural env weight and fall back to a neutral weight."""
+    return float(adaptive_procedural_weights.get(str(env_id), 1.0))
 
 
 def box_weight_summary(box_weights):
@@ -341,13 +384,39 @@ def failed_map_weight(map_config, failed_map_names, failed_map_boost):
 
 def adaptive_success_weight(success_rate):
     """Convert one recent success rate into a replay boost for weaker map groups."""
-    return 1.0 + max(0.0, 1.0 - float(success_rate)) * 2.0
+    return scaled_adaptive_success_weight(success_rate, 2.0)
+
+
+def scaled_adaptive_success_weight(success_rate, boost_scale):
+    """Convert one success rate into a replay boost using the requested strength."""
+    return 1.0 + max(0.0, 1.0 - float(success_rate)) * float(boost_scale)
 
 
 def fixed_family_success(fixed_summary, family_name):
     """Read one fixed-family success rate from the periodic type summary."""
     family_summary = fixed_summary.get(str(family_name), {})
     return float(family_summary.get("success_rate", 1.0))
+
+
+def procedural_family_success(procedural_summary, env_id):
+    """Read one procedural-env success rate from the periodic type summary."""
+    env_summary = procedural_summary.get(str(env_id), {})
+    return float(env_summary.get("success_rate", 1.0))
+
+
+def adaptive_procedural_weights(procedural_summary, env_ids, boost_scale):
+    """Build one adaptive weight per enabled procedural env id."""
+    return {
+        env_id: scaled_adaptive_success_weight(procedural_family_success(procedural_summary, env_id), boost_scale)
+        for env_id in env_ids
+    }
+
+
+def procedural_boost_scale(phase_config):
+    """Return the procedural replay boost strength for one curriculum phase."""
+    if phase_config is None or "procedural_weight_scale" not in phase_config:
+        return 2.0
+    return float(phase_config["procedural_weight_scale"])
 
 
 def failed_fixed_case_names(fixed_summary):

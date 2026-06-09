@@ -7,7 +7,7 @@ import numpy as np
 from src.rl.high_level_env_parts.constants import FILLED_GOAL_DISTANCE_PENALTY
 from src.planners.heuristics import hungarian_matching
 from collections import deque
-from src.rl.high_level_env_parts.movement import get_reachable_parents, push_positions, blocked_push
+from src.rl.high_level_env_parts.movement import blocked_push, get_reachable_parents, new_box_positions, push_positions
 
 def read_board(env):
     """
@@ -106,60 +106,69 @@ def termination_reason(solved, dead_end, repeated_state, no_progress):
 
 def feasible_goals_per_box(box, goals, walls, box_positions, direction):
     """
-    Approximate how many goals a box can still realistically reach. 
+    Approximate which goals this box can still reach after future legal pushes.
     """
-    reachable = []
-
+    reachable_goals = []
     for goal in goals:
         if is_simple_path_possible(box, goal, walls, box_positions, direction):
-            reachable.append(goal)
-
-    return reachable
+            reachable_goals.append(goal)
+    return reachable_goals
 
 def is_simple_path_possible(box, goal, walls, box_positions, direction):
     """
-    BFS-based feasibility check using real Sokoban movement rules 
+    Check whether repeated legal pushes can move one box to one goal.
     """
-
-    #State = (box_position, player_position)
-    start_state = (box, None) #play position not needed initially 
-
+    start_state = initial_box_search_state(box, box_positions)
     visited = set()
     queue = deque([start_state])
-
     while queue:
-        box_pos, _ = queue.popleft()
-
+        box_pos, player_pos, current_boxes = queue.popleft()
         if box_pos == goal:
             return True
-        
-        if box_pos in visited:
+        state_key = (box_pos, player_pos, current_boxes)
+        if state_key in visited:
             continue
-        visited.add(box_pos)
-
-        # For each possible push direction
-        for push_dir, delta in direction.items():
-            #compute where box would go
-            player_push_pos, box_dest = push_positions(direction, box_pos, push_dir)
-
-            #check collision
-            if box_dest in walls or box_dest in box_positions:
-                continue
-            if player_push_pos in walls or player_push_pos in box_positions:
-                continue
-
-            #BFS for player reachability around current box
-            reachable = get_reachable_parents(box_pos, box_positions, walls, direction)
-
-            if player_push_pos not in reachable:
-                continue
-
-            #valid push -> simulate next state
-            new_boxes = frozenset(box_dest if b == box_pos else b for b in box_positions)
-
-            queue.append((box_dest, None))
-
+        visited.add(state_key)
+        queue.extend(next_box_search_states(box_pos, player_pos, current_boxes, walls, direction))
     return False
+
+
+def initial_box_search_state(box_position, box_positions):
+    """
+    Build the first simplified future-push search state for one box.
+    """
+    return box_position, box_position, frozenset(box_positions)
+
+
+def next_box_search_states(box_position, player_position, current_boxes, walls, direction):
+    """
+    Return every one-push future state that stays legal on the updated board.
+    """
+    reachable_parents = get_reachable_parents(player_position, current_boxes, walls, direction)
+    next_states = []
+    for push_direction in direction:
+        next_state = next_box_search_state(
+            box_position,
+            current_boxes,
+            walls,
+            direction,
+            reachable_parents,
+            push_direction,
+        )
+        if next_state is not None:
+            next_states.append(next_state)
+    return next_states
+
+
+def next_box_search_state(box_position, current_boxes, walls, direction, reachable_parents, push_direction):
+    """
+    Return the next simplified future-push state for one legal push.
+    """
+    player_push_position, box_destination_position = push_positions(direction, box_position, push_direction)
+    if blocked_push(player_push_position, box_destination_position, current_boxes, walls, reachable_parents):
+        return None
+    updated_boxes = new_box_positions(current_boxes, box_position, box_destination_position)
+    return box_destination_position, box_position, updated_boxes
 
 def forced_box_failure(before_boxes,
                        after_boxes,

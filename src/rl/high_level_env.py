@@ -219,49 +219,61 @@ class HighLevelSokobanEnv(gym.Env):
         self._procedural_env.close()
 
 
+    def _current_board_profile(self):
+        """Read the board and compute the current macro-action choices."""
+        return board_profile(
+            self.env,
+            self.dead_squares,
+            self.num_boxes,
+            DIRECTION_DELTAS,
+        )
+
+
     def step(self, action):
         """
         Apply one macro push action and return the next state
         """
         action = int(action)
-        player_pos, box_positions, goals, walls, action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
+        _, box_positions, goals, walls, action_profile = self._current_board_profile()
         if not action_profile["selected"]:
             return self._dead_end_result(action_profile) # if there are no valid macro-action, the state is a dead-end
         if action not in action_profile["selected"]:
             return self._invalid_action_result(action_profile) # if agent chose an action that is not valid (eg. lead to dead-square)
+        action_data = action_profile["selected"][action]
+        return self._step_from_action_data(
+            action,
+            action_data,
+            box_positions,
+            goals,
+            walls,
+            action_profile,
+        )
+
+
+    def step_with_macro_action_data(self, action, action_data):
+        """Replay one chosen macro action without trimming it through top-k again."""
+        action = int(action)
+        _, box_positions, goals, walls, action_profile = self._current_board_profile()
+        return self._step_from_action_data(
+            action,
+            action_data,
+            box_positions,
+            goals,
+            walls,
+            action_profile,
+        )
+
+
+    def _step_from_action_data(self, action, action_data, box_positions, goals, walls, action_profile):
+        """Apply one caller-supplied macro action and update the env state."""
         self.invalid_action_streak = 0
         self.lastMacroStepFrames = []
-
-        # log current board, execute next move, and log new board
         before_progress = progress_snapshot(box_positions, goals) 
-        current_action_data = action_profile["selected"][action] # for adding previous move tracking to avoid RL oscillations 
-        raw_reward, env_done, env_info = self._execute_macro_action(action_profile["selected"][action]) # raw reward is the reward in original Sokoban env (eg. -0.1 for each step)
-        # for adding previous move tracking to avoid RL oscillations 
-        reverse_move = False
-        if self.last_macro_action is not None:
-            prev_box = self.last_macro_action["box_index"]
-            prev_dir = self.last_macro_action["direction"]
-
-            curr_box = current_action_data["box_index"]
-            curr_dir = current_action_data["direction"]
-
-            opposite = {
-                1: 2,
-                2: 1,
-                3: 4,
-                4: 3,
-            }
-        
-            reverse_move = (
-                prev_box == curr_box and
-                opposite.get(prev_dir) == curr_dir
-            )
-        self.last_macro_action = current_action_data
-
-        next_player_pos, next_box_positions, goals, _, next_action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
+        raw_reward, env_done, env_info = self._execute_macro_action(action_data)
+        reverse_move = self._is_reverse_move(action_data)
+        self.last_macro_action = action_data
+        next_player_pos, next_box_positions, goals, _, next_action_profile = self._current_board_profile()
         after_progress = progress_snapshot(next_box_positions, goals)
-
-
         solvability_damage = forced_box_failure(
             box_positions,
             next_box_positions,
@@ -313,12 +325,24 @@ class HighLevelSokobanEnv(gym.Env):
         return self._observation(next_action_profile), returned_reward, done, info
 
 
+    def _is_reverse_move(self, current_action_data):
+        """Return True when the new push undoes the last push on the same box."""
+        if self.last_macro_action is None:
+            return False
+        opposite = {1: 2, 2: 1, 3: 4, 4: 3}
+        previous_box = self.last_macro_action["box_index"]
+        previous_dir = self.last_macro_action["direction"]
+        current_box = current_action_data["box_index"]
+        current_dir = current_action_data["direction"]
+        return previous_box == current_box and opposite.get(previous_dir) == current_dir
+
+
     def _reset_to_valid_state(self):
         for _ in range(RESET_RETRY_LIMIT):
             self.env.reset()
-            player_pos, box_positions, goals, walls, action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
+            player_pos, box_positions, goals, walls, action_profile = self._current_board_profile()
             self.dead_squares = precompute_dead_squares(walls, goals, self.board_shape)
-            player_pos, box_positions, goals, walls, action_profile = board_profile(self.env, self.dead_squares, self.num_boxes, DIRECTION_DELTAS)
+            player_pos, box_positions, goals, walls, action_profile = self._current_board_profile()
             if action_profile["selected"]:
                 return player_pos, box_positions, goals, walls, action_profile  # return promising states if available
         return player_pos, box_positions, goals, walls, action_profile  # if all retry fails, return the state even if it leads to dead-end or no valid move
