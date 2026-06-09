@@ -359,3 +359,4 @@ original,original_v0,Sokoban-v0,episode_02,Sokoban-v0,2,greedy,102,True,,,,,11.5
 original,original_v0,Sokoban-v0,episode_03,Sokoban-v0,3,greedy,103,True,,,,,8.0,50,506.3858,22,33,13
 original,original_v0,Sokoban-v0,episode_04,Sokoban-v0,4,greedy,104,True,,,,,7.1,59,559.037,17,15,5
 original,original_v1,Sokoban-v1,episode_00,Sokoban-v1,0,greedy,100,True,,,,,9.6,44,405.2434,15,13,5
+custom,additional,custom_env,tue_map_01,Hard-4box,0,greedy,,True,160,27,97630.8262,56,,89,12,7,10,4,-2.0

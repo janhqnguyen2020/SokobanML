@@ -187,7 +187,7 @@ def build_action_profile(player_pos, box_positions, goal_positions, wall_positio
             future_pushes = action_data["future_physical_pushes"]
 
             return (
-                20.0 * flexibility_delta
+                25.0 * flexibility_delta
                 - 15.0 * forced
                 + 2.0 * future_pushes
                 + 100.0 * solved

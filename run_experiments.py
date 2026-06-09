@@ -19,6 +19,7 @@ from src.utils.show_ui import create_plot
 from src.utils.show_ui import finish_plot
 from src.utils.show_ui import print_step
 from src.utils.show_ui import update_plot
+from src.utils.show_ui import GifRecorder
 
 GROUP_DISPLAY_NAMES = {
     "custom_core": "custom_shizuka",
@@ -88,6 +89,7 @@ def parse_args():
     parser.add_argument("--seed-base", type=int, default=100)
     parser.add_argument("--show-ui", action="store_true")
     parser.add_argument("--delay", type=float, default=0.5)
+    parser.add_argument("--save-gif", type=str, default=None, help="Path to save gif (e.g. results/gifs/bfs.gif)")
     return parser.parse_args()
 
 
@@ -187,7 +189,7 @@ def run_custom_case(config, group_name, algorithm_name, args):
     planner_label, planner_class = PLANNER_REGISTRY[algorithm_name]
     map_type = GROUP_DISPLAY_NAMES.get(group_name, group_name)
     env = create_custom_env(config)
-    row = run_board(env, planner_class, planner_label, map_type, config["map_name"], args.show_ui, args.delay)
+    row = run_board(env, planner_class, planner_label, map_type, config["map_name"], args.show_ui, args.delay, save_gif=(args.save_gif is not None), gif_path=args.save_gif)
     env.close()
     return add_custom_metadata(row, config, group_name, algorithm_name)
 
@@ -257,7 +259,7 @@ def run_original_case(env_id, group_name, episode, seed, algorithm_name, args):
     map_type = GROUP_DISPLAY_NAMES.get(group_name, group_name)
     map_name = build_episode_name(episode)
     env = initialize_env(env_id=env_id, seed=seed)
-    row = run_board(env, planner_class, planner_label, map_type, map_name, args.show_ui, args.delay)
+    row = run_board(env, planner_class, planner_label, map_type, map_name, args.show_ui, args.delay, save_gif=(args.save_gif is not None), gif_path=args.save_gif)
     env.close()
     return add_original_metadata(row, env_id, group_name, episode, seed, algorithm_name)
 
@@ -278,15 +280,23 @@ def add_original_metadata(row, env_id, group_name, episode, seed, algorithm_name
     return row
 
 
-def run_board(env, planner_class, planner_label, map_type, map_name, show_ui, delay):
+def run_board(env, planner_class, planner_label, map_type, map_name, show_ui, delay, save_gif=False, gif_path=None):
     """Run one planner on one board and return the measured row fields."""
     planner = planner_class(env)
     observation = env.reset()
     planner.reset()
     map_code = encode_map(env)
     fig, ax, image = start_ui(observation, show_ui, planner_label, map_type, map_name)
+   
+    gif_recorder = None
+    if save_gif and gif_path:
+        fps = max(1, int(1 / delay)) if delay > 0 else 5
+        gif_recorder = GifRecorder(gif_path, fps=fps)
+    if gif_recorder:
+        gif_recorder.add_frame(fig)
+
     reward_sum, num_steps, solved = play_episode(
-        env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay
+        env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay, gif_recorder
     )
     finish_ui(show_ui)
     return build_run_row(planner, reward_sum, num_steps, solved, map_code)
@@ -300,7 +310,7 @@ def start_ui(observation, show_ui, planner_label, map_type, map_name):
     return create_plot(observation, title)
 
 
-def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay):
+def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name, show_ui, delay, gif_recorder=None):
     """Step through the environment until the planner finishes."""
     done = False
     num_steps = 0
@@ -312,13 +322,22 @@ def play_episode(env, planner, fig, ax, image, planner_label, map_type, map_name
         observation, reward, done, info = run_step(env, planner)
         update_ui(
             fig, ax, image, observation, num_steps, reward_sum + reward, done, info,
-            planner_label, map_type, map_name, show_ui, delay
+            planner_label, map_type, map_name, show_ui, delay, gif_recorder
         )
+        if gif_recorder:
+            fig.canvas.draw()
+            fig.canvas.flush_events()
+            gif_recorder.add_frame(fig)
+
         reward_sum += reward
         num_steps += 1
         solved = info.get("all_boxes_on_target", False)
 
+    if gif_recorder:
+        print("GIF frames:", len(gif_recorder.frames))
+        gif_recorder.save()
     planner.runtime_ms = (time.time() - planner.start_time) * 1000
+
     return reward_sum, num_steps, solved
 
 
@@ -328,7 +347,7 @@ def run_step(env, planner):
     return env.step(action)
 
 
-def update_ui(fig, ax, image, observation, num_steps, reward_sum, done, info, planner_label, map_type, map_name, show_ui, delay):
+def update_ui(fig, ax, image, observation, num_steps, reward_sum, done, info, planner_label, map_type, map_name, show_ui, delay, gif_recorder=None):
     """Refresh the board window after one primitive planner step."""
     if not show_ui:
         return
@@ -337,6 +356,9 @@ def update_ui(fig, ax, image, observation, num_steps, reward_sum, done, info, pl
     status = "SOLVED!" if info.get("all_boxes_on_target") else ("FAILED" if done else "")
     title = build_title(planner_label, map_type, map_name, num_steps + 1, reward_sum, status)
     update_plot(fig, ax, image, observation, title, delay)
+
+    if gif_recorder:
+        gif_recorder.add_frame(fig)
 
 
 def finish_ui(show_ui):

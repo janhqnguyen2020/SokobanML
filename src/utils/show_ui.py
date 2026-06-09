@@ -1,7 +1,26 @@
 # src/utils/show_ui.py
 import matplotlib.pyplot as plt
+import imageio
+import os
+import numpy as np
 
+class GifRecorder:
+    def __init__(self, path, fps=5):
+        self.path = path
+        self.fps = fps
+        self.frames = []
 
+    def add_frame(self, fig):
+        """Capture current matplotlib figure as RGB array."""
+        fig.canvas.draw()
+        buf = np.asarray(fig.canvas.buffer_rgba())
+        frame = buf[:, :, :3].copy()   # force copy so buffer doesn't overwrite
+        self.frames.append(frame)
+
+    def save(self):
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+        imageio.mimsave(self.path, self.frames, fps=self.fps)
+        
 def create_plot(obs, title):
     """Create one matplotlib window to display Sokoban frames."""
     plt.ion()
@@ -12,7 +31,6 @@ def create_plot(obs, title):
     fig.canvas.draw()
     fig.canvas.flush_events()
     return fig, ax, image
-
 
 def update_plot(fig, ax, image, obs, title, delay):
     """Update the existing matplotlib window with a new frame."""
@@ -46,3 +64,4 @@ def print_step(step, action, action_name, reward, done):
         f"reward={reward}, "
         f"done={done}"
     )
+

@@ -1,3 +1,2 @@
-algorithm,group,total_runs,solved_runs,success_rate,avg_steps,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
-astar,curriculum,10,10,1.0,20.6,12745.5829,149.6,361.4
-astar,all,10,10,1.0,20.6,12745.5829,149.6,361.4
+algorithm,group,total_runs,solved_runs,success_rate,avg_num_steps,avg_num_pushes,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
+astar,additional,1,1,1.0,118.0,27.0,89045.5959,3295.0,4892.0
