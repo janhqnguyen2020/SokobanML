@@ -29,8 +29,11 @@ import os
 import time
 from datetime import datetime
 
+import numpy as np
+
 from src.rl.evaluate import evaluate_episode, summarize_results
 from src.rl.masked_dqn import MaskedDQN
+from src.rl.video_recorder import EpisodeVideoRecorder
 from src.rl.train_curriculum_dqn import (
     createCurriculumEvalEnvironment,
     createEvaluationEnvironment,
@@ -168,17 +171,68 @@ def _run_episode_ui(model, env, map_name, episode_num):
     }
 
 
+def _run_episode_record(model, env, map_name, episode_num, recorder):
+    """Run one episode, capture every frame, save mp4 via EpisodeVideoRecorder."""
+    obs = env.reset()
+    recorder.reset()
+    recorder.capture(np.array(env.render(mode="rgb_array")))
+    done = False
+    num_steps = 0
+    num_pushes = 0
+    invalid_macro_actions = 0
+    best_boxes_on_target = 0
+    total_reward = 0.0
+    info = {}
+    start_time = time.time()
+
+    while not done:
+        action, _ = model.predict(obs, deterministic=True)
+        obs, reward, done, info = env.step(int(action))
+        total_reward += reward
+        num_steps += 1
+        if info.get("executed_push"):
+            num_pushes += 1
+        if info.get("invalid_macro_action"):
+            invalid_macro_actions += 1
+        best_boxes_on_target = max(
+            best_boxes_on_target,
+            int(info.get("best_boxes_on_target", info.get("boxes_on_target", 0))),
+        )
+        if num_steps >= MAX_STEPS and not done:
+            done = True
+            info["truncated"] = True
+            info.setdefault("termination_reason", "max_steps")
+        recorder.capture(np.array(env.render(mode="rgb_array")))
+
+    recorder.save(tag=f"eval_{map_name}_ep{episode_num:02d}")
+    boxes_on_target = int(info.get("boxes_on_target", 0))
+    return {
+        "solved": bool(info.get("all_boxes_on_target", False)),
+        "num_steps": num_steps,
+        "num_pushes": num_pushes,
+        "runtime_ms": (time.time() - start_time) * 1000.0,
+        "total_reward": round(float(total_reward), 3),
+        "invalid_macro_actions": invalid_macro_actions,
+        "truncated": bool(info.get("truncated", False)),
+        "termination_reason": str(info.get("termination_reason", "unknown")),
+        "boxes_on_target": boxes_on_target,
+        "best_boxes_on_target": best_boxes_on_target,
+    }
+
+
 def _run_episode_silent(model, env):
     """Run one episode without display."""
     return evaluate_episode(model, env, log_progress=False)
 
 
-def _run_map_episodes(model, map_config, n_episodes, show_ui):
+def _run_map_episodes(model, map_config, n_episodes, show_ui, recorder=None):
     env = createCurriculumEvalEnvironment([map_config])
     results = []
     try:
         for ep in range(n_episodes):
-            if show_ui:
+            if recorder:
+                results.append(_run_episode_record(model, env, map_config["map_name"], ep + 1, recorder))
+            elif show_ui:
                 results.append(_run_episode_ui(model, env, map_config["map_name"], ep + 1))
             else:
                 results.append(_run_episode_silent(model, env))
@@ -241,9 +295,10 @@ def _print_group_summary(label, results):
 # Save helpers
 # ---------------------------------------------------------------------------
 
-def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None):
+def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None, out_dir=None):
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
+    if out_dir is None:
+        out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
     os.makedirs(out_dir, exist_ok=True)
 
     tag = f"{mode}_boxes{boxes_filter}"
@@ -329,6 +384,12 @@ def main():
         default=None,
         help="Label for this eval run, e.g. 'phase2_500k'",
     )
+    parser.add_argument(
+        "--maps",
+        nargs="+",
+        default=[],
+        help="Run only these named maps (e.g. --maps wall3b_033 curr_prog_44)",
+    )
     args = parser.parse_args()
 
     model_path = args.model or _find_latest_model()
@@ -342,6 +403,16 @@ def main():
     print(f"  mode     : {args.mode}  |  boxes: {args.boxes}  |  episodes: {args.episodes}")
     print(f"  note     : {args.note or '(none)'}")
     print()
+
+    # Pre-create output dir so the recorder saves videos there alongside the JSON.
+    out_dir = None
+    recorder = None
+    if args.save:
+        ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
+        os.makedirs(out_dir, exist_ok=True)
+        recorder = EpisodeVideoRecorder(save_dir=out_dir, fps=5)
+        print(f"  Recording videos to: {out_dir}/\n")
 
     per_map_results = {}
     group_summaries = {}
@@ -364,6 +435,10 @@ def main():
             print("  Source: held-out FinalEval benchmark (seed=999, never seen during training)")
         else:
             groups = _build_curr_train_groups(args.boxes)
+        if args.maps:
+            wanted = set(args.maps)
+            groups = [(label, [m for m in maps if m["map_name"] in wanted]) for label, maps in groups]
+            groups = [(label, maps) for label, maps in groups if maps]
         total_maps = sum(len(maps) for _, maps in groups)
         print(f"  {total_maps} maps  x  {args.episodes} episodes each\n")
         _print_table_header()
@@ -375,7 +450,7 @@ def main():
             print(f"\n  ── {group_label.upper()}  ({len(maps)} maps) ──")
             group_results = []
             for m in maps:
-                ep_results = _run_map_episodes(model, m, args.episodes, args.show_ui)
+                ep_results = _run_map_episodes(model, m, args.episodes, args.show_ui, recorder)
                 per_map_results[m["map_name"]] = ep_results
                 for ep, r in enumerate(ep_results):
                     _print_row(m["map_name"], ep, r)
@@ -397,7 +472,7 @@ def main():
 
     if args.save:
         _save_results(model_path, args.mode, args.boxes, args.episodes,
-                      args.note, per_map_results, summary, group_summaries)
+                      args.note, per_map_results, summary, group_summaries, out_dir)
 
 
 if __name__ == "__main__":
