@@ -10,6 +10,7 @@ from src.env.custom_env import SimpleCustomSokobanEnv
 from src.env.sokoban_env import initialize_env
 from src.utils.benchmark_registry import PLANNER_REGISTRY
 from src.utils.custom_maps import select_custom_maps
+from src.utils.final_eval_maps import build_all_final_eval_maps
 from src.utils.result_paths import build_algorithm_runs_path
 from src.utils.result_paths import build_algorithm_summary_path
 from src.utils.result_paths import build_board_csv_path
@@ -25,6 +26,7 @@ GROUP_DISPLAY_NAMES = {
     "canvas":      "canvas_dqn_compatible",
     "dqn_custom":  "dqn_compatible",
     "curriculum":  "curriculum",
+    "final_eval":  "final_eval",
     "original_v0": "v0",
     "original_v1": "v1",
     "original_v2": "v2",
@@ -98,6 +100,10 @@ def expand_sources(source_names):
     return source_names
 
 
+def _is_final_eval_source(sources):
+    return "final_eval" in sources
+
+
 def expand_algorithms(algorithm_names):
     """Replace all with every registered planner key."""
     if "all" in algorithm_names:
@@ -148,6 +154,8 @@ def run_selected_benchmarks(args):
     custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "additional", "archived"}
     if custom_sources.intersection(sources):
         results.extend(run_custom_groups(args, sources, algorithms))
+    if _is_final_eval_source(sources):
+        results.extend(run_final_eval_groups(args, algorithms))
     if "original" in sources:
         results.extend(run_original_groups(args, algorithms))
 
@@ -168,11 +176,30 @@ def run_custom_groups(args, source_names, algorithm_names):
 
     return results
 
+
+def run_final_eval_groups(args, algorithm_names):
+    """Run requested planners on all 150 held-out FinalEval maps."""
+    results = []
+    maps = build_all_final_eval_maps()
+    if args.maps:
+        wanted = set(args.maps)
+        maps = [m for m in maps if m["map_name"] in wanted]
+
+    for config in maps:
+        for algorithm_name in algorithm_names:
+            row = run_custom_case(config, "final_eval", algorithm_name, args)
+            save_run_row(row, "final_eval", config["map_name"], algorithm_name)
+            results.append(row)
+
+    return results
+
 def choose_custom_group(config):
     """Return the source-group label for one custom map config."""
-    if config["group_name"]:
+    if config.get("group_name"):
         return config["group_name"]
     map_name = config["map_name"]
+    if map_name.startswith("fe1b_") or map_name.startswith("fe2b_") or map_name.startswith("fe3b_"):
+        return "final_eval"
     if map_name.startswith("dqn_map_") or map_name.startswith("canvas_"):
         return "canvas"
     if map_name.startswith("map_"):
@@ -201,7 +228,7 @@ def create_custom_env(config):
         box_positions=config["boxes"],
         goal_positions=config["goals"],
         max_steps=config["max_steps"],
-        wall_positions=config["walls"],
+        wall_positions=config.get("walls", []),
     )
 
 
