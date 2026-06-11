@@ -6,7 +6,15 @@ Modes
 procedural  -- Sokoban-small-v1 procedural maps (generalization test)
 currTrain   -- All curriculum training maps: generated 1/2/3-box + walled 1/2/3-box
                + hand-crafted curr_01-10. NOT a held-out test set.
-finalEval   -- Held-out evaluation maps (not yet defined — placeholder)
+finalEval   -- Held-out benchmark: 150 maps (50 one-box + 50 two-box + 50 three-box),
+               seed=999, never seen during training.
+
+Model auto-discovery order
+--------------------------
+1. results/rl_tests/curriculum_dqn_imitation/*/checkpoints/phase*_end.zip
+2. results/rl_tests/curriculum_dqn_imitation/*/checkpoints/post_imitation.zip
+3. results/rl_tests/curriculum_dqn/*/curriculum_dqn_best.zip
+4. results/rl_tests/curriculum_dqn/*/curriculum_dqn_final.zip
 
 Examples
 --------
@@ -15,8 +23,11 @@ python eval_dqn.py --mode procedural --episodes 50
 python eval_dqn.py --mode currTrain
 python eval_dqn.py --mode currTrain --boxes 3
 python eval_dqn.py --mode currTrain --save --note "500k_seed42"
-python eval_dqn.py --model results/rl_tests/curriculum_dqn/<run>/curriculum_dqn_best.zip
+python eval_dqn.py --mode finalEval
+python eval_dqn.py --mode finalEval --boxes 3 --episodes 5 --save --note "v2_final"
+python eval_dqn.py --model results/rl_tests/curriculum_dqn_imitation/<run>/checkpoints/phase12_hard_end.zip
 python eval_dqn.py --show-ui --episodes 1
+python eval_dqn.py --maps fe1b_003 fe2b_017 --save
 """
 
 import argparse
@@ -26,14 +37,20 @@ import os
 import time
 from datetime import datetime
 
+import numpy as np
+
 from src.rl.evaluate import evaluate_episode, summarize_results
 from src.rl.masked_dqn import MaskedDQN
+from src.rl.video_recorder import EpisodeVideoRecorder
 from src.rl.train_curriculum_dqn import (
     createCurriculumEvalEnvironment,
     createEvaluationEnvironment,
 )
-from src.utils.config import CURRICULUM_DQN_CANVAS_SHAPE, CURRICULUM_DQN_MAX_BOXES
+from src.utils.config import CURRICULUM_DQN_CANVAS_SHAPE, CURRICULUM_DQN_MAX_BOXES, MAX_STEPS
 from src.utils.custom_maps import build_curriculum_maps
+from src.utils.final_eval_maps import (
+    build_final_eval_1box_maps, build_final_eval_2box_maps, build_final_eval_3box_maps,
+)
 from src.utils.generated_maps import (
     build_generated_1box_maps, build_generated_2box_maps, build_generated_3box_maps,
     build_walled_1box_maps, build_walled_2box_maps, build_walled_3box_maps,
@@ -49,6 +66,8 @@ DELAY = 0.3
 
 def _find_latest_model():
     for pattern in (
+        os.path.join("results", "rl_tests", "curriculum_dqn_imitation", "*", "checkpoints", "phase*_end.zip"),
+        os.path.join("results", "rl_tests", "curriculum_dqn_imitation", "*", "checkpoints", "post_imitation.zip"),
         os.path.join("results", "rl_tests", "curriculum_dqn", "*", "curriculum_dqn_best.zip"),
         os.path.join("results", "rl_tests", "curriculum_dqn", "*", "curriculum_dqn_final.zip"),
     ):
@@ -57,13 +76,35 @@ def _find_latest_model():
             return matches[-1]
     raise FileNotFoundError(
         "No curriculum DQN model found. "
-        "Run python main_curriculum_dqn.py first, or pass --model <path>."
+        "Run python main_curriculum_dqn_with_imitation.py first, or pass --model <path>."
     )
+
+
+def _is_imitation_model(model_path):
+    return "curriculum_dqn_imitation" in os.path.normpath(model_path)
+
+
+def _default_evals_dir(model_path, ts):
+    base = "curriculum_dqn_imitation" if _is_imitation_model(model_path) else "curriculum_dqn"
+    return os.path.join("results", "rl_tests", base, "evals", ts)
 
 
 # ---------------------------------------------------------------------------
 # Map group builders
 # ---------------------------------------------------------------------------
+
+def _build_final_eval_groups(boxes_filter):
+    """Return [(label, [maps])] for the held-out FinalEval set (seed=999)."""
+    groups_all = {
+        "1-box": build_final_eval_1box_maps(),
+        "2-box": build_final_eval_2box_maps(),
+        "3-box": build_final_eval_3box_maps(),
+    }
+    if boxes_filter == "all":
+        return list(groups_all.items())
+    key = f"{boxes_filter}-box"
+    return [(key, groups_all.get(key, []))]
+
 
 def _build_curr_train_groups(boxes_filter):
     """Return [(label, [maps])] for the full currTrain pool, optionally filtered by box count."""
@@ -100,6 +141,8 @@ def _run_episode_ui(model, env, map_name, episode_num):
     done = False
     num_steps = 0
     num_pushes = 0
+    invalid_macro_actions = 0
+    best_boxes_on_target = 0
     total_reward = 0.0
     info = {}
     start_time = time.time()
@@ -114,6 +157,16 @@ def _run_episode_ui(model, env, map_name, episode_num):
         num_steps += 1
         if info.get("executed_push"):
             num_pushes += 1
+        if info.get("invalid_macro_action"):
+            invalid_macro_actions += 1
+        best_boxes_on_target = max(
+            best_boxes_on_target,
+            int(info.get("best_boxes_on_target", info.get("boxes_on_target", 0))),
+        )
+        if num_steps >= MAX_STEPS and not done:
+            done = True
+            info["truncated"] = True
+            info.setdefault("termination_reason", "max_steps")
         frame = env.render(mode="rgb_array")
         solved = info.get("all_boxes_on_target", False)
         reason = info.get("termination_reason", "")
@@ -122,14 +175,67 @@ def _run_episode_ui(model, env, map_name, episode_num):
         update_plot(fig, ax, image, frame, title, DELAY)
 
     finish_plot()
+    boxes_on_target = int(info.get("boxes_on_target", 0))
     return {
         "solved": bool(info.get("all_boxes_on_target", False)),
         "num_steps": num_steps,
         "num_pushes": num_pushes,
         "runtime_ms": (time.time() - start_time) * 1000.0,
         "total_reward": round(float(total_reward), 3),
+        "invalid_macro_actions": invalid_macro_actions,
+        "truncated": bool(info.get("truncated", False)),
         "termination_reason": str(info.get("termination_reason", "unknown")),
-        "boxes_on_target": info.get("boxes_on_target", 0),
+        "boxes_on_target": boxes_on_target,
+        "best_boxes_on_target": best_boxes_on_target,
+    }
+
+
+def _run_episode_record(model, env, map_name, episode_num, recorder):
+    """Run one episode, capture every frame, save mp4 via EpisodeVideoRecorder."""
+    obs = env.reset()
+    recorder.reset()
+    recorder.capture(np.array(env.render(mode="rgb_array")))
+    done = False
+    num_steps = 0
+    num_pushes = 0
+    invalid_macro_actions = 0
+    best_boxes_on_target = 0
+    total_reward = 0.0
+    info = {}
+    start_time = time.time()
+
+    while not done:
+        action, _ = model.predict(obs, deterministic=True)
+        obs, reward, done, info = env.step(int(action))
+        total_reward += reward
+        num_steps += 1
+        if info.get("executed_push"):
+            num_pushes += 1
+        if info.get("invalid_macro_action"):
+            invalid_macro_actions += 1
+        best_boxes_on_target = max(
+            best_boxes_on_target,
+            int(info.get("best_boxes_on_target", info.get("boxes_on_target", 0))),
+        )
+        if num_steps >= MAX_STEPS and not done:
+            done = True
+            info["truncated"] = True
+            info.setdefault("termination_reason", "max_steps")
+        recorder.capture(np.array(env.render(mode="rgb_array")))
+
+    recorder.save(tag=f"eval_{map_name}_ep{episode_num:02d}")
+    boxes_on_target = int(info.get("boxes_on_target", 0))
+    return {
+        "solved": bool(info.get("all_boxes_on_target", False)),
+        "num_steps": num_steps,
+        "num_pushes": num_pushes,
+        "runtime_ms": (time.time() - start_time) * 1000.0,
+        "total_reward": round(float(total_reward), 3),
+        "invalid_macro_actions": invalid_macro_actions,
+        "truncated": bool(info.get("truncated", False)),
+        "termination_reason": str(info.get("termination_reason", "unknown")),
+        "boxes_on_target": boxes_on_target,
+        "best_boxes_on_target": best_boxes_on_target,
     }
 
 
@@ -138,14 +244,15 @@ def _run_episode_silent(model, env):
     return evaluate_episode(model, env, log_progress=False)
 
 
-def _run_map_episodes(model, map_config, n_episodes, show_ui):
+def _run_map_episodes(model, map_config, n_episodes, show_ui, recorder=None):
     env = createCurriculumEvalEnvironment([map_config])
     results = []
     try:
         for ep in range(n_episodes):
-            if show_ui:
+            if recorder:
+                results.append(_run_episode_record(model, env, map_config["map_name"], ep + 1, recorder))
+            elif show_ui:
                 results.append(_run_episode_ui(model, env, map_config["map_name"], ep + 1))
-                env.reset()
             else:
                 results.append(_run_episode_silent(model, env))
     finally:
@@ -173,13 +280,11 @@ def _run_procedural_episodes(model, n_episodes, show_ui):
 # ---------------------------------------------------------------------------
 
 def _print_table_header():
-    """Print the table header used by the DQN evaluation script."""
     print(f"  {'Map':<22} {'Ep':<4}  {'Solved':<6}  {'Steps':<6}  {'Pushes':<6}  {'Reward':<8}  Reason")
     print("  " + "-" * 76)
 
 
 def _print_row(map_name, ep_idx, result):
-    """Print one DQN evaluation result row."""
     solved_str = "YES" if result.get("solved") else "no"
     reason = result.get("termination_reason", result.get("reason", ""))
     print(
@@ -190,7 +295,6 @@ def _print_row(map_name, ep_idx, result):
 
 
 def _print_group_summary(label, results):
-    """Print one compact group summary for DQN evaluation results."""
     if not results:
         return
     s = summarize_results(results)
@@ -207,9 +311,10 @@ def _print_group_summary(label, results):
 # Save helpers
 # ---------------------------------------------------------------------------
 
-def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None):
+def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None, out_dir=None):
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
+    if out_dir is None:
+        out_dir = _default_evals_dir(model_path, ts)
     os.makedirs(out_dir, exist_ok=True)
 
     tag = f"{mode}_boxes{boxes_filter}"
@@ -267,18 +372,18 @@ def main():
         "--boxes",
         choices=["1", "2", "3", "all"],
         default="all",
-        help="Box count filter for currTrain (default: all)",
+        help="Box count filter for currTrain / finalEval (default: all)",
     )
     parser.add_argument(
         "--episodes",
         type=int,
         default=3,
-        help="Episodes per map (currTrain) or total (procedural) (default: 3)",
+        help="Episodes per map (currTrain/finalEval) or total (procedural) (default: 3)",
     )
     parser.add_argument(
         "--model",
         default=None,
-        help="Path to model .zip (default: auto-find latest curriculum_dqn_best.zip)",
+        help="Path to model .zip (default: auto-find latest imitation or curriculum checkpoint)",
     )
     parser.add_argument(
         "--show-ui",
@@ -288,31 +393,43 @@ def main():
     parser.add_argument(
         "--save",
         action="store_true",
-        help="Save result JSONs to results/rl_tests/curriculum_dqn/evals/",
+        help="Save result JSONs and videos to results/rl_tests/<model_type>/evals/",
     )
     parser.add_argument(
         "--note",
         default=None,
-        help="Label for this eval run, e.g. 'phase2_500k'",
+        help="Label for this eval run, e.g. 'phase12_500k'",
+    )
+    parser.add_argument(
+        "--maps",
+        nargs="+",
+        default=[],
+        help="Run only these named maps (e.g. --maps fe1b_003 fe2b_017 wall3b_033)",
     )
     args = parser.parse_args()
-
-    if args.mode == "finalEval":
-        print("finalEval mode is not yet defined — no held-out maps exist yet.")
-        print("Add maps to eval_dqn.py under _build_final_eval_groups() when ready.")
-        return
 
     model_path = args.model or _find_latest_model()
     model = MaskedDQN.load(model_path)
 
+    model_type = "imitation" if _is_imitation_model(model_path) else "curriculum_dqn"
     print(f"\n{'=' * 60}")
     print("CURRICULUM DQN EVALUATION")
     print(f"{'=' * 60}")
     print(f"  model    : {model_path}")
+    print(f"  type     : {model_type}")
     print(f"  canvas   : {CURRICULUM_DQN_CANVAS_SHAPE}  max_boxes={CURRICULUM_DQN_MAX_BOXES}")
     print(f"  mode     : {args.mode}  |  boxes: {args.boxes}  |  episodes: {args.episodes}")
     print(f"  note     : {args.note or '(none)'}")
     print()
+
+    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    out_dir = None
+    recorder = None
+    if args.save:
+        out_dir = _default_evals_dir(model_path, ts)
+        os.makedirs(out_dir, exist_ok=True)
+        recorder = EpisodeVideoRecorder(save_dir=out_dir, fps=5)
+        print(f"  Recording videos to: {out_dir}/\n")
 
     per_map_results = {}
     group_summaries = {}
@@ -329,8 +446,16 @@ def main():
         _print_group_summary("Sokoban-small-v1", results)
         group_summaries["procedural"] = summarize_results(results)
 
-    else:  # currTrain
-        groups = _build_curr_train_groups(args.boxes)
+    else:  # currTrain or finalEval — same loop, different map source
+        if args.mode == "finalEval":
+            groups = _build_final_eval_groups(args.boxes)
+            print("  Source: held-out FinalEval benchmark (seed=999, never seen during training)")
+        else:
+            groups = _build_curr_train_groups(args.boxes)
+        if args.maps:
+            wanted = set(args.maps)
+            groups = [(label, [m for m in maps if m["map_name"] in wanted]) for label, maps in groups]
+            groups = [(label, maps) for label, maps in groups if maps]
         total_maps = sum(len(maps) for _, maps in groups)
         print(f"  {total_maps} maps  x  {args.episodes} episodes each\n")
         _print_table_header()
@@ -342,7 +467,7 @@ def main():
             print(f"\n  ── {group_label.upper()}  ({len(maps)} maps) ──")
             group_results = []
             for m in maps:
-                ep_results = _run_map_episodes(model, m, args.episodes, args.show_ui)
+                ep_results = _run_map_episodes(model, m, args.episodes, args.show_ui, recorder)
                 per_map_results[m["map_name"]] = ep_results
                 for ep, r in enumerate(ep_results):
                     _print_row(m["map_name"], ep, r)
@@ -364,7 +489,7 @@ def main():
 
     if args.save:
         _save_results(model_path, args.mode, args.boxes, args.episodes,
-                      args.note, per_map_results, summary, group_summaries)
+                      args.note, per_map_results, summary, group_summaries, out_dir)
 
 
 if __name__ == "__main__":
