@@ -1,7 +1,0 @@
-source,group,env_version,map_name,difficulty,episode,algorithm,seed,solved,failure_reason,height,width,num_boxes,total_reward,steps,runtime_ms,nodes_expanded,deadlocks_pruned,dead_squares
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,bfs,,True,,7,9,3,10.9,21,12341.7714,2017,2918,15
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,greedy,,True,,7,9,3,9.7,33,18857.9814,43,48,15
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,astar,,True,,7,9,3,10.9,21,12130.2698,71,92,15
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,bfs,,True,,7,9,3,10.9,21,11807.1456,2017,2918,15
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,greedy,,True,,7,9,3,9.7,33,18315.1793,43,48,15
-custom,custom_additional,custom_env,dqn_map_1,DQN-3box,0,astar,,True,,7,9,3,10.9,21,11545.4986,71,92,15
