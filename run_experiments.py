@@ -151,7 +151,7 @@ def run_selected_benchmarks(args):
     sources = expand_sources(args.sources)
     algorithms = expand_algorithms(args.algorithms)
 
-    custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "additional", "archived"}
+    custom_sources = {"custom_core", "canvas", "dqn_custom", "curriculum", "additional", "archived", "final_eval"}
     if custom_sources.intersection(sources):
         results.extend(run_custom_groups(args, sources, algorithms))
     if _is_final_eval_source(sources):

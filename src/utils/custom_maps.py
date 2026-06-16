@@ -1,4 +1,5 @@
 # src/utils/custom_maps.py
+from src.utils.final_eval_maps import build_all_final_eval_maps
 """Custom benchmark maps for fixed Sokoban evaluation.
 
 Active map groups
@@ -205,6 +206,8 @@ def select_custom_maps(source_names, selected_names):
         maps.extend(build_additional_maps())
     if "archived" in source_names:
         maps.extend(build_archived_maps())
+    if "final_eval" in source_names:
+        maps.extend(build_final_eval_maps())
     return filter_maps_by_name(maps, selected_names)
 
 
@@ -230,3 +233,23 @@ def build_additional_maps():
             group_name="additional",
         ),
     ]
+
+def build_final_eval_maps():
+    maps = []
+
+    for config in build_all_final_eval_maps():
+        config = dict(config)
+        config["walls"] = []
+
+        if config["map_name"].startswith("fe1b_"):
+            config["group_name"] = "final_eval_1box"
+        elif config["map_name"].startswith("fe2b_"):
+            config["group_name"] = "final_eval_2box"
+        elif config["map_name"].startswith("fe3b_"):
+            config["group_name"] = "final_eval_3box"
+        else:
+            config["group_name"] = "final_eval"
+
+        maps.append(config)
+
+    return maps
