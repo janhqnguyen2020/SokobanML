@@ -9,13 +9,6 @@ currTrain   -- All curriculum training maps: generated 1/2/3-box + walled 1/2/3-
 finalEval   -- Held-out benchmark: 150 maps (50 one-box + 50 two-box + 50 three-box),
                seed=999, never seen during training.
 
-Model auto-discovery order
---------------------------
-1. results/rl_tests/curriculum_dqn_imitation/*/checkpoints/phase*_end.zip
-2. results/rl_tests/curriculum_dqn_imitation/*/checkpoints/post_imitation.zip
-3. results/rl_tests/curriculum_dqn/*/curriculum_dqn_best.zip
-4. results/rl_tests/curriculum_dqn/*/curriculum_dqn_final.zip
-
 Examples
 --------
 python eval_dqn.py
@@ -25,9 +18,8 @@ python eval_dqn.py --mode currTrain --boxes 3
 python eval_dqn.py --mode currTrain --save --note "500k_seed42"
 python eval_dqn.py --mode finalEval
 python eval_dqn.py --mode finalEval --boxes 3 --episodes 5 --save --note "v2_final"
-python eval_dqn.py --model results/rl_tests/curriculum_dqn_imitation/<run>/checkpoints/phase12_hard_end.zip
+python eval_dqn.py --model results/rl_tests/curriculum_dqn/<run>/curriculum_dqn_best.zip
 python eval_dqn.py --show-ui --episodes 1
-python eval_dqn.py --maps fe1b_003 fe2b_017 --save
 """
 
 import argparse
@@ -66,8 +58,6 @@ DELAY = 0.3
 
 def _find_latest_model():
     for pattern in (
-        os.path.join("results", "rl_tests", "curriculum_dqn_imitation", "*", "checkpoints", "phase*_end.zip"),
-        os.path.join("results", "rl_tests", "curriculum_dqn_imitation", "*", "checkpoints", "post_imitation.zip"),
         os.path.join("results", "rl_tests", "curriculum_dqn", "*", "curriculum_dqn_best.zip"),
         os.path.join("results", "rl_tests", "curriculum_dqn", "*", "curriculum_dqn_final.zip"),
     ):
@@ -76,17 +66,8 @@ def _find_latest_model():
             return matches[-1]
     raise FileNotFoundError(
         "No curriculum DQN model found. "
-        "Run python main_curriculum_dqn_with_imitation.py first, or pass --model <path>."
+        "Run python main_curriculum_dqn.py first, or pass --model <path>."
     )
-
-
-def _is_imitation_model(model_path):
-    return "curriculum_dqn_imitation" in os.path.normpath(model_path)
-
-
-def _default_evals_dir(model_path, ts):
-    base = "curriculum_dqn_imitation" if _is_imitation_model(model_path) else "curriculum_dqn"
-    return os.path.join("results", "rl_tests", base, "evals", ts)
 
 
 # ---------------------------------------------------------------------------
@@ -280,11 +261,13 @@ def _run_procedural_episodes(model, n_episodes, show_ui):
 # ---------------------------------------------------------------------------
 
 def _print_table_header():
+    """Print the table header used by the DQN evaluation script."""
     print(f"  {'Map':<22} {'Ep':<4}  {'Solved':<6}  {'Steps':<6}  {'Pushes':<6}  {'Reward':<8}  Reason")
     print("  " + "-" * 76)
 
 
 def _print_row(map_name, ep_idx, result):
+    """Print one DQN evaluation result row."""
     solved_str = "YES" if result.get("solved") else "no"
     reason = result.get("termination_reason", result.get("reason", ""))
     print(
@@ -295,6 +278,7 @@ def _print_row(map_name, ep_idx, result):
 
 
 def _print_group_summary(label, results):
+    """Print one compact group summary for DQN evaluation results."""
     if not results:
         return
     s = summarize_results(results)
@@ -314,7 +298,7 @@ def _print_group_summary(label, results):
 def _save_results(model_path, mode, boxes_filter, episodes, note, per_map_results, summary, group_summaries=None, out_dir=None):
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     if out_dir is None:
-        out_dir = _default_evals_dir(model_path, ts)
+        out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
     os.makedirs(out_dir, exist_ok=True)
 
     tag = f"{mode}_boxes{boxes_filter}"
@@ -378,12 +362,12 @@ def main():
         "--episodes",
         type=int,
         default=3,
-        help="Episodes per map (currTrain/finalEval) or total (procedural) (default: 3)",
+        help="Episodes per map (currTrain) or total (procedural) (default: 3)",
     )
     parser.add_argument(
         "--model",
         default=None,
-        help="Path to model .zip (default: auto-find latest imitation or curriculum checkpoint)",
+        help="Path to model .zip (default: auto-find latest curriculum_dqn_best.zip)",
     )
     parser.add_argument(
         "--show-ui",
@@ -393,40 +377,39 @@ def main():
     parser.add_argument(
         "--save",
         action="store_true",
-        help="Save result JSONs and videos to results/rl_tests/<model_type>/evals/",
+        help="Save result JSONs to results/rl_tests/curriculum_dqn/evals/",
     )
     parser.add_argument(
         "--note",
         default=None,
-        help="Label for this eval run, e.g. 'phase12_500k'",
+        help="Label for this eval run, e.g. 'phase2_500k'",
     )
     parser.add_argument(
         "--maps",
         nargs="+",
         default=[],
-        help="Run only these named maps (e.g. --maps fe1b_003 fe2b_017 wall3b_033)",
+        help="Run only these named maps (e.g. --maps wall3b_033 curr_prog_44)",
     )
     args = parser.parse_args()
 
     model_path = args.model or _find_latest_model()
     model = MaskedDQN.load(model_path)
 
-    model_type = "imitation" if _is_imitation_model(model_path) else "curriculum_dqn"
     print(f"\n{'=' * 60}")
     print("CURRICULUM DQN EVALUATION")
     print(f"{'=' * 60}")
     print(f"  model    : {model_path}")
-    print(f"  type     : {model_type}")
     print(f"  canvas   : {CURRICULUM_DQN_CANVAS_SHAPE}  max_boxes={CURRICULUM_DQN_MAX_BOXES}")
     print(f"  mode     : {args.mode}  |  boxes: {args.boxes}  |  episodes: {args.episodes}")
     print(f"  note     : {args.note or '(none)'}")
     print()
 
-    ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    # Pre-create output dir so the recorder saves videos there alongside the JSON.
     out_dir = None
     recorder = None
     if args.save:
-        out_dir = _default_evals_dir(model_path, ts)
+        ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        out_dir = os.path.join("results", "rl_tests", "curriculum_dqn", "evals", ts)
         os.makedirs(out_dir, exist_ok=True)
         recorder = EpisodeVideoRecorder(save_dir=out_dir, fps=5)
         print(f"  Recording videos to: {out_dir}/\n")

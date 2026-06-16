@@ -1,0 +1,2 @@
+algorithm,group,total_runs,solved_runs,success_rate,avg_num_steps,avg_num_pushes,avg_runtime_ms,avg_nodes_expanded,avg_deadlocks_pruned
+greedy,curriculum,60,60,1.0,29.95,8.5667,248.8022,8.7,11.0333
